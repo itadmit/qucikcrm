@@ -474,7 +474,7 @@ export default function ClientDetailPage() {
 
   useEffect(() => {
     fetchClient()
-  }, [])
+  }, [params.id])
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -731,8 +731,6 @@ export default function ClientDetailPage() {
       // אם המשימה לא באותו סטטוס, נשנה את הסטטוס קודם
       if (draggedTask.status !== status) {
         await handleTaskStatusChange(taskId, status)
-        // רענון נתונים אחרי שינוי סטטוס
-        await fetchClient()
         return
       }
 
@@ -900,20 +898,6 @@ export default function ClientDetailPage() {
     tasksCount: project.tasks.length,
     completedTasks: project.tasks.filter(t => t.status === 'DONE').length,
   }))
-
-  if (!client) {
-    return (
-      <AppLayout>
-        <div className="text-center py-12">
-          <Building className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">לקוח לא נמצא</h3>
-          <Link href="/clients">
-            <Button variant="outline">חזרה ללקוחות</Button>
-          </Link>
-        </div>
-      </AppLayout>
-    )
-  }
 
   const budgets = Array.isArray(client?.budgets) ? client.budgets : []
   const tasks = Array.isArray(client?.tasks) ? client.tasks.filter(t => t && typeof t === 'object' && t.id) : []
@@ -1142,7 +1126,7 @@ export default function ClientDetailPage() {
                 <div>
                   <div className="text-sm text-gray-500 mb-1">התקדמות ממוצעת</div>
                   <div className="text-3xl font-bold text-purple-600">
-                    {Math.round(projects.reduce((sum, p) => sum + p.progress, 0) / projects.length)}%
+                    {projects.length > 0 ? Math.round(projects.reduce((sum, p) => sum + p.progress, 0) / projects.length) : 0}%
                   </div>
                 </div>
                 <TrendingUp className="w-8 h-8 text-purple-600" />

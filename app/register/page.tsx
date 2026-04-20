@@ -65,7 +65,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-pacifico text-white mb-2" style={{ letterSpacing: '2px' }}>
-            Quick crm
+            Quick crm <span className="text-2xl align-super opacity-80">v2</span>
           </h1>
           <p className="text-purple-100">צור את החשבון שלך והתחל עכשיו</p>
         </div>

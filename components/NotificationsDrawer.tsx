@@ -95,7 +95,6 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
         setNotifications(prev =>
           prev.map(n => ({ ...n, isRead: true }))
         )
-        fetchNotifications()
       }
     } catch (error) {
       console.error('Error marking all as read:', error)
@@ -220,7 +219,7 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
         const payment = notification.entityDetails
         return (
           <div className="mt-2 space-y-1 text-sm">
-            <div className="font-semibold text-emerald-600 text-lg">₪{payment.amount.toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
+            <div className="font-semibold text-emerald-600 text-lg">₪{(payment.amount ?? 0).toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
             {payment.transactionId && (
               <div className="text-gray-600">מספר עסקה: {payment.transactionId}</div>
             )}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Bell, Search, ChevronDown, Settings, LogOut, User, UserPlus, Menu } from "lucide-react"
@@ -21,33 +21,16 @@ import { InvitePeopleDialog } from "@/components/dialogs/InvitePeopleDialog"
 interface HeaderProps {
   title?: string
   onMenuToggle?: () => void
+  externalUnreadCount?: number
 }
 
-export function Header({ title, onMenuToggle }: HeaderProps) {
+export function Header({ title, onMenuToggle, externalUnreadCount }: HeaderProps) {
   const { data: session } = useSession()
   const router = useRouter()
   const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const [unreadCount, setUnreadCount] = useState(0)
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
 
-  useEffect(() => {
-    const fetchUnreadCount = async () => {
-      try {
-        const response = await fetch('/api/notifications')
-        if (response.ok) {
-          const notifications = await response.json()
-          const unread = notifications.filter((n: any) => !n.isRead).length
-          setUnreadCount(unread)
-        }
-      } catch (error) {
-        console.error('Error fetching notifications count:', error)
-      }
-    }
-
-    fetchUnreadCount()
-    const interval = setInterval(fetchUnreadCount, 30000)
-    return () => clearInterval(interval)
-  }, [])
+  const unreadCount = externalUnreadCount ?? 0
 
   const getUserInitials = (name: string) => {
     return name

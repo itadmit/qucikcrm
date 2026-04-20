@@ -160,6 +160,12 @@ export default function TaskDetailPage() {
     fetchTask()
   }, [params.id])
 
+  useEffect(() => {
+    return () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current)
+    }
+  }, [])
+
   const fetchTask = async () => {
     try {
       const response = await fetch(`/api/tasks/${params.id}`)

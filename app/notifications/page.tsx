@@ -129,7 +129,6 @@ export default function NotificationsPage() {
           title: "הכל סומן כנקרא",
           description: "כל ההתראות סומנו כנקראו בהצלחה",
         })
-        fetchNotifications()
       } else {
         toast({
           title: "שגיאה",
@@ -163,7 +162,6 @@ export default function NotificationsPage() {
           title: "הכל נמחק",
           description: "כל ההתראות נמחקו בהצלחה",
         })
-        fetchNotifications()
       } else {
         toast({
           title: "שגיאה",
@@ -271,7 +269,7 @@ export default function NotificationsPage() {
         const payment = notification.entityDetails
         return (
           <div className="mt-2 space-y-1 text-sm">
-            <div className="font-semibold text-emerald-600 text-lg">₪{payment.amount.toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
+            <div className="font-semibold text-emerald-600 text-lg">₪{(payment.amount ?? 0).toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
             {payment.transactionId && (
               <div className="text-gray-600">מספר עסקה: {payment.transactionId}</div>
             )}

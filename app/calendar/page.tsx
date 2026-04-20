@@ -32,6 +32,7 @@ export default function CalendarPage() {
   }, [currentDate])
 
   const fetchMeetings = async () => {
+    setLoading(true)
     try {
       const response = await fetch(`/api/calendar?month=${currentDate.getMonth()}&year=${currentDate.getFullYear()}`)
       if (response.ok) {
@@ -82,8 +83,9 @@ export default function CalendarPage() {
   }
 
   const goToToday = () => {
-    setCurrentDate(new Date(2024, 6, 7))
-    setSelectedDay(7)
+    const now = new Date()
+    setCurrentDate(now)
+    setSelectedDay(now.getDate())
     toast({
       title: "חזרה להיום",
       description: "הלוח שנה הוחזר לתאריך של היום",
@@ -93,14 +95,15 @@ export default function CalendarPage() {
   const handleDayClick = (day: number) => {
     setSelectedDay(day)
     const dayMeetings = getMeetingsForDay(day)
+    const currentMonthName = monthNames[currentDate.getMonth()]
     if (dayMeetings.length > 0) {
       toast({
-        title: `${day} ביולי`,
+        title: `${day} ב${currentMonthName}`,
         description: `יש לך ${dayMeetings.length} פגישות ביום זה`,
       })
     } else {
       toast({
-        title: `${day} ביולי`,
+        title: `${day} ב${currentMonthName}`,
         description: "אין פגישות ביום זה",
       })
     }
@@ -141,7 +144,7 @@ export default function CalendarPage() {
             <p className="text-gray-500 mt-1">נהל את הפגישות והאירועים שלך</p>
           </div>
           <NewMeetingDialog onMeetingCreated={() => {
-            // Refresh meetings list if needed
+            fetchMeetings()
             toast({
               title: "הפגישה נשמרה",
               description: "הפגישה נוספה ללוח השנה",

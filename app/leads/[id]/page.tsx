@@ -59,17 +59,14 @@ export default function LeadDetailPage() {
   useEffect(() => {
     fetchLead()
     fetchQuotes()
-  }, [])
+  }, [params.id])
 
   const fetchLead = async () => {
     try {
-      console.log('Fetching lead:', params.id)
       const response = await fetch(`/api/leads/${params.id}`)
-      console.log('Response status:', response.status)
       
       if (response.ok) {
         const data = await response.json()
-        console.log('Lead data:', data)
         setLead(data)
       } else {
         const errorData = await response.json().catch(() => ({}))

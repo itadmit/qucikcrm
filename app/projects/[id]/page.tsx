@@ -125,6 +125,12 @@ export default function ProjectDetailPage() {
 
   useEffect(() => {
     fetchProject()
+  }, [params.id])
+
+  useEffect(() => {
+    return () => {
+      if (notesTimer.current) clearTimeout(notesTimer.current)
+    }
   }, [])
 
   const fetchProject = async () => {

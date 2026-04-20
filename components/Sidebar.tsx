@@ -52,19 +52,23 @@ const settingsItems = [
 interface SidebarProps {
   mobileOpen?: boolean
   onMobileClose?: () => void
+  externalUnreadCount?: number
 }
 
-export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
+export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: SidebarProps) {
   const pathname = usePathname()
   const [unreadCount, setUnreadCount] = useState(0)
   const [permissions, setPermissions] = useState<Record<string, boolean>>({})
   const [loadingPermissions, setLoadingPermissions] = useState(true)
 
   useEffect(() => {
+    if (externalUnreadCount !== undefined) {
+      setUnreadCount(externalUnreadCount)
+    }
+  }, [externalUnreadCount])
+
+  useEffect(() => {
     fetchPermissions()
-    fetchUnreadCount()
-    const interval = setInterval(fetchUnreadCount, 30000)
-    return () => clearInterval(interval)
   }, [])
 
   // Close on route change (mobile)
@@ -94,11 +98,16 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
 
   const fetchUnreadCount = async () => {
     try {
-      const response = await fetch('/api/notifications')
+      const response = await fetch('/api/notifications?countOnly=true')
       if (response.ok) {
-        const notifications = await response.json()
-        const unread = notifications.filter((n: any) => !n.isRead).length
-        setUnreadCount(unread)
+        const data = await response.json()
+        if (typeof data === 'number') {
+          setUnreadCount(data)
+        } else if (Array.isArray(data)) {
+          setUnreadCount(data.filter((n: any) => !n.isRead).length)
+        } else if (data.unreadCount !== undefined) {
+          setUnreadCount(data.unreadCount)
+        }
       }
     } catch (error) {
       console.error('Error fetching notifications count:', error)

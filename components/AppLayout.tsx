@@ -22,6 +22,26 @@ export function AppLayout({ children, title, hideSidebar = false, hideHeader = f
   const pathname = usePathname()
   const { toast } = useToast()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [unreadNotifications, setUnreadNotifications] = useState(0)
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await fetch('/api/notifications')
+        if (response.ok) {
+          const notifications = await response.json()
+          const unread = notifications.filter((n: any) => !n.isRead).length
+          setUnreadNotifications(unread)
+        }
+      } catch (error) {
+        console.error('Error fetching notifications count:', error)
+      }
+    }
+
+    fetchUnreadCount()
+    const interval = setInterval(fetchUnreadCount, 30000)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     if (pathname?.startsWith("/invite") || pathname?.startsWith("/register")) {
@@ -68,10 +88,11 @@ export function AppLayout({ children, title, hideSidebar = false, hideHeader = f
         <Sidebar
           mobileOpen={mobileMenuOpen}
           onMobileClose={handleMobileClose}
+          externalUnreadCount={unreadNotifications}
         />
       )}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-        {!hideHeader && <Header title={title} onMenuToggle={handleMenuToggle} />}
+        {!hideHeader && <Header title={title} onMenuToggle={handleMenuToggle} externalUnreadCount={unreadNotifications} />}
         <main className={`flex-1 ${fullWidth ? 'overflow-hidden' : 'overflow-y-auto'}`}>
           {fullWidth ? (
             <div className="h-full">
