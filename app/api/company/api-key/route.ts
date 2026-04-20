@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת מפתח ה-API של החברה
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const user = await getAuthUser(req)
     if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { id: user.id },
       include: {
         company: {
@@ -23,13 +23,13 @@ export async function GET() {
       },
     })
 
-    if (!user || !user.company) {
+    if (!dbUser || !dbUser.company) {
       return NextResponse.json({ error: "Company not found" }, { status: 404 })
     }
 
     return NextResponse.json({
-      companyName: user.company.name,
-      apiKey: user.company.apiKey,
+      companyName: dbUser.company.name,
+      apiKey: dbUser.company.apiKey,
       webhookUrl: `${process.env.NEXTAUTH_URL || "https://quick-crm.com"}/api/webhooks/quotes`,
       documentation: `${process.env.NEXTAUTH_URL || "https://quick-crm.com"}/api/webhooks/quotes`,
     })
@@ -43,7 +43,7 @@ export async function GET() {
 }
 
 // POST - יצירת מפתח API חדש (רענון)
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
     const user = await getAuthUser(req)
     if (!user?.id) {
@@ -55,12 +55,12 @@ export async function POST() {
       return NextResponse.json({ error: "Only admins can regenerate API keys" }, { status: 403 })
     }
 
-    const user = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { id: user.id },
       select: { companyId: true },
     })
 
-    if (!user) {
+    if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
@@ -69,7 +69,7 @@ export async function POST() {
     const newApiKey = `qcrm_${crypto.randomBytes(24).toString("hex")}`
 
     const company = await prisma.company.update({
-      where: { id: user.companyId },
+      where: { id: dbUser.companyId },
       data: { apiKey: newApiKey },
       select: {
         name: true,
@@ -91,4 +91,3 @@ export async function POST() {
     )
   }
 }
-

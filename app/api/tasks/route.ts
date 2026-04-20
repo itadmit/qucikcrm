@@ -171,8 +171,8 @@ export async function PATCH(req: NextRequest) {
             where: { id: item.id, companyId: user.companyId },
             data: {
               position: item.position,
-              ...(item.columnId && { columnId: item.columnId }),
-              ...(item.status && { status: item.status }),
+              ...(item.columnId ? { columnId: item.columnId } : {}),
+              ...(item.status ? { status: item.status as any } : {}),
             },
           })
         )
@@ -184,7 +184,7 @@ export async function PATCH(req: NextRequest) {
         where: { id: { in: taskIds }, projectId: { not: null } },
         select: { projectId: true },
       })
-      const projectIds = [...new Set(affectedTasks.map(t => t.projectId).filter(Boolean))] as string[]
+      const projectIds = Array.from(new Set(affectedTasks.map(t => t.projectId).filter(Boolean))) as string[]
 
       for (const pid of projectIds) {
         await recalcProjectProgress(pid)

@@ -3,19 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { readFile } from "fs/promises"
 import { join } from "path"
 import { existsSync } from "fs"
-import { Session } from "next-auth"
 import { getAuthUser } from "@/lib/mobile-auth"
-
-interface ExtendedSession extends Session {
-  user: {
-    id: string
-    email: string
-    name: string
-    role: string
-    companyId: string
-    companyName: string
-  }
-}
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {

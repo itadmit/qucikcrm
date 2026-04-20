@@ -2,19 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { sendEmail, getEmailTemplate } from "@/lib/email"
 import { generateQuotePDF } from "@/lib/pdf-generator"
-import { Session } from "next-auth"
 import { getAuthUser } from "@/lib/mobile-auth"
-
-interface ExtendedSession extends Session {
-  user: {
-    id: string
-    email: string
-    name: string
-    role: string
-    companyId: string
-    companyName: string
-  }
-}
 
 // POST /api/quotes/[id]/send - שליחה מחדש של הצעת מחיר במייל
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

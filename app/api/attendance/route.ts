@@ -1,22 +1,20 @@
-import { NextResponse } from 'next/server';
-;
-;
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת כל רישומי הנוכחות
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
   try {
     const user = await getAuthUser(req)
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(req.url);
     const month = searchParams.get('month'); // YYYY-MM format
     const userId = searchParams.get('userId');
 
-    const user = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { id: user.id }
     });
 
@@ -76,14 +74,14 @@ export async function GET(request: Request) {
 }
 
 // POST - יצירת רישום נוכחות חדש
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
     const user = await getAuthUser(req)
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { id: user.id }
     });
 
@@ -91,7 +89,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const body = await request.json();
+    const body = await req.json();
     const { date, clockIn, clockOut, notes } = body;
 
     // חישוב סה"כ שעות

@@ -1,18 +1,16 @@
-import { NextResponse } from 'next/server';
-;
-;
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת סטטיסטיקות חודשיות
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
   try {
     const user = await getAuthUser(req)
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(req.url);
     const month = searchParams.get('month'); // YYYY-MM format
     const allEmployees = searchParams.get('allEmployees') === 'true'; // האם להחזיר כל העובדים
 

@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-;
-;
 import { prisma } from '@/lib/prisma';
 import { createInvoice4UClearingClient } from '@/lib/invoice4u-clearing';
 import { getAuthUser } from "@/lib/mobile-auth"
@@ -10,7 +8,7 @@ import { getAuthUser } from "@/lib/mobile-auth"
  */
 export async function GET(request: NextRequest) {
   try {
-    const user = await getAuthUser(req)
+    const user = await getAuthUser(request)
     if (!user?.companyId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

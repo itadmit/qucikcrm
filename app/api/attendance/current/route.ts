@@ -1,11 +1,9 @@
-import { NextResponse } from 'next/server';
-;
-;
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת מצב נוכחות נוכחי של היום
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
   try {
     const user = await getAuthUser(req)
     if (!user) {

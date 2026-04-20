@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-;
-;
 import { prisma } from '@/lib/prisma';
 import { createInvoice4UClient, DocumentType } from '@/lib/invoice4u';
 import { getAuthUser } from "@/lib/mobile-auth"
@@ -8,7 +6,7 @@ import { getAuthUser } from "@/lib/mobile-auth"
 // POST - יצירת מסמך (הצעת מחיר, חשבון עסקה, חשבונית מס)
 export async function POST(request: NextRequest) {
   try {
-    const user = await getAuthUser(req)
+    const user = await getAuthUser(request)
     if (!user?.companyId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -192,7 +190,7 @@ export async function POST(request: NextRequest) {
 // GET - קבלת רשימת מסמכים
 export async function GET(request: NextRequest) {
   try {
-    const user = await getAuthUser(req)
+    const user = await getAuthUser(request)
     if (!user?.companyId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

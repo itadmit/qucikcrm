@@ -2,19 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { sendEmail, getEmailTemplate } from "@/lib/email"
 import { generateQuotePDF } from "@/lib/pdf-generator"
-import { Session } from "next-auth"
 import { getAuthUser } from "@/lib/mobile-auth"
-
-interface ExtendedSession extends Session {
-  user: {
-    id: string
-    email: string
-    name: string
-    role: string
-    companyId: string
-    companyName: string
-  }
-}
 
 // POST /api/quotes/create-and-send - יצירת הצעת מחיר ושילוח במייל
 export async function POST(req: NextRequest) {
@@ -24,12 +12,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { id: user.id },
       select: { companyId: true },
     })
 
-    if (!user) {
+    if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
@@ -57,7 +45,7 @@ export async function POST(req: NextRequest) {
     const lead = await prisma.lead.findFirst({
       where: {
         id: leadId,
-        companyId: user.companyId,
+        companyId: dbUser.companyId,
       },
     })
 
@@ -137,7 +125,7 @@ export async function POST(req: NextRequest) {
       try {
         quote = await prisma.quote.create({
           data: {
-            companyId: user.companyId,
+            companyId: dbUser.companyId,
             leadId: leadId,
             quoteNumber,
             title,

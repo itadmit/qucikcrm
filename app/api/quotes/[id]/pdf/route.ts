@@ -1,19 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { generateQuotePDF } from "@/lib/pdf-generator"
-import { Session } from "next-auth"
 import { getAuthUser } from "@/lib/mobile-auth"
-
-interface ExtendedSession extends Session {
-  user: {
-    id: string
-    email: string
-    name: string
-    role: string
-    companyId: string
-    companyName: string
-  }
-}
 
 // GET /api/quotes/[id]/pdf - יצירת PDF של הצעת מחיר
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -24,19 +12,19 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { id: user.id },
       select: { companyId: true },
     })
 
-    if (!user) {
+    if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
     const quote = await prisma.quote.findFirst({
       where: {
         id: id,
-        companyId: user.companyId,
+        companyId: dbUser.companyId,
       },
       include: {
         lead: true,

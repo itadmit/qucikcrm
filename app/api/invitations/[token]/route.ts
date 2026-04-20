@@ -5,11 +5,10 @@ import bcrypt from "bcryptjs"
 // GET - קבלת פרטי הזמנה לפי token
 export async function GET(req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   try {
-    const { token } = await params;
-    const { token } = params
+    const { token: inviteToken } = await params;
 
     const invitation = await prisma.invitation.findUnique({
-      where: { token },
+      where: { token: inviteToken },
       include: {
         company: {
           select: {
@@ -54,8 +53,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ toke
 // POST - אישור הזמנה ויצירת משתמש
 export async function POST(req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   try {
-    const { token } = await params;
-    const { token } = params
+    const { token: inviteToken } = await params;
     const body = await req.json()
     const { name, password } = body
 
@@ -68,7 +66,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
 
     // קבלת ההזמנה
     const invitation = await prisma.invitation.findUnique({
-      where: { token },
+      where: { token: inviteToken },
     })
 
     if (!invitation) {
@@ -168,4 +166,3 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     )
   }
 }
-

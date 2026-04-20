@@ -5,13 +5,6 @@ import { join } from "path"
 import { existsSync } from "fs"
 import { getAuthUser } from "@/lib/mobile-auth"
 
-interface ExtendedSession {
-  user: {
-    id: string
-    companyId: string
-  }
-}
-
 export async function POST(req: NextRequest) {
   try {
     const user = await getAuthUser(req)

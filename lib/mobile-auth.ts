@@ -34,14 +34,15 @@ export function verifyToken(token: string): MobileTokenPayload | null {
 
 export async function getAuthUser(req?: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (session?.user?.id) {
+  const sessionUser = session?.user as any;
+  if (sessionUser?.id) {
     return {
-      id: session.user.id,
-      email: session.user.email,
-      name: session.user.name,
-      role: session.user.role,
-      companyId: session.user.companyId,
-      companyName: session.user.companyName,
+      id: sessionUser.id,
+      email: sessionUser.email,
+      name: sessionUser.name,
+      role: sessionUser.role,
+      companyId: sessionUser.companyId,
+      companyName: sessionUser.companyName,
     };
   }
 

@@ -17,19 +17,19 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
     }
 
     // בדיקה שהמשתמש שייך לאותה חברה
-    const user = await prisma.user.findFirst({
+    const dbUser = await prisma.user.findFirst({
       where: {
         id: userId,
         companyId: user.companyId,
       },
     })
 
-    if (!user) {
+    if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
     // אם המשתמש הוא ADMIN או SUPER_ADMIN, יש לו כל ההרשאות
-    if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
+    if (dbUser.role === "ADMIN" || dbUser.role === "SUPER_ADMIN") {
       return NextResponse.json({
         permissions: {
           dashboard: true,
@@ -98,19 +98,19 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ us
     const { permissions } = body
 
     // בדיקה שהמשתמש שייך לאותה חברה
-    const user = await prisma.user.findFirst({
+    const dbUser = await prisma.user.findFirst({
       where: {
         id: userId,
         companyId: user.companyId,
       },
     })
 
-    if (!user) {
+    if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
     // לא ניתן לשנות הרשאות של ADMIN
-    if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
+    if (dbUser.role === "ADMIN" || dbUser.role === "SUPER_ADMIN") {
       return NextResponse.json(
         { error: "Cannot modify permissions for admin users" },
         { status: 400 }

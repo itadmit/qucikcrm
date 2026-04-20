@@ -1,18 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { Session } from "next-auth"
 import { getAuthUser } from "@/lib/mobile-auth"
-
-interface ExtendedSession extends Session {
-  user: {
-    id: string
-    email: string
-    name: string
-    role: string
-    companyId: string
-    companyName: string
-  }
-}
 
 // GET /api/quotes - קבלת כל הצעות המחיר
 export async function GET(req: NextRequest) {

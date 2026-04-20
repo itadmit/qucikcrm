@@ -29,17 +29,17 @@ export async function PATCH(req: NextRequest) {
     }
 
     // קבלת המשתמש עם הסיסמה
-    const user = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { id: user.id },
-      select: { password: true },
+      select: { id: true, password: true },
     })
 
-    if (!user) {
+    if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
     // בדיקת הסיסמה הנוכחית
-    const isPasswordValid = await bcrypt.compare(currentPassword, user.password)
+    const isPasswordValid = await bcrypt.compare(currentPassword, dbUser.password)
     if (!isPasswordValid) {
       return NextResponse.json(
         { error: "Current password is incorrect" },
@@ -52,7 +52,7 @@ export async function PATCH(req: NextRequest) {
 
     // עדכון הסיסמה
     await prisma.user.update({
-      where: { id: user.id },
+      where: { id: dbUser.id },
       data: { password: hashedPassword },
     })
 
