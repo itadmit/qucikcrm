@@ -137,7 +137,7 @@ export default function AcceptInvitationPage() {
     return (
       <AppLayout hideSidebar={true} hideHeader={true}>
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-violet-600" />
         </div>
       </AppLayout>
     )
@@ -150,10 +150,10 @@ export default function AcceptInvitationPage() {
           <CardContent className="pt-6">
             <div className="text-center">
               <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl font-bold text-zinc-900 mb-2">
                 שגיאה
               </h2>
-              <p className="text-gray-600 mb-6">{error || "ההזמנה לא נמצאה"}</p>
+              <p className="text-zinc-600 mb-6">{error || "ההזמנה לא נמצאה"}</p>
               <Button onClick={() => router.push("/login")} variant="outline">
                 חזור לדף ההתחברות
               </Button>
@@ -177,14 +177,14 @@ export default function AcceptInvitationPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-6 p-4 bg-purple-50 rounded-lg">
+          <div className="mb-6 p-4 bg-violet-50 rounded-lg">
             <div className="flex items-center gap-2 mb-2">
-              <CheckCircle2 className="w-5 h-5 text-purple-600" />
-              <span className="font-medium text-gray-900">
+              <CheckCircle2 className="w-5 h-5 text-violet-600" />
+              <span className="font-medium text-zinc-900">
                 {invitation.inviter.name} הזמין אותך להצטרף
               </span>
             </div>
-            <div className="text-sm text-gray-600 space-y-1">
+            <div className="text-sm text-zinc-600 space-y-1">
               <div>חברה: {invitation.company.name}</div>
               <div>אימייל: {invitation.email}</div>
               <div>הרשאות: {permissionsCount} פריטים</div>

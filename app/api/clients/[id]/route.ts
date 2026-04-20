@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -17,7 +13,7 @@ export async function GET(
 
     const client = await prisma.client.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -318,13 +314,10 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -335,7 +328,7 @@ export async function PATCH(
 
     const client = await prisma.client.update({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       data: {
@@ -355,13 +348,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -370,7 +360,7 @@ export async function DELETE(
     // Get client with related data counts
     const client = await prisma.client.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -435,7 +425,7 @@ export async function DELETE(
     // Delete all projects
     await prisma.project.deleteMany({
       where: {
-        clientId: params.id,
+        clientId: id,
         companyId: user.companyId,
       },
     })
@@ -443,7 +433,7 @@ export async function DELETE(
     // Delete budgets associated with the client (not through projects)
     await prisma.budget.deleteMany({
       where: {
-        clientId: params.id,
+        clientId: id,
         companyId: user.companyId,
       },
     })
@@ -451,7 +441,7 @@ export async function DELETE(
     // Delete files associated with the client
     await prisma.file.deleteMany({
       where: {
-        clientId: params.id,
+        clientId: id,
         companyId: user.companyId,
       },
     })
@@ -459,7 +449,7 @@ export async function DELETE(
     // Delete tasks associated with the client (not through projects)
     await prisma.task.deleteMany({
       where: {
-        clientId: params.id,
+        clientId: id,
         companyId: user.companyId,
       },
     })
@@ -467,11 +457,11 @@ export async function DELETE(
     // Finally, delete the client itself
     await prisma.client.delete({
       where: {
-        id: params.id,
+        id: id,
       },
     })
 
-    console.log(`✅ Client ${params.id} deleted successfully with all related data`)
+    console.log(`✅ Client ${id} deleted successfully with all related data`)
 
     return NextResponse.json({ 
       success: true,

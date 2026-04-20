@@ -23,6 +23,7 @@ import {
   FileText,
   CreditCard,
   X,
+  ArrowRight,
 } from "lucide-react"
 import { InvitePeopleDialog } from "@/components/dialogs/InvitePeopleDialog"
 
@@ -36,7 +37,7 @@ const menuItems = [
 ]
 
 const projectItems = [
-  { label: "לידים", href: "/leads", color: "bg-purple-500", permission: "leads" },
+  { label: "לידים", href: "/leads", color: "bg-violet-500", permission: "leads" },
   { label: "לקוחות", href: "/clients", color: "bg-blue-500", permission: "clients" },
   { label: "פרויקטים", href: "/projects", color: "bg-cyan-500", permission: "projects" },
   { label: "מסמכים", href: "/quotes", color: "bg-green-500", permission: "quotes" },
@@ -122,25 +123,33 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="py-6 px-6 border-b border-gray-200 min-h-[80px] flex items-center justify-between">
-        <Link href="/dashboard" className="block">
-          <span
-            className="text-3xl font-pacifico prodify-gradient-text block leading-relaxed"
-            style={{ letterSpacing: '2px', paddingBottom: '4px' }}
-          >
-            Quick crm
-          </span>
+      <div className="py-5 px-5 border-b border-zinc-200/70 min-h-[72px] flex items-center justify-between">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <div className="w-9 h-9 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-sm shadow-violet-200">
+            <Sparkles className="w-4 h-4 text-white" strokeWidth={2.5} />
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <span
+              className="text-xl font-pacifico text-zinc-900 leading-none"
+              style={{ letterSpacing: '0.5px' }}
+            >
+              Quick crm
+            </span>
+            <span className="text-[9px] font-bold text-violet-700 bg-violet-100 px-1.5 py-0.5 rounded">
+              v2
+            </span>
+          </div>
         </Link>
         {onMobileClose && (
-          <button onClick={onMobileClose} className="lg:hidden p-1 rounded-lg hover:bg-gray-200 text-gray-500">
-            <X className="w-6 h-6" />
+          <button onClick={onMobileClose} className="lg:hidden p-1 rounded-lg hover:bg-zinc-100 text-zinc-500">
+            <X className="w-5 h-5" />
           </button>
         )}
       </div>
 
       {/* Main Navigation */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-8">
-        <nav className="space-y-1">
+      <div className="flex-1 overflow-y-auto p-3 space-y-6">
+        <nav className="space-y-0.5">
           {menuItems
             .filter((item) => hasPermission(item.permission))
             .map((item) => {
@@ -151,17 +160,23 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                    "group flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all relative",
                     isActive
-                      ? "bg-purple-100 text-purple-700"
-                      : "text-gray-700 hover:bg-gray-200"
+                      ? "bg-zinc-900 text-white shadow-sm"
+                      : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                   )}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className={cn("w-4 h-4 shrink-0", isActive ? "text-white" : "text-zinc-500 group-hover:text-zinc-900")} strokeWidth={2} />
                   <span className="flex-1">{item.label}</span>
                   {item.hasBadge && unreadCount > 0 && (
-                    <span className="prodify-gradient text-white text-xs rounded-full px-2 py-0.5 min-w-[20px] text-center">
-                      {unreadCount}
+                    <span className={cn(
+                      "text-[10px] font-bold rounded-full inline-flex items-center justify-center shrink-0",
+                      unreadCount > 9 ? "h-5 px-1.5 min-w-[20px]" : "h-5 w-5",
+                      isActive
+                        ? "bg-white text-zinc-900"
+                        : "bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white"
+                    )}>
+                      {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                   )}
                 </Link>
@@ -172,14 +187,14 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
         {/* Projects Section */}
         <div>
           <div className="flex items-center justify-between px-3 mb-2">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              הפרויקטים שלי
+            <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+              עבודה
             </h3>
-            <button className="text-gray-400 hover:text-gray-600">
-              <span className="text-lg">+</span>
+            <button className="text-zinc-400 hover:text-zinc-700 transition-colors">
+              <span className="text-base leading-none">+</span>
             </button>
           </div>
-          <nav className="space-y-1">
+          <nav className="space-y-0.5">
             {projectItems
               .filter((item) => hasPermission(item.permission))
               .map((item) => {
@@ -189,14 +204,18 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                      "group flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
                       isActive
-                        ? "bg-gray-200 text-gray-900"
-                        : "text-gray-700 hover:bg-gray-200"
+                        ? "bg-violet-50 text-violet-900"
+                        : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
                     )}
                   >
-                    <div className={cn("w-3 h-3 rounded-full", item.color)} />
-                    <span>{item.label}</span>
+                    <div className={cn(
+                      "w-2 h-2 rounded-full shrink-0 transition-transform",
+                      item.color,
+                      isActive && "ring-2 ring-offset-1 ring-violet-300 scale-110"
+                    )} />
+                    <span className="flex-1">{item.label}</span>
                   </Link>
                 )
               })}
@@ -204,61 +223,74 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
         </div>
 
         {/* Settings Section */}
-        <nav className="space-y-1">
-          {settingsItems
-            .filter((item) => hasPermission(item.permission))
-            .map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href ||
-                (pathname.startsWith(item.href + '/') &&
-                  !settingsItems.some(otherItem =>
-                    otherItem.href !== item.href &&
-                    pathname.startsWith(otherItem.href + '/') &&
-                    otherItem.href.length > item.href.length
-                  ))
-              const isIntegrationsPage = pathname.startsWith('/settings/integrations')
-              const finalIsActive = isIntegrationsPage && item.href === '/settings'
-                ? false
-                : isActive
+        <div>
+          <div className="px-3 mb-2">
+            <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+              הגדרות
+            </h3>
+          </div>
+          <nav className="space-y-0.5">
+            {settingsItems
+              .filter((item) => hasPermission(item.permission))
+              .map((item) => {
+                const Icon = item.icon
+                const isActive = pathname === item.href ||
+                  (pathname.startsWith(item.href + '/') &&
+                    !settingsItems.some(otherItem =>
+                      otherItem.href !== item.href &&
+                      pathname.startsWith(otherItem.href + '/') &&
+                      otherItem.href.length > item.href.length
+                    ))
+                const isIntegrationsPage = pathname.startsWith('/settings/integrations')
+                const finalIsActive = isIntegrationsPage && item.href === '/settings'
+                  ? false
+                  : isActive
 
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                    finalIsActive
-                      ? "bg-gray-200 text-gray-900"
-                      : "text-gray-700 hover:bg-gray-200"
-                  )}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span>{item.label}</span>
-                </Link>
-              )
-            })}
-        </nav>
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "group flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                      finalIsActive
+                        ? "bg-zinc-900 text-white shadow-sm"
+                        : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+                    )}
+                  >
+                    <Icon className={cn("w-4 h-4 shrink-0", finalIsActive ? "text-white" : "text-zinc-500 group-hover:text-zinc-900")} strokeWidth={2} />
+                    <span>{item.label}</span>
+                  </Link>
+                )
+              })}
+          </nav>
+        </div>
       </div>
 
-      {/* Bottom Section */}
-      <div className="p-4 border-t border-gray-200">
-        <div className="rounded-xl p-4 text-white text-sm" style={{
-          background: 'linear-gradient(135deg, #6f65e2 0%, #b965e2 100%)'
-        }}>
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-5 h-5" />
-            <span className="font-pacifico text-lg" style={{ letterSpacing: '1px' }}>Quick crm</span>
+      {/* Bottom Section - clean upgrade card */}
+      <div className="p-3 border-t border-zinc-200/70">
+        <div className="relative bg-white rounded-xl border border-zinc-200 p-3.5 overflow-hidden">
+          <div className="absolute -top-8 -left-8 w-24 h-24 bg-violet-200/40 rounded-full blur-2xl"></div>
+          <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-fuchsia-200/40 rounded-full blur-2xl"></div>
+
+          <div className="relative">
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <div className="w-5 h-5 rounded-md bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center">
+                <Sparkles className="w-3 h-3 text-white" />
+              </div>
+              <span className="text-xs font-bold text-zinc-900">הזמן את הצוות</span>
+            </div>
+            <p className="text-zinc-500 text-[11px] mb-2.5 leading-relaxed">
+              הוסף משתמשים והתחל לעבוד יחד בזמן אמת.
+            </p>
+            <InvitePeopleDialog
+              triggerButton={
+                <button className="w-full bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg px-3 py-1.5 text-xs font-medium transition-colors flex items-center justify-center gap-1.5">
+                  <UserPlus className="w-3 h-3" />
+                  הזמן אנשים
+                </button>
+              }
+            />
           </div>
-          <p className="text-white/80 text-xs mb-3">
-            משתמשים חדשים מקבלים גישה ל-Dashboards-1 Spaces, Docs וצ׳וברהיים
-          </p>
-          <InvitePeopleDialog
-            triggerButton={
-              <button className="w-full bg-white/20 hover:bg-white/30 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors">
-                + הזמן אנשים
-              </button>
-            }
-          />
         </div>
       </div>
     </>
@@ -267,15 +299,15 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
   return (
     <>
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex w-64 h-screen bg-gradient-to-b from-gray-50 to-gray-100 border-l border-gray-200 flex-col shrink-0">
+      <div className="hidden lg:flex w-64 h-screen bg-[#FAFAF7] border-l border-zinc-200/70 flex-col shrink-0">
         {sidebarContent}
       </div>
 
       {/* Mobile overlay + drawer */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
-          <div className="fixed inset-0 bg-black/40" onClick={onMobileClose} />
-          <div className="relative w-72 max-w-[85vw] h-full bg-gradient-to-b from-gray-50 to-gray-100 border-l border-gray-200 flex flex-col shadow-xl z-10 mr-auto">
+          <div className="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm" onClick={onMobileClose} />
+          <div className="relative w-72 max-w-[85vw] h-full bg-[#FAFAF7] border-l border-zinc-200 flex flex-col shadow-xl z-10 mr-auto">
             {sidebarContent}
           </div>
         </div>

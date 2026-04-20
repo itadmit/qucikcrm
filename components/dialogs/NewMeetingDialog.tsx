@@ -38,13 +38,47 @@ export function NewMeetingDialog({ onMeetingCreated }: NewMeetingDialogProps) {
     setLoading(true)
 
     try {
-      // For now, we'll just show a success message
-      // In a real app, you'd save this to a Calendar or Event model
+      // בונים Date באזור זמן מקומי (לא UTC) כדי שהתאריך לא יזוז ביום
+      const startTime = new Date(`${formData.date}T${formData.startTime}:00`)
+      const endTime = new Date(`${formData.date}T${formData.endTime}:00`)
+
+      if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
+        throw new Error("תאריך או שעה לא תקינים")
+      }
+
+      if (endTime <= startTime) {
+        throw new Error("שעת הסיום חייבת להיות אחרי שעת ההתחלה")
+      }
+
+      const attendeesArray = formData.attendees
+        .split(',')
+        .map(a => a.trim())
+        .filter(Boolean)
+
+      const response = await fetch('/api/calendar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: formData.title,
+          description: formData.description,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          location: formData.location,
+          attendees: attendeesArray,
+          isAllDay: false,
+        }),
+      })
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}))
+        throw new Error(err.error || "שגיאה בשמירת הפגישה")
+      }
+
       toast({
         title: "פגישה נוצרה!",
-        description: `הפגישה "${formData.title}" נקבעה ל-${new Date(formData.date).toLocaleDateString('he-IL')}`,
+        description: `הפגישה "${formData.title}" נקבעה ל-${startTime.toLocaleDateString('he-IL')}`,
       })
-      
+
       setOpen(false)
       setFormData({
         title: "",
@@ -56,11 +90,11 @@ export function NewMeetingDialog({ onMeetingCreated }: NewMeetingDialogProps) {
         attendees: "",
       })
       onMeetingCreated?.()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating meeting:', error)
       toast({
         title: "שגיאה",
-        description: "אירעה שגיאה ביצירת הפגישה",
+        description: error?.message || "אירעה שגיאה ביצירת הפגישה",
         variant: "destructive",
       })
     } finally {
@@ -158,7 +192,7 @@ export function NewMeetingDialog({ onMeetingCreated }: NewMeetingDialogProps) {
                 onChange={(e) => setFormData({ ...formData, attendees: e.target.value })}
                 placeholder="שמות או אימיילים מופרדים בפסיקים"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-zinc-500 mt-1">
                 למשל: יוסי כהן, dana@example.com, משה לוי
               </p>
             </div>

@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -17,7 +13,7 @@ export async function GET(
 
     const task = await prisma.task.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -82,13 +78,10 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -100,7 +93,7 @@ export async function PATCH(
     // Verify task exists and belongs to company
     const existingTask = await prisma.task.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })
@@ -111,7 +104,7 @@ export async function PATCH(
 
     const task = await prisma.task.update({
       where: {
-        id: params.id,
+        id: id,
       },
       data: {
         ...(title !== undefined && { title }),
@@ -155,7 +148,7 @@ export async function PATCH(
       },
     })
 
-    console.log(`✅ Task ${params.id} updated successfully`)
+    console.log(`✅ Task ${id} updated successfully`)
 
     return NextResponse.json(task)
   } catch (error) {
@@ -167,13 +160,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -182,7 +172,7 @@ export async function DELETE(
     // Verify task exists and belongs to company
     const task = await prisma.task.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })
@@ -194,11 +184,11 @@ export async function DELETE(
     // Delete the task
     await prisma.task.delete({
       where: {
-        id: params.id,
+        id: id,
       },
     })
 
-    console.log(`✅ Task ${params.id} deleted successfully`)
+    console.log(`✅ Task ${id} deleted successfully`)
 
     return NextResponse.json({ 
       success: true,

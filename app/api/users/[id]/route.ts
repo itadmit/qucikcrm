@@ -1,22 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // PUT - עדכון פרופיל משתמש
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.companyId) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     // משתמש יכול לעדכן רק את עצמו, או ADMIN יכול לעדכן כל משתמש
-    const isOwnProfile = params.id === session.user.id
-    const isAdmin = session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN"
+    const isOwnProfile = id === user.id
+    const isAdmin = user.role === "ADMIN" || user.role === "SUPER_ADMIN"
     
     if (!isOwnProfile && !isAdmin) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
@@ -28,8 +25,8 @@ export async function PUT(
     // בדיקה שהמשתמש שייך לאותה חברה
     const userToUpdate = await prisma.user.findFirst({
       where: {
-        id: params.id,
-        companyId: session.user.companyId,
+        id: id,
+        companyId: user.companyId,
       },
     })
 
@@ -52,7 +49,7 @@ export async function PUT(
 
     // עדכון המשתמש
     const updatedUser = await prisma.user.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         ...(name && { name }),
         ...(email && { email }),
@@ -79,23 +76,21 @@ export async function PUT(
 }
 
 // DELETE - מחיקת משתמש
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.companyId) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     // רק ADMIN יכול למחוק משתמשים
-    if (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN") {
+    if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
     // לא ניתן למחוק את עצמך
-    if (params.id === session.user.id) {
+    if (id === user.id) {
       return NextResponse.json(
         { error: "Cannot delete your own account" },
         { status: 400 }
@@ -105,8 +100,8 @@ export async function DELETE(
     // בדיקה שהמשתמש שייך לאותה חברה
     const userToDelete = await prisma.user.findFirst({
       where: {
-        id: params.id,
-        companyId: session.user.companyId,
+        id: id,
+        companyId: user.companyId,
       },
       include: {
         _count: {
@@ -140,8 +135,8 @@ export async function DELETE(
     // 2. עדכון לידים - הסרת owner
     await prisma.lead.updateMany({
       where: {
-        ownerId: params.id,
-        companyId: session.user.companyId,
+        ownerId: id,
+        companyId: user.companyId,
       },
       data: {
         ownerId: null,
@@ -151,8 +146,8 @@ export async function DELETE(
     // 3. עדכון לקוחות - הסרת owner
     await prisma.client.updateMany({
       where: {
-        ownerId: params.id,
-        companyId: session.user.companyId,
+        ownerId: id,
+        companyId: user.companyId,
       },
       data: {
         ownerId: null,
@@ -162,8 +157,8 @@ export async function DELETE(
     // 4. עדכון משימות - הסרת assignee
     await prisma.task.updateMany({
       where: {
-        assigneeId: params.id,
-        companyId: session.user.companyId,
+        assigneeId: id,
+        companyId: user.companyId,
       },
       data: {
         assigneeId: null,
@@ -173,54 +168,54 @@ export async function DELETE(
     // 5. מחיקת אוטומציות שנוצרו על ידי המשתמש
     await prisma.automation.deleteMany({
       where: {
-        createdBy: params.id,
-        companyId: session.user.companyId,
+        createdBy: id,
+        companyId: user.companyId,
       },
     })
 
     // 6. מחיקת התראות
     await prisma.notification.deleteMany({
       where: {
-        userId: params.id,
-        companyId: session.user.companyId,
+        userId: id,
+        companyId: user.companyId,
       },
     })
 
     // 7. עדכון הזמנות שנשלחו על ידי המשתמש
     await prisma.invitation.updateMany({
       where: {
-        invitedBy: params.id,
-        companyId: session.user.companyId,
+        invitedBy: id,
+        companyId: user.companyId,
       },
       data: {
-        invitedBy: session.user.id, // העברת הזמנות למנהל
+        invitedBy: user.id, // העברת הזמנות למנהל
       },
     })
 
     // 8. מחיקת הזמנה שקשורה למשתמש (אם יש)
     await prisma.invitation.deleteMany({
       where: {
-        userId: params.id,
-        companyId: session.user.companyId,
+        userId: id,
+        companyId: user.companyId,
       },
     })
 
     // 9. מחיקת audit logs
     await prisma.auditLog.deleteMany({
       where: {
-        userId: params.id,
-        companyId: session.user.companyId,
+        userId: id,
+        companyId: user.companyId,
       },
     })
 
     // 10. מחיקת המשתמש עצמו (UserPermission ימחק אוטומטית בגלל cascade)
     await prisma.user.delete({
       where: {
-        id: params.id,
+        id: id,
       },
     })
 
-    console.log(`✅ User ${params.id} deleted successfully`)
+    console.log(`✅ User ${id} deleted successfully`)
 
     return NextResponse.json({
       success: true,
@@ -246,5 +241,4 @@ export async function DELETE(
     )
   }
 }
-
 

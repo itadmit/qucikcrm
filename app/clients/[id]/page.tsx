@@ -162,12 +162,12 @@ const CustomDragLayer = ({ tasks }: { tasks: Client['tasks'] }) => {
         <Card className="shadow-2xl bg-white border-2 border-purple-400 w-64">
           <CardContent className="p-3">
             <div className="flex items-start gap-2">
-              <GripVertical className="w-4 h-4 mt-0.5 flex-shrink-0 text-purple-500" />
+              <GripVertical className="w-4 h-4 mt-0.5 flex-shrink-0 text-violet-500" />
               <div className="flex-1">
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <h4 className="font-medium text-sm text-gray-900">{draggedTask.title}</h4>
+                  <h4 className="font-medium text-sm text-zinc-900">{draggedTask.title}</h4>
                 </div>
-                <div className="space-y-1 text-xs text-gray-600">
+                <div className="space-y-1 text-xs text-zinc-600">
                   {draggedTask.project && (
                     <div>פרויקט: {draggedTask.project.name}</div>
                   )}
@@ -219,16 +219,16 @@ const TaskCard = ({ task, onStatusChange, onTaskAssigned, onDeleteTask }: { task
       <Card className={`shadow-sm bg-white transition-all ${
         isDragging 
           ? 'border-2 border-purple-400 shadow-lg' 
-          : 'border border-gray-200'
+          : 'border border-zinc-200'
       }`}>
         <CardContent className="p-3">
           <div className="flex items-start gap-2">
             <GripVertical className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
-              isDragging ? 'text-purple-500' : 'text-gray-400'
+              isDragging ? 'text-violet-500' : 'text-zinc-400'
             }`} />
             <div className="flex-1">
               <div className="flex items-start justify-between gap-2 mb-2">
-                <h4 className={`font-medium text-sm ${isDone ? 'text-gray-500 line-through' : 'text-gray-900'}`}>{task.title}</h4>
+                <h4 className={`font-medium text-sm ${isDone ? 'text-zinc-500 line-through' : 'text-zinc-900'}`}>{task.title}</h4>
                 {isDone && onDeleteTask ? (
                   <button
                     onClick={(e) => {
@@ -250,7 +250,7 @@ const TaskCard = ({ task, onStatusChange, onTaskAssigned, onDeleteTask }: { task
                   />
                 )}
               </div>
-              <div className={`space-y-1 text-xs ${isDone ? 'text-gray-400' : 'text-gray-600'}`}>
+              <div className={`space-y-1 text-xs ${isDone ? 'text-zinc-400' : 'text-zinc-600'}`}>
                 {task.project && (
                   <div>פרויקט: {task.project.name}</div>
                 )}
@@ -301,7 +301,7 @@ const TaskDropZone = ({
       ref={drop as any}
       className={`transition-all duration-300 ease-in-out ${
         isOver 
-          ? 'h-12 bg-purple-100 border-2 border-dashed border-purple-400 rounded-lg my-2' 
+          ? 'h-12 bg-violet-100 border-2 border-dashed border-purple-400 rounded-lg my-2' 
           : 'h-1 bg-transparent'
       }`}
       onMouseLeave={() => {
@@ -312,7 +312,7 @@ const TaskDropZone = ({
     >
       {isOver && (
         <div className="flex items-center justify-center h-full">
-          <div className="text-purple-600 text-sm font-medium">שחרר כאן</div>
+          <div className="text-violet-600 text-sm font-medium">שחרר כאן</div>
         </div>
       )}
     </div>
@@ -367,12 +367,12 @@ const TaskColumn = ({
     console.error('Tasks is not an array in TaskColumn:', tasks, typeof tasks)
     return (
       <div className="h-full">
-        <Card className="shadow-sm bg-gray-50 h-full">
+        <Card className="shadow-sm bg-zinc-50 h-full">
           <CardHeader className="pb-3">
             <CardTitle className="text-base">{statusLabel}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center text-gray-400 py-8 text-sm">שגיאה בטעינת משימות</div>
+            <div className="text-center text-zinc-400 py-8 text-sm">שגיאה בטעינת משימות</div>
           </CardContent>
         </Card>
       </div>
@@ -398,25 +398,25 @@ const TaskColumn = ({
     <div ref={drop as any} className="h-full">
       <Card className={`shadow-sm h-full transition-all duration-200 ${
         isOver 
-          ? 'bg-purple-50 border-2 border-purple-400 border-dashed' 
-          : 'bg-gray-50 border border-gray-200'
+          ? 'bg-violet-50 border-2 border-purple-400 border-dashed' 
+          : 'bg-zinc-50 border border-zinc-200'
       }`}>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className={`text-base ${isOver ? 'text-purple-700' : ''}`}>
+            <CardTitle className={`text-base ${isOver ? 'text-violet-700' : ''}`}>
               {statusLabel}
             </CardTitle>
-            <span className="text-sm text-gray-500">{Array.isArray(sortedTasks) ? sortedTasks.length : 0}</span>
+            <span className="text-sm text-zinc-500">{Array.isArray(sortedTasks) ? sortedTasks.length : 0}</span>
           </div>
         </CardHeader>
         <CardContent className="space-y-0 min-h-[200px]">
           {isOver && sortedTasks.length === 0 && (
-            <div className="text-center text-purple-600 py-8 text-sm font-medium border-2 border-purple-300 border-dashed rounded-lg bg-purple-50">
+            <div className="text-center text-violet-600 py-8 text-sm font-medium border-2 border-purple-300 border-dashed rounded-lg bg-violet-50">
               שחרר כאן כדי להעביר
             </div>
           )}
           {!isOver && (!sortedTasks || sortedTasks.length === 0) ? (
-            <div className="text-center text-gray-400 py-8 text-sm">
+            <div className="text-center text-zinc-400 py-8 text-sm">
               אין משימות
             </div>
           ) : (
@@ -869,7 +869,7 @@ export default function ClientDetailPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">טוען פרטי לקוח...</p>
+            <p className="mt-4 text-zinc-600">טוען פרטי לקוח...</p>
           </div>
         </div>
       </AppLayout>
@@ -880,8 +880,8 @@ export default function ClientDetailPage() {
     return (
       <AppLayout>
         <div className="text-center py-12">
-          <Building className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">לקוח לא נמצא</h3>
+          <Building className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+          <h3 className="text-lg font-medium text-zinc-900 mb-2">לקוח לא נמצא</h3>
           <Link href="/clients">
             <Button variant="outline">חזרה ללקוחות</Button>
           </Link>
@@ -1002,7 +1002,7 @@ export default function ClientDetailPage() {
   })
 
   const statusColors: Record<string, string> = {
-    PLANNING: "bg-gray-100 text-gray-800",
+    PLANNING: "bg-zinc-100 text-zinc-800",
     IN_PROGRESS: "bg-blue-100 text-blue-800",
     ON_HOLD: "bg-yellow-100 text-yellow-800",
     COMPLETED: "bg-green-100 text-green-800",
@@ -1018,7 +1018,7 @@ export default function ClientDetailPage() {
   }
 
   const taskStatusColors: Record<string, string> = {
-    TODO: "bg-gray-100 text-gray-800",
+    TODO: "bg-zinc-100 text-zinc-800",
     IN_PROGRESS: "bg-blue-100 text-blue-800",
     DONE: "bg-green-100 text-green-800",
   }
@@ -1033,21 +1033,21 @@ export default function ClientDetailPage() {
     <AppLayout>
       <div className="space-y-6">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/clients" className="hover:text-gray-700">לקוחות</Link>
+        <div className="flex items-center gap-2 text-sm text-zinc-500">
+          <Link href="/clients" className="hover:text-zinc-700">לקוחות</Link>
           <ArrowRight className="w-4 h-4" />
-          <span className="text-gray-900">{client.name}</span>
+          <span className="text-zinc-900">{client.name}</span>
         </div>
 
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Building className="w-8 h-8 text-purple-600" />
+            <div className="w-16 h-16 bg-violet-100 rounded-lg flex items-center justify-center">
+              <Building className="w-8 h-8 text-violet-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{client.name}</h1>
-              <div className="flex items-center gap-3 mt-2 text-sm text-gray-600">
+              <h1 className="text-3xl font-bold text-zinc-900">{client.name}</h1>
+              <div className="flex items-center gap-3 mt-2 text-sm text-zinc-600">
                 <span className="flex items-center gap-1">
                   <Mail className="w-4 h-4" />
                   {client.email}
@@ -1084,7 +1084,7 @@ export default function ClientDetailPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-500 mb-1">פרויקטים פעילים</div>
+                  <div className="text-sm text-zinc-500 mb-1">פרויקטים פעילים</div>
                   <div className="text-3xl font-bold text-blue-600">{projects.length}</div>
                 </div>
                 <FolderKanban className="w-8 h-8 text-blue-600" />
@@ -1095,7 +1095,7 @@ export default function ClientDetailPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-500 mb-1">משימות פתוחות</div>
+                  <div className="text-sm text-zinc-500 mb-1">משימות פתוחות</div>
                   <div className="text-3xl font-bold text-orange-600">
                     {Array.isArray(tasks) ? tasks.filter(t => t && t.status !== "DONE").length : 0}
                   </div>
@@ -1108,11 +1108,11 @@ export default function ClientDetailPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-500 mb-1">תשלומים</div>
+                  <div className="text-sm text-zinc-500 mb-1">תשלומים</div>
                   <div className="text-2xl font-bold text-green-600">
                     ₪{totalPaid.toLocaleString('he-IL', { minimumFractionDigits: 0 })}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-xs text-zinc-500 mt-1">
                     {completedPayments.length} תשלומים הושלמו
                   </div>
                 </div>
@@ -1124,19 +1124,19 @@ export default function ClientDetailPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm text-gray-500 mb-1">התקדמות ממוצעת</div>
-                  <div className="text-3xl font-bold text-purple-600">
+                  <div className="text-sm text-zinc-500 mb-1">התקדמות ממוצעת</div>
+                  <div className="text-3xl font-bold text-violet-600">
                     {projects.length > 0 ? Math.round(projects.reduce((sum, p) => sum + p.progress, 0) / projects.length) : 0}%
                   </div>
                 </div>
-                <TrendingUp className="w-8 h-8 text-purple-600" />
+                <TrendingUp className="w-8 h-8 text-violet-600" />
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-zinc-200">
           <div className="flex gap-6">
             {[
               { key: "overview", label: "סקירה" },
@@ -1151,8 +1151,8 @@ export default function ClientDetailPage() {
                 onClick={() => setActiveTab(tab.key as any)}
                 className={`pb-3 border-b-2 transition-colors ${
                   activeTab === tab.key
-                    ? "border-purple-600 text-purple-600 font-medium"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
+                    ? "border-purple-600 text-violet-600 font-medium"
+                    : "border-transparent text-zinc-500 hover:text-zinc-700"
                 }`}
               >
                 {tab.label}
@@ -1214,25 +1214,25 @@ export default function ClientDetailPage() {
                   <CardContent>
                     <div className="space-y-4">
                       {projects.slice(0, 2).map((project) => (
-                        <div key={project.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                        <div key={project.id} className="p-4 border rounded-lg hover:bg-zinc-50">
                           <div className="flex items-center justify-between mb-2">
-                            <h3 className="font-medium text-gray-900">{project.name}</h3>
+                            <h3 className="font-medium text-zinc-900">{project.name}</h3>
                             <span className={`text-xs px-2 py-1 rounded ${statusColors[project.status]}`}>
                               {statusLabels[project.status]}
                             </span>
                           </div>
                           <div className="space-y-2">
                             <div className="flex items-center justify-between text-sm">
-                              <span className="text-gray-600">התקדמות</span>
+                              <span className="text-zinc-600">התקדמות</span>
                               <span className="font-medium">{project.progress}%</span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="w-full bg-zinc-200 rounded-full h-2">
                               <div 
                                 className="bg-blue-600 h-2 rounded-full transition-all" 
                                 style={{ width: `${project.progress}%` }}
                               ></div>
                             </div>
-                            <div className="flex items-center justify-between text-sm text-gray-600">
+                            <div className="flex items-center justify-between text-sm text-zinc-600">
                               <span>{project.completedTasks}/{project.tasksCount} משימות</span>
                               <span>{((project as any).budget ? (project as any).budget / 1000 : 0).toFixed(0)}K ₪</span>
                             </div>
@@ -1274,7 +1274,7 @@ export default function ClientDetailPage() {
                 <CardContent>
                   <div className="space-y-4">
                     {projects.map((project) => (
-                      <div key={project.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                      <div key={project.id} className="p-4 border rounded-lg hover:bg-zinc-50">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex-1 flex items-center gap-2">
                             {editingProjectId === project.id ? (
@@ -1313,11 +1313,11 @@ export default function ClientDetailPage() {
                               </div>
                             ) : (
                               <>
-                                <h3 className="font-medium text-gray-900">{project.name}</h3>
+                                <h3 className="font-medium text-zinc-900">{project.name}</h3>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600"
+                                  className="h-6 w-6 p-0 text-zinc-400 hover:text-zinc-600"
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     setEditingProjectId(project.id)
@@ -1336,26 +1336,26 @@ export default function ClientDetailPage() {
                         </div>
                         <div className="grid grid-cols-2 gap-3 text-sm mb-3">
                           <div>
-                            <span className="text-gray-500">תאריך התחלה:</span>
+                            <span className="text-zinc-500">תאריך התחלה:</span>
                             <span className="mr-2 font-medium">{(project as any).startDate || '—'}</span>
                           </div>
                           <div>
-                            <span className="text-gray-500">תאריך סיום:</span>
+                            <span className="text-zinc-500">תאריך סיום:</span>
                             <span className="mr-2 font-medium">{(project as any).endDate || '—'}</span>
                           </div>
                         </div>
                         <div className="space-y-2">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600">התקדמות</span>
+                            <span className="text-zinc-600">התקדמות</span>
                             <span className="font-medium">{project.progress}%</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-zinc-200 rounded-full h-2">
                             <div 
                               className="bg-blue-600 h-2 rounded-full" 
                               style={{ width: `${project.progress}%` }}
                             ></div>
                           </div>
-                          <div className="flex items-center justify-between text-sm text-gray-600">
+                          <div className="flex items-center justify-between text-sm text-zinc-600">
                             <span>{project.completedTasks}/{project.tasksCount} משימות הושלמו</span>
                             <span className="font-medium text-green-600">{((project as any).budget ? (project as any).budget / 1000 : 0).toFixed(0)}K ₪</span>
                           </div>
@@ -1421,22 +1421,22 @@ export default function ClientDetailPage() {
                     <CardContent>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="text-center p-4 bg-blue-50 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">סכום כל הפרויקט</div>
+                          <div className="text-sm text-zinc-600 mb-1">סכום כל הפרויקט</div>
                           <div className="text-2xl font-bold text-blue-600">
                             {totalQuoteAmount > 0 
                               ? `₪${totalQuoteAmount.toLocaleString('he-IL', { minimumFractionDigits: 2 })}`
-                              : <span className="text-gray-400">₪0.00</span>
+                              : <span className="text-zinc-400">₪0.00</span>
                             }
                           </div>
                         </div>
                         <div className="text-center p-4 bg-green-50 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">שולם מקדמה</div>
+                          <div className="text-sm text-zinc-600 mb-1">שולם מקדמה</div>
                           <div className="text-2xl font-bold text-green-600">
                             ₪{totalPaidForQuotes.toLocaleString('he-IL', { minimumFractionDigits: 2 })}
                           </div>
                         </div>
                         <div className="text-center p-4 bg-orange-50 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">יתרה לתשלום</div>
+                          <div className="text-sm text-zinc-600 mb-1">יתרה לתשלום</div>
                           <div className="text-2xl font-bold text-orange-600">
                             {totalBalance > 0 ? (
                               `₪${totalBalance.toLocaleString('he-IL', { minimumFractionDigits: 2 })}`
@@ -1474,7 +1474,7 @@ export default function ClientDetailPage() {
                   </CardHeader>
                   <CardContent>
                   {allPayments.length === 0 ? (
-                    <div className="text-center text-gray-400 py-12">
+                    <div className="text-center text-zinc-400 py-12">
                       <Coins className="w-12 h-12 mx-auto mb-3 opacity-50" />
                       <p>אין תשלומים להצגה</p>
                     </div>
@@ -1487,7 +1487,7 @@ export default function ClientDetailPage() {
                           : null
                         
                         return (
-                        <div key={payment.id} className="pr-3 pl-2 py-4 border rounded-lg hover:bg-gray-50 relative">
+                        <div key={payment.id} className="pr-3 pl-2 py-4 border rounded-lg hover:bg-zinc-50 relative">
                           {/* כפתור מחיקה - שמאל למעלה (ימין למעלה ב-RTL) */}
                           <Button
                             variant="ghost"
@@ -1502,19 +1502,19 @@ export default function ClientDetailPage() {
                           
                           <div className="flex items-center justify-between mb-2 pr-10">
                             <div className="flex-1">
-                              <h4 className="font-medium text-gray-900">
+                              <h4 className="font-medium text-zinc-900">
                                 {payment.description || `תשלום #${payment.transactionId || payment.id.slice(-6)}`}
                               </h4>
-                              <div className="text-sm text-gray-600 mt-1">
+                              <div className="text-sm text-zinc-600 mt-1">
                                 {payment.project.name}
                                 {payment.quote && ` • הצעה ${payment.quote.quoteNumber}`}
                               </div>
                               {quoteBalance && (
-                                <div className="text-xs text-gray-500 mt-1">
+                                <div className="text-xs text-zinc-500 mt-1">
                                   סכום הצעה: ₪{quoteBalance.quoteTotal.toLocaleString('he-IL', { minimumFractionDigits: 2 })}
                                 </div>
                               )}
-                              <div className="text-xs text-gray-500 mt-1">
+                              <div className="text-xs text-zinc-500 mt-1">
                                 {new Date(payment.createdAt).toLocaleDateString('he-IL', {
                                   year: 'numeric',
                                   month: 'long',
@@ -1687,7 +1687,7 @@ export default function ClientDetailPage() {
                                 </div>
                               )}
                               {payment.paymentReference && (
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-zinc-500">
                                   אישור: {payment.paymentReference}
                                 </span>
                               )}
@@ -1726,7 +1726,7 @@ export default function ClientDetailPage() {
                 </CardHeader>
                 <CardContent>
                   {!client?.files || client.files.length === 0 ? (
-                    <div className="text-center text-gray-400 py-12">
+                    <div className="text-center text-zinc-400 py-12">
                       <Paperclip className="w-12 h-12 mx-auto mb-3 opacity-50" />
                       <p>אין קבצים מצורפים</p>
                       <p className="text-sm mt-1">גרור קבצים לכאן או לחץ להעלאה</p>
@@ -1734,12 +1734,12 @@ export default function ClientDetailPage() {
                   ) : (
                     <div className="space-y-3">
                       {client.files.map((file) => (
-                        <div key={file.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                        <div key={file.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-zinc-50">
                           <div className="flex items-center gap-3 flex-1">
-                            <Paperclip className="w-5 h-5 text-gray-400" />
+                            <Paperclip className="w-5 h-5 text-zinc-400" />
                             <div className="flex-1">
-                              <h4 className="font-medium text-gray-900">{file.name}</h4>
-                              <div className="text-xs text-gray-500 mt-1">
+                              <h4 className="font-medium text-zinc-900">{file.name}</h4>
+                              <div className="text-xs text-zinc-500 mt-1">
                                 {(file.size / 1024).toFixed(2)} KB • {new Date(file.createdAt).toLocaleDateString('he-IL')}
                               </div>
                             </div>
@@ -1794,18 +1794,18 @@ export default function ClientDetailPage() {
                     {timeline.map((event) => (
                       <div key={event.id} className="flex gap-4">
                         <div className="flex flex-col items-center">
-                          <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                            {event.type === "created" && <CheckCircle2 className="w-4 h-4 text-purple-600" />}
+                          <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center">
+                            {event.type === "created" && <CheckCircle2 className="w-4 h-4 text-violet-600" />}
                             {event.type === "payment" && <Coins className="w-4 h-4 text-green-600" />}
                           </div>
                           {event.id !== timeline[timeline.length - 1].id && (
-                            <div className="w-0.5 h-12 bg-gray-200"></div>
+                            <div className="w-0.5 h-12 bg-zinc-200"></div>
                           )}
                         </div>
                         <div className="flex-1 pb-4">
-                          <div className="font-medium text-gray-900">{event.title}</div>
-                          <div className="text-sm text-gray-600 mt-1">{event.description}</div>
-                          <div className="text-xs text-gray-500 mt-2">
+                          <div className="font-medium text-zinc-900">{event.title}</div>
+                          <div className="text-sm text-zinc-600 mt-1">{event.description}</div>
+                          <div className="text-xs text-zinc-500 mt-2">
                             {event.date} • {event.user}
                           </div>
                         </div>
@@ -1851,15 +1851,15 @@ export default function ClientDetailPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500">בעלים</span>
+                  <span className="text-zinc-500">בעלים</span>
                   <span className="font-medium">{client.owner?.name || 'לא משויך'}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500">סטטוס</span>
+                  <span className="text-zinc-500">סטטוס</span>
                   <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">פעיל</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500">תאריך יצירה</span>
+                  <span className="text-zinc-500">תאריך יצירה</span>
                 </div>
               </CardContent>
             </Card>
@@ -1871,7 +1871,7 @@ export default function ClientDetailPage() {
                   <CardTitle>חתימה דיגיטלית</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="border-2 border-gray-200 rounded-lg p-4 bg-white">
+                  <div className="border-2 border-zinc-200 rounded-lg p-4 bg-white">
                     <img 
                       src={client.signature} 
                       alt="חתימת הלקוח" 
@@ -1879,7 +1879,7 @@ export default function ClientDetailPage() {
                       style={{ maxHeight: '200px' }}
                     />
                   </div>
-                  <p className="text-xs text-gray-500 mt-2 text-center">
+                  <p className="text-xs text-zinc-500 mt-2 text-center">
                     חתימה זו נשמרה בעת אישור הצעת המחיר
                   </p>
                 </CardContent>

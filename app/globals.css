@@ -5,25 +5,25 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0.5rem;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.75rem;
   }
 }
 
@@ -70,34 +70,45 @@ body {
   @apply bg-muted-foreground/50;
 }
 
-/* Prodify-like styling */
+/* Primary action style - solid dark (used in dialogs, forms) */
 .prodify-gradient {
-  background: linear-gradient(135deg, #6f65e2 0%, #b965e2 100%);
+  background: #18181b;
 }
 
-.prodify-gradient-text {
-  background: linear-gradient(135deg, #6f65e2 0%, #b965e2 100%);
+.prodify-gradient:hover {
+  background: #27272a;
+}
+
+/* Brand gradient - violet to fuchsia (for landing/marketing accents) */
+.brand-gradient {
+  background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+}
+
+.prodify-gradient-text,
+.brand-gradient-text {
+  background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .prodify-gradient-horizontal {
-  background: linear-gradient(to left, #93f0e1 0%, #6374c5 100%);
+  background: linear-gradient(to left, #7c3aed 0%, #c026d3 100%);
 }
 
 .sidebar-gradient {
-  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #FAFAF7;
 }
 
-/* Card hover effects */
+/* Card hover effects - subtle, modern */
 .hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.06);
+  border-color: rgb(228 228 231);
 }
 
 /* Status badges */
@@ -144,6 +155,24 @@ body {
 
 .priority-low {
   @apply bg-gray-500 text-white;
+}
+
+/* Marquee animation for landing page */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+[dir="rtl"] .animate-marquee {
+  animation: marquee 40s linear infinite reverse;
 }
 
 /* Project colors */

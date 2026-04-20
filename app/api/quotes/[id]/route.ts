@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { Session } from "next-auth"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession extends Session {
   user: {
@@ -16,18 +15,16 @@ interface ExtendedSession extends Session {
 }
 
 // GET /api/quotes/[id] - קבלת הצעת מחיר בודדת
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { companyId: true },
     })
 
@@ -37,7 +34,7 @@ export async function GET(
 
     const quote = await prisma.quote.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -71,18 +68,16 @@ export async function GET(
 }
 
 // PATCH /api/quotes/[id] - עדכון הצעת מחיר
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { companyId: true },
     })
 
@@ -107,7 +102,7 @@ export async function PATCH(
     // בדיקה שההצעת מחיר שייכת לחברה
     const existingQuote = await prisma.quote.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })
@@ -175,13 +170,13 @@ export async function PATCH(
 
       // מחיקת פריטים קיימים ויצירת חדשים
       await prisma.quoteItem.deleteMany({
-        where: { quoteId: params.id },
+        where: { quoteId: id },
       })
 
       await prisma.quoteItem.createMany({
         data: processedItems.map((item: any) => ({
           ...item,
-          quoteId: params.id,
+          quoteId: id,
         })),
       })
     } else {
@@ -204,7 +199,7 @@ export async function PATCH(
     }
 
     const quote = await prisma.quote.update({
-      where: { id: params.id },
+      where: { id: id },
       data: updateData,
       include: {
         lead: true,
@@ -227,18 +222,16 @@ export async function PATCH(
 }
 
 // DELETE /api/quotes/[id] - מחיקת הצעת מחיר
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { companyId: true },
     })
 
@@ -249,7 +242,7 @@ export async function DELETE(
     // בדיקה שההצעת מחיר שייכת לחברה
     const quote = await prisma.quote.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })
@@ -259,7 +252,7 @@ export async function DELETE(
     }
 
     await prisma.quote.delete({
-      where: { id: params.id },
+      where: { id: id },
     })
 
     return NextResponse.json({ success: true })

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Copy, RefreshCw, Eye, EyeOff, ExternalLink, CheckCircle2, XCircle, FileText, CreditCard, Smartphone, Loader2 } from "lucide-react"
+import { Copy, RefreshCw, Eye, EyeOff, ExternalLink, CheckCircle2, XCircle, FileText, CreditCard, Smartphone, Loader2, Plug } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 
 export default function IntegrationsPage() {
@@ -441,13 +441,18 @@ export default function IntegrationsPage() {
   return (
     <AppLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">אינטגרציות ו-Webhooks</h1>
-          <p className="text-gray-500 mt-1">נהל את האינטגרציות והחיבורים עם מערכות חיצוניות</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
+            <Plug className="w-5 h-5 text-indigo-600" strokeWidth={2.2} />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">אינטגרציות ו-Webhooks</h1>
+            <p className="text-sm text-zinc-500 mt-0.5">נהל את האינטגרציות והחיבורים עם מערכות חיצוניות</p>
+          </div>
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-zinc-200">
           <div className="flex gap-6">
             {[
               { key: "integrations", label: "אינטגרציות" },
@@ -459,8 +464,8 @@ export default function IntegrationsPage() {
                 onClick={() => setActiveTab(tab.key as any)}
                 className={`pb-3 border-b-2 transition-colors ${
                   activeTab === tab.key
-                    ? "border-purple-600 text-purple-600 font-medium"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
+                    ? "border-purple-600 text-violet-600 font-medium"
+                    : "border-transparent text-zinc-500 hover:text-zinc-700"
                 }`}
               >
                 {tab.label}
@@ -473,7 +478,7 @@ export default function IntegrationsPage() {
         {activeTab === "api" && (
           <div className="space-y-6">
             {/* API Key Section */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <CardTitle>מפתח API</CardTitle>
                 <CardDescription>
@@ -493,7 +498,7 @@ export default function IntegrationsPage() {
                       />
                       <button
                         onClick={() => setShowApiKey(!showApiKey)}
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                       >
                         {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -507,7 +512,7 @@ export default function IntegrationsPage() {
                       חדש
                     </Button>
                   </div>
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-zinc-500 mt-2">
                     ⚠️ שמור את המפתח במקום מאובטח. אל תשתף אותו באופן ציבורי.
                   </p>
                 </div>
@@ -515,11 +520,11 @@ export default function IntegrationsPage() {
             </Card>
 
             {/* Siri Shortcuts Integration */}
-            <Card className="shadow-sm border-purple-200 bg-gradient-to-br from-purple-50 to-white">
+            <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-white">
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-purple-100 rounded-lg">
-                    <Smartphone className="w-6 h-6 text-purple-600" />
+                  <div className="p-3 bg-violet-100 rounded-lg">
+                    <Smartphone className="w-6 h-6 text-violet-600" />
                   </div>
                   <div>
                     <CardTitle>Siri Shortcuts - יצירת הצעות מחיר בקול</CardTitle>
@@ -546,21 +551,21 @@ export default function IntegrationsPage() {
                   </div>
                 </div>
 
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 space-y-3">
+                <div className="bg-violet-50 border border-purple-200 rounded-lg p-4 space-y-3">
                   <h4 className="font-medium text-sm text-purple-900">📱 איך להגדיר ב-Siri Shortcuts</h4>
-                  <ol className="text-sm text-purple-700 space-y-2 mr-4 list-decimal">
+                  <ol className="text-sm text-violet-700 space-y-2 mr-4 list-decimal">
                     <li>פתח את אפליקציית <strong>Shortcuts</strong> באייפון</li>
                     <li>צור Shortcut חדש ← הוסף פעולת <strong>"Get Contents of URL"</strong></li>
                     <li>הגדר: URL = הכתובת למעלה, Method = POST</li>
-                    <li>הוסף Header: <code className="bg-purple-100 px-1 rounded">X-API-KEY</code> = המפתח שלך</li>
-                    <li>הוסף Header: <code className="bg-purple-100 px-1 rounded">Content-Type</code> = application/json</li>
+                    <li>הוסף Header: <code className="bg-violet-100 px-1 rounded">X-API-KEY</code> = המפתח שלך</li>
+                    <li>הוסף Header: <code className="bg-violet-100 px-1 rounded">Content-Type</code> = application/json</li>
                     <li>ב-Body שים JSON עם הפרמטרים (ראה דוגמה למטה)</li>
                   </ol>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                <div className="bg-zinc-50 rounded-lg p-4 space-y-3">
                   <h4 className="font-medium text-sm">דוגמת JSON ליצירת הצעה מתבנית</h4>
-                  <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
+                  <pre className="bg-zinc-900 text-zinc-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
 {`{
   "action": "create_quote",
   "templateName": "הצעת מחיר איקומרס",
@@ -571,18 +576,18 @@ export default function IntegrationsPage() {
                   </pre>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                <div className="bg-zinc-50 rounded-lg p-4 space-y-3">
                   <h4 className="font-medium text-sm">קבלת רשימת תבניות</h4>
-                  <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
+                  <pre className="bg-zinc-900 text-zinc-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
 {`{
   "action": "list_templates"
 }`}
                   </pre>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                <div className="bg-zinc-50 rounded-lg p-4 space-y-3">
                   <h4 className="font-medium text-sm">חיפוש לידים</h4>
-                  <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
+                  <pre className="bg-zinc-900 text-zinc-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
 {`{
   "action": "list_leads",
   "search": "משה"
@@ -603,7 +608,7 @@ export default function IntegrationsPage() {
             </Card>
 
             {/* Webhook Endpoint - Leads */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <CardTitle>Webhook - קבלת לידים</CardTitle>
                 <CardDescription>
@@ -627,9 +632,9 @@ export default function IntegrationsPage() {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                <div className="bg-zinc-50 rounded-lg p-4 space-y-3">
                   <h4 className="font-medium text-sm">דוגמת שימוש</h4>
-                  <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
+                  <pre className="bg-zinc-900 text-zinc-100 p-4 rounded-lg text-xs overflow-x-auto" dir="ltr">
 {`POST /api/webhooks/leads
 Content-Type: application/json
 X-API-KEY: ${apiKey || "YOUR_API_KEY"}
@@ -652,7 +657,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
         {activeTab === "integrations" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Invoice4U Integration - Documents */}
-            <Card className="shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+            <Card className="hover:shadow-md transition-shadow flex flex-col h-full">
               <CardHeader className="pb-4">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="p-3 bg-blue-100 rounded-lg flex-shrink-0">
@@ -672,7 +677,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
                       <span className="text-sm font-medium">מחובר</span>
                     </div>
                   ) : (
-                    <div className="text-sm text-gray-500">לא מחובר</div>
+                    <div className="text-sm text-zinc-500">לא מחובר</div>
                   )}
                   <Button
                     onClick={() => setShowInvoice4uDocsSettings(!showInvoice4uDocsSettings)}
@@ -716,7 +721,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
                       />
                       <button
                         onClick={() => setShowInvoice4uPassword(!showInvoice4uPassword)}
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                       >
                         {showInvoice4uPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -782,7 +787,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
 
                 <div className="space-y-2">
                   <h4 className="font-medium text-sm">מסמכים זמינים:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1 mr-4">
+                  <ul className="text-sm text-zinc-600 space-y-1 mr-4">
                     <li>• הצעת מחיר (InvoiceQuote)</li>
                     <li>• חשבון עסקה (ProformaInvoice)</li>
                     <li>• חשבונית מס (Invoice)</li>
@@ -804,7 +809,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
             </Card>
 
             {/* Invoice4U Clearing Integration */}
-            <Card className="shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+            <Card className="hover:shadow-md transition-shadow flex flex-col h-full">
               <CardHeader className="pb-4">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="p-3 bg-green-100 rounded-lg flex-shrink-0">
@@ -824,7 +829,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
                       <span className="text-sm font-medium">מחובר</span>
                     </div>
                   ) : (
-                    <div className="text-sm text-gray-500">לא מחובר</div>
+                    <div className="text-sm text-zinc-500">לא מחובר</div>
                   )}
                   <Button
                     onClick={() => setShowInvoice4uClearingSettings(!showInvoice4uClearingSettings)}
@@ -907,7 +912,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
                           />
                           <button
                             onClick={() => setShowInvoice4uClearingPassword(!showInvoice4uClearingPassword)}
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                           >
                             {showInvoice4uClearingPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                           </button>
@@ -1036,7 +1041,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
 
                 <div className="space-y-2">
                   <h4 className="font-medium text-sm">תכונות זמינות:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1 mr-4">
+                  <ul className="text-sm text-zinc-600 space-y-1 mr-4">
                     <li>• תשלומים רגילים (Regular Clearing)</li>
                     <li>• שמירת כרטיסי אשראי (Tokenization)</li>
                     <li>• חיוב עם טוקן שמור (Charge with Token)</li>
@@ -1076,7 +1081,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
             </Card>
 
             {/* PayPlus Integration */}
-            <Card className="shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+            <Card className="hover:shadow-md transition-shadow flex flex-col h-full">
               <CardHeader className="pb-4">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="p-3 bg-orange-100 rounded-lg flex-shrink-0">
@@ -1096,7 +1101,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
                       <span className="text-sm font-medium">מחובר</span>
                     </div>
                   ) : (
-                    <div className="text-sm text-gray-500">לא מחובר</div>
+                    <div className="text-sm text-zinc-500">לא מחובר</div>
                   )}
                   <Button
                     onClick={() => setShowPayplusSettings(!showPayplusSettings)}
@@ -1140,7 +1145,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
                       />
                       <button
                         onClick={() => setShowPayplusSecretKey(!showPayplusSecretKey)}
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                       >
                         {showPayplusSecretKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -1220,7 +1225,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
 
                 <div className="space-y-2">
                   <h4 className="font-medium text-sm">תכונות זמינות:</h4>
-                  <ul className="text-sm text-gray-600 space-y-1 mr-4">
+                  <ul className="text-sm text-zinc-600 space-y-1 mr-4">
                     <li>• יצירת קישורי תשלום מאובטחים</li>
                     <li>• עיבוד תשלומי כרטיס אשראי</li>
                     <li>• תשלומים בתשלומים</li>
@@ -1247,7 +1252,7 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
         {activeTab === "logs" && (
           <div className="space-y-6">
             {/* Webhook Logs */}
-            <Card className="shadow-sm">
+            <Card className="">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -1265,17 +1270,17 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
               <table className="w-full">
                 <thead>
                   <tr className="border-b text-right">
-                    <th className="pb-3 px-4 text-sm font-medium text-gray-500">סטטוס</th>
-                    <th className="pb-3 px-4 text-sm font-medium text-gray-500">סוג</th>
-                    <th className="pb-3 px-4 text-sm font-medium text-gray-500">Payload</th>
-                    <th className="pb-3 px-4 text-sm font-medium text-gray-500">משך זמן</th>
-                    <th className="pb-3 px-4 text-sm font-medium text-gray-500">תאריך</th>
-                    <th className="pb-3 px-4 text-sm font-medium text-gray-500">פעולות</th>
+                    <th className="pb-3 px-4 text-sm font-medium text-zinc-500">סטטוס</th>
+                    <th className="pb-3 px-4 text-sm font-medium text-zinc-500">סוג</th>
+                    <th className="pb-3 px-4 text-sm font-medium text-zinc-500">Payload</th>
+                    <th className="pb-3 px-4 text-sm font-medium text-zinc-500">משך זמן</th>
+                    <th className="pb-3 px-4 text-sm font-medium text-zinc-500">תאריך</th>
+                    <th className="pb-3 px-4 text-sm font-medium text-zinc-500">פעולות</th>
                   </tr>
                 </thead>
                 <tbody>
                   {webhookLogs.map((log) => (
-                    <tr key={log.id} className="border-b hover:bg-gray-50">
+                    <tr key={log.id} className="border-b hover:bg-zinc-50">
                       <td className="py-3 px-4">
                         {log.status === 200 ? (
                           <div className="flex items-center gap-2 text-green-600">
@@ -1295,12 +1300,12 @@ X-API-KEY: ${apiKey || "YOUR_API_KEY"}
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <code className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                        <code className="text-xs text-zinc-600 bg-zinc-100 px-2 py-1 rounded">
                           {JSON.stringify(log.payload).substring(0, 50)}...
                         </code>
                       </td>
-                      <td className="py-3 px-4 text-sm text-gray-600">{log.duration}ms</td>
-                      <td className="py-3 px-4 text-sm text-gray-500">{log.createdAt}</td>
+                      <td className="py-3 px-4 text-sm text-zinc-600">{log.duration}ms</td>
+                      <td className="py-3 px-4 text-sm text-zinc-500">{log.createdAt}</td>
                       <td className="py-3 px-4">
                         <Button variant="ghost" size="sm">
                           <Eye className="w-4 h-4" />

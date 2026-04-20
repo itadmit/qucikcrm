@@ -1,18 +1,17 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת הרשאות המשתמש הנוכחי
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.id || !session?.user?.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.id || !user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     // אם המשתמש הוא ADMIN או SUPER_ADMIN, יש לו גישה לכל דבר
-    if (session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN") {
+    if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
       // החזר כל ההרשאות כפעילות
       return NextResponse.json({
         permissions: {
@@ -37,7 +36,7 @@ export async function GET(req: NextRequest) {
     // קבלת הרשאות המשתמש
     const permissions = await prisma.userPermission.findMany({
       where: {
-        userId: session.user.id,
+        userId: user.id,
         allowed: true,
       },
       select: {
@@ -64,5 +63,4 @@ export async function GET(req: NextRequest) {
     )
   }
 }
-
 

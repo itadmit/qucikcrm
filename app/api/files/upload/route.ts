@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { writeFile, mkdir } from "fs/promises"
 import { join } from "path"
 import { existsSync } from "fs"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession {
   user: {
@@ -15,8 +14,8 @@ interface ExtendedSession {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id || !session?.user?.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.id || !user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -52,14 +51,14 @@ export async function POST(req: NextRequest) {
     // שמירת הקובץ במסד הנתונים
     const fileRecord = await prisma.file.create({
       data: {
-        companyId: session.user.companyId,
+        companyId: user.companyId,
         entityType,
         entityId,
         path: `/uploads/${entityType}/${fileName}`,
         name: file.name,
         size: buffer.length,
         mimeType: file.type || null,
-        uploadedBy: session.user.id,
+        uploadedBy: user.id,
         clientId: clientId || null,
       },
     })

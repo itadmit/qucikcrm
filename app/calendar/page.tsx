@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { AppLayout } from "@/components/AppLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Plus, Clock, MapPin, Users, Video, Phone } from "lucide-react"
+import { ChevronLeft, ChevronRight, Plus, Clock, MapPin, Users, Video, Phone, CalendarDays } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import { NewMeetingDialog } from "@/components/dialogs/NewMeetingDialog"
 
@@ -56,13 +56,13 @@ export default function CalendarPage() {
   
   const getColorClasses = (color: string) => {
     const colors: Record<string, string> = {
-      purple: "bg-purple-100 border-purple-300 text-purple-700",
+      purple: "bg-violet-100 border-purple-300 text-violet-700",
       blue: "bg-blue-100 border-blue-300 text-blue-700",
       green: "bg-green-100 border-green-300 text-green-700",
       orange: "bg-orange-100 border-orange-300 text-orange-700",
       red: "bg-red-100 border-red-300 text-red-700",
     }
-    return colors[color] || "bg-gray-100 border-gray-300 text-gray-700"
+    return colors[color] || "bg-zinc-100 border-zinc-300 text-zinc-700"
   }
 
   const getMeetingsForDay = (day: number) => {
@@ -139,9 +139,14 @@ export default function CalendarPage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">לוח שנה</h1>
-            <p className="text-gray-500 mt-1">נהל את הפגישות והאירועים שלך</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+              <CalendarDays className="w-5 h-5 text-blue-600" strokeWidth={2.2} />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">לוח שנה</h1>
+              <p className="text-sm text-zinc-500 mt-0.5">נהל את הפגישות והאירועים שלך</p>
+            </div>
           </div>
           <NewMeetingDialog onMeetingCreated={() => {
             fetchMeetings()
@@ -155,7 +160,7 @@ export default function CalendarPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Calendar */}
           <div className="lg:col-span-2">
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>{monthName}</CardTitle>
@@ -176,7 +181,7 @@ export default function CalendarPage() {
                 {/* Days header */}
                 <div className="grid grid-cols-7 gap-2 mb-2">
                   {days.map((day, idx) => (
-                    <div key={idx} className="text-center text-sm font-medium text-gray-600 py-2">
+                    <div key={idx} className="text-center text-sm font-medium text-zinc-600 py-2">
                       {day}
                     </div>
                   ))}
@@ -202,12 +207,12 @@ export default function CalendarPage() {
                         onClick={() => handleDayClick(day)}
                         className={`aspect-square flex flex-col items-center justify-center rounded-lg text-sm transition-all relative ${
                           isToday
-                            ? "bg-purple-600 text-white font-bold shadow-lg scale-110"
+                            ? "bg-violet-600 text-white font-bold shadow-lg scale-110"
                             : isSelected
-                            ? "bg-purple-100 text-purple-900 font-semibold ring-2 ring-purple-600"
+                            ? "bg-violet-100 text-purple-900 font-semibold ring-2 ring-purple-600"
                             : hasMeetings
-                            ? "bg-blue-50 hover:bg-blue-100 text-gray-900 hover:scale-105"
-                            : "hover:bg-gray-100 text-gray-700 hover:scale-105"
+                            ? "bg-blue-50 hover:bg-blue-100 text-zinc-900 hover:scale-105"
+                            : "hover:bg-zinc-100 text-zinc-700 hover:scale-105"
                         }`}
                       >
                         <span>{day}</span>
@@ -219,7 +224,7 @@ export default function CalendarPage() {
                                 <div 
                                   key={i} 
                                   className={`w-1 h-1 rounded-full ${
-                                    isSelected ? 'bg-purple-600' : 'bg-blue-600'
+                                    isSelected ? 'bg-violet-600' : 'bg-blue-600'
                                   }`}
                                 ></div>
                               ))}
@@ -270,13 +275,13 @@ export default function CalendarPage() {
           {/* Upcoming Meetings */}
           <div className="space-y-6">
             {/* Today's Meetings */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <CardTitle>היום • {todayMeetings.length} פגישות</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {todayMeetings.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-zinc-500">
                     <Clock className="w-12 h-12 mx-auto mb-2 opacity-20" />
                     <p className="text-sm">אין פגישות היום</p>
                   </div>
@@ -309,13 +314,13 @@ export default function CalendarPage() {
             </Card>
 
             {/* Upcoming */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <CardTitle>קרוב</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {upcomingMeetings.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-zinc-500">
                     <Clock className="w-12 h-12 mx-auto mb-2 opacity-20" />
                     <p className="text-sm">אין פגישות קרובות</p>
                   </div>
@@ -324,15 +329,15 @@ export default function CalendarPage() {
                     <div 
                       key={meeting.id} 
                       onClick={() => handleMeetingClick(meeting)}
-                      className="p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                      className="p-3 border rounded-lg hover:bg-zinc-50 cursor-pointer transition-colors"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <h4 className="font-medium text-sm">{meeting.title}</h4>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-zinc-500">
                           {new Date(meeting.date).toLocaleDateString('he-IL', { day: 'numeric', month: 'short' })}
                         </span>
                       </div>
-                      <div className="text-xs text-gray-600 space-y-1">
+                      <div className="text-xs text-zinc-600 space-y-1">
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           <span>{meeting.startTime} - {meeting.endTime}</span>

@@ -277,12 +277,22 @@ export default function MyTasksPage() {
   return (
     <AppLayout fullWidth>
       <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full bg-[#FAFAF7]">
           {/* Board header */}
-          <div className="px-6 py-3 border-b bg-white flex items-center justify-between shrink-0">
+          <div className="px-6 py-4 border-b border-zinc-200/70 bg-[#FAFAF7] flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">
-              <h1 className="text-lg font-bold text-gray-900">המשימות שלי</h1>
-              <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{tasks.length}</span>
+              <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center">
+                <CheckSquare className="w-4 h-4 text-violet-600" strokeWidth={2.2} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-lg font-bold text-zinc-900 tracking-tight">המשימות שלי</h1>
+                  <span className="text-[10px] font-bold text-zinc-600 bg-white border border-zinc-200 px-1.5 py-0.5 rounded-md tabular-nums">
+                    {tasks.length}
+                  </span>
+                </div>
+                <p className="text-[11px] text-zinc-500 mt-0.5">גרור כרטיסים בין עמודות, ערוך וצור משימות חדשות</p>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <EditTaskTemplatesDialog />
@@ -291,13 +301,15 @@ export default function MyTasksPage() {
           </div>
 
           {/* Board content */}
-          <div className="flex-1 overflow-x-auto overflow-y-hidden px-6 py-4 bg-[#f1f2f4]">
+          <div className="flex-1 overflow-x-auto overflow-y-hidden px-6 py-5 bg-[#FAFAF7]">
             {columns.length === 0 && tasks.length === 0 ? (
               <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <CheckSquare className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">אין משימות עדיין</h3>
-                  <p className="text-gray-500 mb-4">התחל על ידי יצירת משימה חדשה</p>
+                <div className="text-center max-w-sm">
+                  <div className="w-16 h-16 mx-auto rounded-2xl bg-white border border-zinc-200 flex items-center justify-center mb-4 shadow-sm">
+                    <CheckSquare className="w-7 h-7 text-zinc-300" strokeWidth={1.8} />
+                  </div>
+                  <h3 className="text-lg font-bold text-zinc-900 mb-1.5 tracking-tight">אין משימות עדיין</h3>
+                  <p className="text-sm text-zinc-500 mb-5">התחל ליצור משימות, לארגן אותן בעמודות, ולעקוב אחר ההתקדמות.</p>
                   <NewTaskDialog onTaskCreated={fetchData} />
                 </div>
               </div>
@@ -324,10 +336,10 @@ export default function MyTasksPage() {
 
                 <button
                   onClick={handleAddColumn}
-                  className="flex-shrink-0 w-[290px] min-h-[80px] flex items-center justify-center gap-2 bg-gray-200/60 hover:bg-gray-200 rounded-xl border-2 border-dashed border-gray-300 text-gray-500 hover:text-gray-700 transition-all cursor-pointer"
+                  className="group flex-shrink-0 w-[290px] min-h-[80px] flex items-center justify-center gap-2 bg-white/40 hover:bg-white rounded-2xl border-2 border-dashed border-zinc-300 hover:border-violet-300 text-zinc-500 hover:text-violet-700 transition-all cursor-pointer"
                 >
-                  <Plus className="w-5 h-5" />
-                  <span className="text-sm font-medium">הוסף עמודה</span>
+                  <Plus className="w-4 h-4" />
+                  <span className="text-sm font-semibold">הוסף עמודה</span>
                 </button>
               </div>
             )}

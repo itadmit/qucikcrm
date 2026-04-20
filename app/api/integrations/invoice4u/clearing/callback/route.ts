@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { createInvoice4UClearingClient } from '@/lib/invoice4u-clearing';
 import { AutomationEngine } from '@/lib/automation-engine';
@@ -373,5 +371,4 @@ async function handleCallback(request: NextRequest) {
     return NextResponse.redirect(new URL('/quotes?error=callback_error', request.url));
   }
 }
-
 

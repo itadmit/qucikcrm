@@ -1,19 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { triggerAutomation } from "@/lib/automation-engine"
 import { notifyTaskAssigned, notifyTaskCompleted } from "@/lib/notification-service"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user || !('companyId' in session.user) || !session.user.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-
-    const user = session.user as { id: string; companyId: string; [key: string]: any }
     const { searchParams } = new URL(req.url)
     const myTasks = searchParams.get('my') === 'true'
 
@@ -58,13 +54,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user || !('companyId' in session.user) || !session.user.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-
-    const user = session.user as { id: string; companyId: string; name?: string | null; [key: string]: any }
     const body = await req.json()
     const { title, description, projectId, clientId, leadId, dueDate, priority, status, skipEmail, columnId: reqColumnId } = body
 
@@ -164,13 +157,10 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user || !('companyId' in session.user) || !session.user.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-
-    const user = session.user as { id: string; companyId: string; [key: string]: any }
     const body = await req.json()
     const { id, status, assigneeId, columnId, position, batchPositions, ...updateData } = body
 

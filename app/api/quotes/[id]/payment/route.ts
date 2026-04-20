@@ -4,11 +4,9 @@ import { AutomationEngine } from "@/lib/automation-engine"
 import crypto from "crypto"
 
 // POST /api/quotes/[id]/payment - תשלום על הצעת מחיר
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const body = await req.json()
     const { token, amount } = body
 
@@ -20,7 +18,7 @@ export async function POST(
     }
 
     const quote = await prisma.quote.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         lead: true,
         company: true,

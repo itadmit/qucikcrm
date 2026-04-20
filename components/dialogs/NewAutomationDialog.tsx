@@ -23,7 +23,7 @@ interface NewAutomationDialogProps {
 }
 
 const triggers = [
-  { value: 'lead_created', label: 'ליד חדש נוצר', icon: UserPlus, color: 'text-purple-600', bg: 'bg-purple-100' },
+  { value: 'lead_created', label: 'ליד חדש נוצר', icon: UserPlus, color: 'text-violet-600', bg: 'bg-violet-100' },
   { value: 'lead_status_changed', label: 'סטטוס ליד השתנה', icon: UserPlus, color: 'text-blue-600', bg: 'bg-blue-100' },
   { value: 'task_created', label: 'משימה חדשה נוצרה', icon: CheckSquare, color: 'text-green-600', bg: 'bg-green-100' },
   { value: 'task_completed', label: 'משימה הושלמה', icon: CheckSquare, color: 'text-cyan-600', bg: 'bg-cyan-100' },
@@ -39,7 +39,7 @@ const actions = [
   { value: 'create_task', label: 'צור משימה', icon: CheckSquare, color: 'text-green-600', bg: 'bg-green-100' },
   { value: 'create_task_kit', label: 'צור מספר משימות', icon: CheckSquare, color: 'text-emerald-600', bg: 'bg-emerald-100' },
   { value: 'send_notification', label: 'שלח התראה', icon: Bell, color: 'text-orange-600', bg: 'bg-orange-100' },
-  { value: 'add_tag', label: 'הוסף תגית', icon: Tag, color: 'text-purple-600', bg: 'bg-purple-100' },
+  { value: 'add_tag', label: 'הוסף תגית', icon: Tag, color: 'text-violet-600', bg: 'bg-violet-100' },
   { value: 'update_field', label: 'עדכן שדה', icon: FileText, color: 'text-cyan-600', bg: 'bg-cyan-100' },
 ]
 
@@ -157,7 +157,7 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl flex items-center gap-2">
-            <Zap className="w-6 h-6 text-purple-600" />
+            <Zap className="w-6 h-6 text-violet-600" />
             צור אוטומציה חדשה
           </DialogTitle>
           <DialogDescription>
@@ -167,22 +167,22 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
 
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-2 mb-6">
-          <div className={`flex items-center gap-2 ${step >= 1 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 1 ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}>
+          <div className={`flex items-center gap-2 ${step >= 1 ? 'text-violet-600' : 'text-zinc-400'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 1 ? 'bg-violet-600 text-white' : 'bg-zinc-200'}`}>
               1
             </div>
             <span className="text-sm font-medium">פרטים בסיסיים</span>
           </div>
-          <ArrowLeft className="w-4 h-4 text-gray-400" />
-          <div className={`flex items-center gap-2 ${step >= 2 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 2 ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}>
+          <ArrowLeft className="w-4 h-4 text-zinc-400" />
+          <div className={`flex items-center gap-2 ${step >= 2 ? 'text-violet-600' : 'text-zinc-400'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 2 ? 'bg-violet-600 text-white' : 'bg-zinc-200'}`}>
               2
             </div>
             <span className="text-sm font-medium">טריגר</span>
           </div>
-          <ArrowLeft className="w-4 h-4 text-gray-400" />
-          <div className={`flex items-center gap-2 ${step >= 3 ? 'text-purple-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 3 ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}>
+          <ArrowLeft className="w-4 h-4 text-zinc-400" />
+          <div className={`flex items-center gap-2 ${step >= 3 ? 'text-violet-600' : 'text-zinc-400'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 3 ? 'bg-violet-600 text-white' : 'bg-zinc-200'}`}>
               3
             </div>
             <span className="text-sm font-medium">פעולה</span>
@@ -223,7 +223,7 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
             <div className="space-y-4">
               <div>
                 <Label className="text-lg font-semibold mb-3 block">מתי האוטומציה תרוץ?</Label>
-                <p className="text-sm text-gray-500 mb-4">בחר את האירוע שיפעיל את האוטומציה</p>
+                <p className="text-sm text-zinc-500 mb-4">בחר את האירוע שיפעיל את האוטומציה</p>
                 
                 <div className="grid grid-cols-2 gap-3">
                   {triggers.map((trigger) => {
@@ -235,8 +235,8 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
                         onClick={() => setFormData({ ...formData, trigger: trigger.value })}
                         className={`p-4 rounded-lg border-2 transition-all text-right hover:shadow-md ${
                           isSelected
-                            ? 'border-purple-500 bg-purple-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-purple-500 bg-violet-50'
+                            : 'border-zinc-200 hover:border-zinc-300'
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -244,10 +244,10 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
                             <Icon className={`w-5 h-5 ${trigger.color}`} />
                           </div>
                           <div className="flex-1">
-                            <div className="font-medium text-gray-900">{trigger.label}</div>
+                            <div className="font-medium text-zinc-900">{trigger.label}</div>
                           </div>
                           {isSelected && (
-                            <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-full bg-violet-600 flex items-center justify-center">
                               <CheckSquare className="w-3 h-3 text-white" />
                             </div>
                           )}
@@ -265,7 +265,7 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
             <div className="space-y-4">
               <div>
                 <Label className="text-lg font-semibold mb-3 block">מה יקרה אז?</Label>
-                <p className="text-sm text-gray-500 mb-4">בחר את הפעולה שתתבצע</p>
+                <p className="text-sm text-zinc-500 mb-4">בחר את הפעולה שתתבצע</p>
                 
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {actions.map((action) => {
@@ -277,8 +277,8 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
                         onClick={() => setFormData({ ...formData, action: action.value })}
                         className={`p-4 rounded-lg border-2 transition-all text-right hover:shadow-md ${
                           isSelected
-                            ? 'border-purple-500 bg-purple-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-purple-500 bg-violet-50'
+                            : 'border-zinc-200 hover:border-zinc-300'
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -286,10 +286,10 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
                             <Icon className={`w-5 h-5 ${action.color}`} />
                           </div>
                           <div className="flex-1">
-                            <div className="font-medium text-gray-900">{action.label}</div>
+                            <div className="font-medium text-zinc-900">{action.label}</div>
                           </div>
                           {isSelected && (
-                            <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-full bg-violet-600 flex items-center justify-center">
                               <CheckSquare className="w-3 h-3 text-white" />
                             </div>
                           )}
@@ -337,7 +337,7 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
                         <div className="space-y-1.5 mb-3">
                           {formData.taskChecklist.map((item, index) => (
                             <div key={index} className="flex items-center gap-2 group">
-                              <span className="text-xs text-gray-400 w-5 text-center">{index + 1}</span>
+                              <span className="text-xs text-zinc-400 w-5 text-center">{index + 1}</span>
                               <Input
                                 value={item}
                                 onChange={(e) => {
@@ -400,7 +400,7 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
                       </div>
 
                       {formData.taskChecklist.length > 0 && (
-                        <p className="text-xs text-gray-400 mt-1.5">
+                        <p className="text-xs text-zinc-400 mt-1.5">
                           {formData.taskChecklist.length} פריטים בצ׳קליסט
                         </p>
                       )}
@@ -411,7 +411,7 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
                 {formData.action === 'create_task_kit' && (
                   <div className="space-y-3">
                     <Label>רשימת משימות ליצירה</Label>
-                    <p className="text-sm text-gray-500">הזן את כותרות המשימות שיווצרו אוטומטית</p>
+                    <p className="text-sm text-zinc-500">הזן את כותרות המשימות שיווצרו אוטומטית</p>
                     {formData.taskTitles.map((title, index) => (
                       <Input
                         key={index}
@@ -469,14 +469,14 @@ export function NewAutomationDialog({ open, onOpenChange, onAutomationCreated }:
 
               {/* Preview */}
               {selectedTrigger && selectedAction && (
-                <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
-                  <div className="text-sm font-medium text-gray-700 mb-2">תצוגה מקדימה:</div>
+                <div className="mt-6 p-4 bg-zinc-50 rounded-lg border">
+                  <div className="text-sm font-medium text-zinc-700 mb-2">תצוגה מקדימה:</div>
                   <div className="flex items-center gap-3 text-sm">
                     <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border">
                       {React.createElement(selectedTrigger.icon, { className: `w-4 h-4 ${selectedTrigger.color}` })}
                       <span>{selectedTrigger.label}</span>
                     </div>
-                    <ArrowLeft className="w-4 h-4 text-gray-400" />
+                    <ArrowLeft className="w-4 h-4 text-zinc-400" />
                     <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border">
                       {React.createElement(selectedAction.icon, { className: `w-4 h-4 ${selectedAction.color}` })}
                       <span>{selectedAction.label}</span>

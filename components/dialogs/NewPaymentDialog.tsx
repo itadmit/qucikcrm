@@ -481,11 +481,11 @@ export function NewPaymentDialog({
                 {quoteBalance !== null && selectedQuote && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">סכום הצעה:</span>
+                      <span className="text-zinc-600">סכום הצעה:</span>
                       <span className="font-medium">₪{selectedQuote.total?.toLocaleString('he-IL', { minimumFractionDigits: 2 })}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm mt-1">
-                      <span className="text-gray-600">יתרה לתשלום:</span>
+                      <span className="text-zinc-600">יתרה לתשלום:</span>
                       <span className={`font-bold ${quoteBalance > 0 ? 'text-orange-600' : 'text-green-600'}`}>
                         ₪{quoteBalance.toLocaleString('he-IL', { minimumFractionDigits: 2 })}
                       </span>
@@ -558,7 +558,7 @@ export function NewPaymentDialog({
                     <SelectItem value="manual">✏️ תשלום ידני (ללא דף סליקה)</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-zinc-500 mt-1">
                   {paymentProvider === "manual" ? (
                     <span className="text-orange-600">
                       ⚠️ תשלום ידני רק יוצר רשומה במערכת. לא תועבר לדף סליקה. בחר את שיטת התשלום למטה.

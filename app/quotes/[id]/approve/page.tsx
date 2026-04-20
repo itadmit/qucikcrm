@@ -229,10 +229,10 @@ export default function ApproveQuotePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50" dir="rtl">
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50" dir="rtl">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-purple-600 mx-auto mb-4" />
-          <p className="text-gray-600">טוען...</p>
+          <Loader2 className="w-8 h-8 animate-spin text-violet-600 mx-auto mb-4" />
+          <p className="text-zinc-600">טוען...</p>
         </div>
       </div>
     )
@@ -240,13 +240,13 @@ export default function ApproveQuotePage() {
 
   if (error || !quote) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50" dir="rtl">
+      <div className="min-h-screen flex items-center justify-center bg-zinc-50" dir="rtl">
         <Card className="max-w-md w-full">
           <CardContent className="pt-6">
             <div className="text-center">
               <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-              <h2 className="text-xl font-bold text-gray-900 mb-2">שגיאה</h2>
-              <p className="text-gray-600 mb-4">{error || "הצעת המחיר לא נמצאה"}</p>
+              <h2 className="text-xl font-bold text-zinc-900 mb-2">שגיאה</h2>
+              <p className="text-zinc-600 mb-4">{error || "הצעת המחיר לא נמצאה"}</p>
               <Button onClick={() => router.push("/")} variant="outline">
                 חזרה לדף הבית
               </Button>
@@ -262,27 +262,27 @@ export default function ApproveQuotePage() {
       <div className="max-w-2xl mx-auto">
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
+            <CardTitle className="text-2xl font-bold text-zinc-900 mb-2">
               {quote.isInvoice ? 'תשלום חשבון' : 'אישור הצעת מחיר'}
             </CardTitle>
-            <p className="text-gray-600">
+            <p className="text-zinc-600">
               {quote.isInvoice ? 'מספר חשבון:' : 'מספר הצעה:'} {quote.quoteNumber}
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{quote.title}</h3>
+              <h3 className="text-lg font-semibold text-zinc-900 mb-2">{quote.title}</h3>
               {quote.description && (
-                <p className="text-gray-600 text-sm">{quote.description}</p>
+                <p className="text-zinc-600 text-sm">{quote.description}</p>
               )}
             </div>
 
             {quote.lead && (
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600 mb-1">לקוח:</p>
-                <p className="font-medium text-gray-900">{quote.lead.name}</p>
+              <div className="bg-zinc-50 p-4 rounded-lg">
+                <p className="text-sm text-zinc-600 mb-1">לקוח:</p>
+                <p className="font-medium text-zinc-900">{quote.lead.name}</p>
                 {quote.lead.email && (
-                  <p className="text-sm text-gray-600">{quote.lead.email}</p>
+                  <p className="text-sm text-zinc-600">{quote.lead.email}</p>
                 )}
               </div>
             )}
@@ -291,14 +291,14 @@ export default function ApproveQuotePage() {
               /* תצוגה עבור חשבון עסקה */
               <div className="bg-orange-50 p-6 rounded-lg border-2 border-orange-200">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-lg font-semibold text-gray-900">סה״כ לתשלום:</span>
+                  <span className="text-lg font-semibold text-zinc-900">סה״כ לתשלום:</span>
                   <span className="text-2xl font-bold text-orange-600">
                     ₪{(quote.total - quote.paidAmount).toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                   </span>
                 </div>
                 {quote.paidAmount > 0 && (
                   <>
-                    <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
+                    <div className="flex items-center justify-between text-sm text-zinc-600 mb-1">
                       <span>סכום כולל:</span>
                       <span>₪{quote.total.toLocaleString("he-IL", { minimumFractionDigits: 2 })}</span>
                     </div>
@@ -308,24 +308,24 @@ export default function ApproveQuotePage() {
                     </div>
                   </>
                 )}
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-zinc-600">
                   לאחר החתימה, תועבר לעמוד תשלום
                 </p>
               </div>
             ) : (
               /* תצוגה עבור הצעת מחיר */
-              <div className="bg-purple-50 p-6 rounded-lg border-2 border-purple-200">
+              <div className="bg-violet-50 p-6 rounded-lg border-2 border-purple-200">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-lg font-semibold text-gray-900">מקדמה ({quote.depositPercent || 40}%):</span>
-                  <span className="text-2xl font-bold text-purple-600">
+                  <span className="text-lg font-semibold text-zinc-900">מקדמה ({quote.depositPercent || 40}%):</span>
+                  <span className="text-2xl font-bold text-violet-600">
                     ₪{(quote.total * (quote.depositPercent || 40) / 100).toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+                <div className="flex items-center justify-between text-sm text-zinc-600 mb-2">
                   <span>סה״כ כולל:</span>
                   <span>₪{quote.total.toLocaleString("he-IL", { minimumFractionDigits: 2 })}</span>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-zinc-600">
                   לאחר אישור ההצעה, תועבר לעמוד תשלום מקדמה
                 </p>
               </div>
@@ -334,7 +334,7 @@ export default function ApproveQuotePage() {
             {/* בחירת מערכת תשלום - מופיע רק אם יש יותר מאינטגרציה אחת */}
             {hasAnyPaymentProvider && (hasPayplus && hasInvoice4u) && (
             <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">מערכת תשלום</h3>
+              <h3 className="text-lg font-semibold text-zinc-900 mb-4">מערכת תשלום</h3>
               <div className="grid gap-2">
                 <Label htmlFor="paymentProvider">בחר מערכת תשלום</Label>
                 <Select
@@ -357,7 +357,7 @@ export default function ApproveQuotePage() {
 
             {/* חתימה דיגיטלית */}
             <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">חתימה דיגיטלית</h3>
+              <h3 className="text-lg font-semibold text-zinc-900 mb-4">חתימה דיגיטלית</h3>
               <SignaturePad onSignatureChange={setSignature} />
             </div>
 

@@ -112,10 +112,10 @@ export function QuotePreviewDialog({
             </div>
           </DialogHeader>
           
-          <div className="flex-1 overflow-hidden bg-gray-100">
+          <div className="flex-1 overflow-hidden bg-zinc-100">
             {loading ? (
               <div className="flex items-center justify-center h-[70vh]">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+                <Loader2 className="w-8 h-8 animate-spin text-violet-600" />
               </div>
             ) : htmlContent ? (
               <div className="w-full h-[70vh] overflow-auto bg-white">

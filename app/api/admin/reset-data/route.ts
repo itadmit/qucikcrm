@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const user = await getAuthUser(req)
     
     // Only allow admins to reset data
-    const user = session?.user as { companyId?: string; role?: string } | null
     if (!user || !user.companyId || user.role !== 'ADMIN') {
       return NextResponse.json({ error: "Unauthorized - Admin only" }, { status: 401 })
     }

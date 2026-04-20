@@ -51,6 +51,8 @@ model User {
   companyId                String
   avatar                   String?
   settings                 Json?
+  pushTokens               String[]                  @default([])
+  refreshToken             String?
   createdAt                DateTime                  @default(now())
   updatedAt                DateTime                  @updatedAt
   attendanceHistory        AttendanceHistory[]

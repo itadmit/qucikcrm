@@ -98,7 +98,7 @@ function ChecklistAddInput({ onAdd }: { onAdd: (text: string) => void }) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 mt-2 px-2 py-1.5 text-sm text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors w-full"
+        className="flex items-center gap-1.5 mt-2 px-2 py-1.5 text-sm text-zinc-400 hover:text-zinc-600 hover:bg-zinc-50 rounded-lg transition-colors w-full"
       >
         <Plus className="w-4 h-4" />
         הוסף פריט
@@ -123,7 +123,7 @@ function ChecklistAddInput({ onAdd }: { onAdd: (text: string) => void }) {
           if (e.key === 'Escape') { setIsOpen(false); setText("") }
         }}
         placeholder="הוסף פריט..."
-        className="flex-1 text-sm px-3 py-2 border border-gray-200 rounded-lg focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none"
+        className="flex-1 text-sm px-3 py-2 border border-zinc-200 rounded-lg focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none"
         autoFocus
       />
       <Button size="sm" onClick={handleAdd} className="h-9 px-3 text-xs shrink-0">
@@ -131,7 +131,7 @@ function ChecklistAddInput({ onAdd }: { onAdd: (text: string) => void }) {
       </Button>
       <button
         onClick={() => { setIsOpen(false); setText("") }}
-        className="p-1.5 text-gray-400 hover:text-gray-600 rounded"
+        className="p-1.5 text-zinc-400 hover:text-zinc-600 rounded"
       >
         <X className="w-4 h-4" />
       </button>
@@ -357,11 +357,11 @@ export default function TaskDetailPage() {
     URGENT: { label: "דחוף מאוד", color: "text-red-700", icon: AlertCircle, bg: "bg-red-100 border-red-200" },
     HIGH: { label: "גבוהה", color: "text-orange-700", icon: AlertCircle, bg: "bg-orange-100 border-orange-200" },
     NORMAL: { label: "רגילה", color: "text-blue-700", icon: Circle, bg: "bg-blue-100 border-blue-200" },
-    LOW: { label: "נמוכה", color: "text-gray-700", icon: Circle, bg: "bg-gray-100 border-gray-200" },
+    LOW: { label: "נמוכה", color: "text-zinc-700", icon: Circle, bg: "bg-zinc-100 border-zinc-200" },
   }
 
   const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
-    TODO: { label: "לביצוע", color: "text-gray-700", bg: "bg-gray-100" },
+    TODO: { label: "לביצוע", color: "text-zinc-700", bg: "bg-zinc-100" },
     IN_PROGRESS: { label: "בתהליך", color: "text-cyan-700", bg: "bg-cyan-100" },
     DONE: { label: "הושלם", color: "text-green-700", bg: "bg-green-100" },
   }
@@ -384,7 +384,7 @@ export default function TaskDetailPage() {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
     
     let label = ''
-    let colorClass = 'text-gray-600'
+    let colorClass = 'text-zinc-600'
     
     if (diffDays < 0) {
       label = `באיחור של ${Math.abs(diffDays)} ימים`
@@ -411,7 +411,7 @@ export default function TaskDetailPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">טוען פרטי משימה...</p>
+            <p className="mt-4 text-zinc-600">טוען פרטי משימה...</p>
           </div>
         </div>
       </AppLayout>
@@ -422,8 +422,8 @@ export default function TaskDetailPage() {
     return (
       <AppLayout>
         <div className="text-center py-12">
-          <CheckSquare className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">משימה לא נמצאה</h3>
+          <CheckSquare className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+          <h3 className="text-lg font-medium text-zinc-900 mb-2">משימה לא נמצאה</h3>
           <Link href="/tasks/my">
             <Button variant="outline">חזרה למשימות</Button>
           </Link>
@@ -441,10 +441,10 @@ export default function TaskDetailPage() {
     <AppLayout>
       <div className="space-y-6">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/tasks/my" className="hover:text-gray-700">המשימות שלי</Link>
+        <div className="flex items-center gap-2 text-sm text-zinc-500">
+          <Link href="/tasks/my" className="hover:text-zinc-700">המשימות שלי</Link>
           <ArrowRight className="w-4 h-4" />
-          <span className="text-gray-900 truncate max-w-xs">{task.title}</span>
+          <span className="text-zinc-900 truncate max-w-xs">{task.title}</span>
         </div>
 
         {/* Header */}
@@ -458,7 +458,7 @@ export default function TaskDetailPage() {
                 placeholder="כותרת המשימה"
               />
             ) : (
-              <h1 className={`text-3xl font-bold text-gray-900 ${task.status === 'DONE' ? 'line-through opacity-60' : ''}`}>
+              <h1 className={`text-3xl font-bold text-zinc-900 ${task.status === 'DONE' ? 'line-through opacity-60' : ''}`}>
                 {task.title}
               </h1>
             )}
@@ -542,7 +542,7 @@ export default function TaskDetailPage() {
                     placeholder="הוסף תיאור למשימה..."
                   />
                 ) : (
-                  <p className="text-gray-700 whitespace-pre-wrap">
+                  <p className="text-zinc-700 whitespace-pre-wrap">
                     {task.description || "אין תיאור למשימה זו"}
                   </p>
                 )}
@@ -554,10 +554,10 @@ export default function TaskDetailPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <ListChecks className="w-5 h-5 text-gray-400" />
+                    <ListChecks className="w-5 h-5 text-zinc-400" />
                     <CardTitle>צ'קליסט</CardTitle>
                     {checklist.length > 0 && (
-                      <span className="text-sm text-gray-400 font-normal">{completedCount}/{checklist.length}</span>
+                      <span className="text-sm text-zinc-400 font-normal">{completedCount}/{checklist.length}</span>
                     )}
                   </div>
                 </div>
@@ -566,13 +566,13 @@ export default function TaskDetailPage() {
                 {checklist.length > 0 && (
                   <div className="mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="flex-1 h-2.5 bg-zinc-200 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all duration-300 ${progressPercent === 100 ? 'bg-green-500' : 'bg-blue-500'}`}
                           style={{ width: `${progressPercent}%` }}
                         />
                       </div>
-                      <span className={`text-sm font-semibold min-w-[40px] text-left ${progressPercent === 100 ? 'text-green-600' : 'text-gray-500'}`}>
+                      <span className={`text-sm font-semibold min-w-[40px] text-left ${progressPercent === 100 ? 'text-green-600' : 'text-zinc-500'}`}>
                         {progressPercent}%
                       </span>
                     </div>
@@ -581,26 +581,26 @@ export default function TaskDetailPage() {
 
                 <div className="space-y-1">
                   {checklist.map((item, idx) => (
-                    <div key={item.id} className="group flex items-start gap-2 py-2 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div key={item.id} className="group flex items-start gap-2 py-2 px-2 -mx-2 rounded-lg hover:bg-zinc-50 transition-colors">
                       <div className="flex flex-col shrink-0 opacity-0 group-hover:opacity-100 transition-all -space-y-1 mt-0.5">
                         <button
                           onClick={() => moveChecklistItem(idx, 'up')}
                           disabled={idx === 0}
-                          className="text-gray-300 hover:text-gray-600 disabled:opacity-20 p-0"
+                          className="text-zinc-300 hover:text-zinc-600 disabled:opacity-20 p-0"
                         >
                           <ChevronUp className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => moveChecklistItem(idx, 'down')}
                           disabled={idx === checklist.length - 1}
-                          className="text-gray-300 hover:text-gray-600 disabled:opacity-20 p-0"
+                          className="text-zinc-300 hover:text-zinc-600 disabled:opacity-20 p-0"
                         >
                           <ChevronDown className="w-4 h-4" />
                         </button>
                       </div>
                       <button
                         onClick={() => toggleChecklistItem(item.id)}
-                        className="mt-0.5 shrink-0 text-gray-400 hover:text-blue-600 transition-colors"
+                        className="mt-0.5 shrink-0 text-zinc-400 hover:text-blue-600 transition-colors"
                       >
                         {item.checked ? (
                           <CheckSquare className="w-5 h-5 text-blue-600" />
@@ -611,11 +611,11 @@ export default function TaskDetailPage() {
                       <input
                         value={item.text}
                         onChange={(e) => updateChecklistItemText(item.id, e.target.value)}
-                        className={`flex-1 text-sm bg-transparent border-0 outline-none py-0.5 ${item.checked ? 'line-through text-gray-400' : 'text-gray-700'}`}
+                        className={`flex-1 text-sm bg-transparent border-0 outline-none py-0.5 ${item.checked ? 'line-through text-zinc-400' : 'text-zinc-700'}`}
                       />
                       <button
                         onClick={() => removeChecklistItem(item.id)}
-                        className="shrink-0 p-1 rounded text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
+                        className="shrink-0 p-1 rounded text-zinc-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -660,12 +660,12 @@ export default function TaskDetailPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {task.project && (
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center justify-between p-3 bg-zinc-50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <FolderKanban className="w-5 h-5 text-cyan-600" />
                         <div>
-                          <div className="font-medium text-gray-900">{task.project.name}</div>
-                          <div className="text-sm text-gray-500">פרויקט</div>
+                          <div className="font-medium text-zinc-900">{task.project.name}</div>
+                          <div className="text-sm text-zinc-500">פרויקט</div>
                         </div>
                       </div>
                       {task.project.client && (
@@ -680,22 +680,22 @@ export default function TaskDetailPage() {
                   )}
                   {task.client && (
                     <Link href={`/clients/${task.client.id}`} className="block">
-                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                      <div className="flex items-center gap-3 p-3 bg-zinc-50 rounded-lg hover:bg-zinc-100 transition-colors">
                         <Building className="w-5 h-5 text-blue-600" />
                         <div>
-                          <div className="font-medium text-gray-900">{task.client.name}</div>
-                          <div className="text-sm text-gray-500">לקוח</div>
+                          <div className="font-medium text-zinc-900">{task.client.name}</div>
+                          <div className="text-sm text-zinc-500">לקוח</div>
                         </div>
                       </div>
                     </Link>
                   )}
                   {task.lead && (
                     <Link href={`/leads/${task.lead.id}`} className="block">
-                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                        <UserPlus className="w-5 h-5 text-purple-600" />
+                      <div className="flex items-center gap-3 p-3 bg-zinc-50 rounded-lg hover:bg-zinc-100 transition-colors">
+                        <UserPlus className="w-5 h-5 text-violet-600" />
                         <div>
-                          <div className="font-medium text-gray-900">{task.lead.name}</div>
-                          <div className="text-sm text-gray-500">ליד</div>
+                          <div className="font-medium text-zinc-900">{task.lead.name}</div>
+                          <div className="text-sm text-zinc-500">ליד</div>
                         </div>
                       </div>
                     </Link>
@@ -719,12 +719,12 @@ export default function TaskDetailPage() {
                 {task.files && task.files.length > 0 ? (
                   <div className="space-y-2">
                     {task.files.map((file) => (
-                      <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                      <div key={file.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-zinc-50">
                         <div className="flex items-center gap-3">
-                          <Paperclip className="w-4 h-4 text-gray-400" />
+                          <Paperclip className="w-4 h-4 text-zinc-400" />
                           <div>
                             <div className="font-medium text-sm">{file.name}</div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-zinc-500">
                               {(file.size / 1024).toFixed(2)} KB
                             </div>
                           </div>
@@ -734,7 +734,7 @@ export default function TaskDetailPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center text-gray-400 py-8">
+                  <div className="text-center text-zinc-400 py-8">
                     <Paperclip className="w-10 h-10 mx-auto mb-2 opacity-50" />
                     <p>אין קבצים מצורפים</p>
                   </div>
@@ -753,22 +753,22 @@ export default function TaskDetailPage() {
               <CardContent>
                 {task.assignee ? (
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
                       {task.assignee.avatar ? (
                         <img src={task.assignee.avatar} alt={task.assignee.name} className="w-10 h-10 rounded-full" />
                       ) : (
-                        <span className="text-purple-600 font-medium">
+                        <span className="text-violet-600 font-medium">
                           {task.assignee.name?.charAt(0) || "?"}
                         </span>
                       )}
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">{task.assignee.name}</div>
-                      <div className="text-sm text-gray-500">{task.assignee.email}</div>
+                      <div className="font-medium text-zinc-900">{task.assignee.name}</div>
+                      <div className="text-sm text-zinc-500">{task.assignee.email}</div>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center text-gray-400 py-4">
+                  <div className="text-center text-zinc-400 py-4">
                     <User className="w-8 h-8 mx-auto mb-2 opacity-50" />
                     <p className="text-sm">לא משויך לאף אחד</p>
                   </div>
@@ -794,7 +794,7 @@ export default function TaskDetailPage() {
                 {isEditing ? (
                   <>
                     <div>
-                      <Label className="text-gray-500 text-sm">עדיפות</Label>
+                      <Label className="text-zinc-500 text-sm">עדיפות</Label>
                       <select
                         className="w-full mt-1 p-2 border rounded-lg"
                         value={editData.priority}
@@ -806,7 +806,7 @@ export default function TaskDetailPage() {
                       </select>
                     </div>
                     <div>
-                      <Label className="text-gray-500 text-sm">תאריך יעד</Label>
+                      <Label className="text-zinc-500 text-sm">תאריך יעד</Label>
                       <Input
                         type="date"
                         className="mt-1"
@@ -818,27 +818,27 @@ export default function TaskDetailPage() {
                 ) : (
                   <>
                     <div>
-                      <Label className="text-gray-500 text-sm">עדיפות</Label>
+                      <Label className="text-zinc-500 text-sm">עדיפות</Label>
                       <div className={`mt-1 flex items-center gap-2 ${priority.color}`}>
                         <PriorityIcon className="w-4 h-4" />
                         <span>{priority.label}</span>
                       </div>
                     </div>
                     <div>
-                      <Label className="text-gray-500 text-sm">תאריך יעד</Label>
+                      <Label className="text-zinc-500 text-sm">תאריך יעד</Label>
                       <div className="mt-1">
                         {dueInfo ? (
                           <span className={dueInfo.colorClass}>{dueInfo.formatted}</span>
                         ) : (
-                          <span className="text-gray-400">לא הוגדר</span>
+                          <span className="text-zinc-400">לא הוגדר</span>
                         )}
                       </div>
                     </div>
                   </>
                 )}
                 <div>
-                  <Label className="text-gray-500 text-sm">נוצר בתאריך</Label>
-                  <div className="mt-1 text-gray-700">
+                  <Label className="text-zinc-500 text-sm">נוצר בתאריך</Label>
+                  <div className="mt-1 text-zinc-700">
                     {new Date(task.createdAt).toLocaleDateString('he-IL', {
                       year: 'numeric',
                       month: 'long',
@@ -847,8 +847,8 @@ export default function TaskDetailPage() {
                   </div>
                 </div>
                 <div>
-                  <Label className="text-gray-500 text-sm">עודכן לאחרונה</Label>
-                  <div className="mt-1 text-gray-700">
+                  <Label className="text-zinc-500 text-sm">עודכן לאחרונה</Label>
+                  <div className="mt-1 text-zinc-700">
                     {new Date(task.updatedAt).toLocaleDateString('he-IL', {
                       year: 'numeric',
                       month: 'long',
@@ -872,7 +872,7 @@ export default function TaskDetailPage() {
                     {task.tags.map((tag, index) => (
                       <span 
                         key={index} 
-                        className="text-xs px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 flex items-center gap-1"
+                        className="text-xs px-2.5 py-1 rounded-full bg-violet-100 text-violet-700 flex items-center gap-1"
                       >
                         <Tag className="w-3 h-3" />
                         {tag}
@@ -880,7 +880,7 @@ export default function TaskDetailPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center text-gray-400 py-4">
+                  <div className="text-center text-zinc-400 py-4">
                     <Tag className="w-6 h-6 mx-auto mb-2 opacity-50" />
                     <p className="text-sm">אין תגיות</p>
                   </div>

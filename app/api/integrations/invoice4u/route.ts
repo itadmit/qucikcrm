@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+;
+;
 import { prisma } from '@/lib/prisma';
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת הגדרות אינטגרציה
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    const user = session?.user as { companyId?: string } | null;
+    const user = await getAuthUser(req)
     if (!user?.companyId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -43,8 +43,7 @@ export async function GET(request: NextRequest) {
 // POST - יצירת/עדכון אינטגרציה
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    const user = session?.user as { companyId?: string } | null;
+    const user = await getAuthUser(req)
     if (!user?.companyId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -128,8 +127,7 @@ export async function POST(request: NextRequest) {
 // DELETE - מחיקת אינטגרציה
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    const user = session?.user as { companyId?: string } | null;
+    const user = await getAuthUser(req)
     if (!user?.companyId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

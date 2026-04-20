@@ -100,7 +100,7 @@ export function AddColumnDialog({ onColumnCreated }: AddColumnDialogProps) {
                   key={c}
                   onClick={() => setColor(c)}
                   className={`w-7 h-7 rounded-full border-2 transition-transform hover:scale-110 ${
-                    color === c ? 'border-gray-800 scale-110' : 'border-transparent'
+                    color === c ? 'border-zinc-800 scale-110' : 'border-transparent'
                   }`}
                   style={{ backgroundColor: c }}
                 />
@@ -120,7 +120,7 @@ export function AddColumnDialog({ onColumnCreated }: AddColumnDialogProps) {
                 <SelectItem value="DONE">הושלם</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-zinc-500 mt-1">
               כרטיסים בעמודה זו יקבלו את הסטטוס הנבחר
             </p>
           </div>

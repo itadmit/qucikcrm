@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // PATCH - שינוי סיסמה
 export async function PATCH(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.id) {
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -31,7 +30,7 @@ export async function PATCH(req: NextRequest) {
 
     // קבלת המשתמש עם הסיסמה
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { password: true },
     })
 
@@ -53,7 +52,7 @@ export async function PATCH(req: NextRequest) {
 
     // עדכון הסיסמה
     await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: user.id },
       data: { password: hashedPassword },
     })
 
@@ -66,5 +65,4 @@ export async function PATCH(req: NextRequest) {
     )
   }
 }
-
 

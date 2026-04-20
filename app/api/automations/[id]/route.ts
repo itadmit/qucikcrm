@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -17,7 +13,7 @@ export async function GET(
 
     const automation = await prisma.automation.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })
@@ -33,13 +29,10 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -59,7 +52,7 @@ export async function PATCH(
 
     const automation = await prisma.automation.updateMany({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       data: updateData,
@@ -76,13 +69,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -90,7 +80,7 @@ export async function DELETE(
 
     const automation = await prisma.automation.deleteMany({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })

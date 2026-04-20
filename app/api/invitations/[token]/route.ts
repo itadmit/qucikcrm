@@ -3,11 +3,9 @@ import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 
 // GET - קבלת פרטי הזמנה לפי token
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { token: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   try {
+    const { token } = await params;
     const { token } = params
 
     const invitation = await prisma.invitation.findUnique({
@@ -54,11 +52,9 @@ export async function GET(
 }
 
 // POST - אישור הזמנה ויצירת משתמש
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { token: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   try {
+    const { token } = await params;
     const { token } = params
     const body = await req.json()
     const { name, password } = body
@@ -172,5 +168,4 @@ export async function POST(
     )
   }
 }
-
 

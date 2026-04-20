@@ -75,7 +75,7 @@ export function SignaturePad({
 
   return (
     <div className="space-y-3 w-full" dir="rtl" ref={containerRef}>
-      <div className="border-2 border-gray-300 rounded-lg bg-white w-full" style={{ height }}>
+      <div className="border-2 border-zinc-300 rounded-lg bg-white w-full" style={{ height }}>
         <SignatureCanvas
           ref={sigPadRef}
           canvasProps={{
@@ -96,7 +96,7 @@ export function SignaturePad({
           <Trash2 className="w-4 h-4 ml-2" />
           נקה
         </Button>
-        <p className="text-sm text-gray-600 flex items-center">
+        <p className="text-sm text-zinc-600 flex items-center">
           אנא חתום בשדה לעיל
         </p>
       </div>

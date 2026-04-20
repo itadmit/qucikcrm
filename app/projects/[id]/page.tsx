@@ -317,7 +317,7 @@ export default function ProjectDetailPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">טוען פרטי פרויקט...</p>
+            <p className="mt-4 text-zinc-600">טוען פרטי פרויקט...</p>
           </div>
         </div>
       </AppLayout>
@@ -328,8 +328,8 @@ export default function ProjectDetailPage() {
     return (
       <AppLayout>
         <div className="text-center py-12">
-          <FolderKanban className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">פרויקט לא נמצא</h3>
+          <FolderKanban className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+          <h3 className="text-lg font-medium text-zinc-900 mb-2">פרויקט לא נמצא</h3>
           <Link href="/projects">
             <Button variant="outline">חזרה לפרויקטים</Button>
           </Link>
@@ -339,7 +339,7 @@ export default function ProjectDetailPage() {
   }
 
   const statusColors: Record<string, string> = {
-    PLANNING: "bg-gray-100 text-gray-800",
+    PLANNING: "bg-zinc-100 text-zinc-800",
     IN_PROGRESS: "bg-blue-100 text-blue-800",
     ON_HOLD: "bg-yellow-100 text-yellow-800",
     COMPLETED: "bg-green-100 text-green-800",
@@ -355,7 +355,7 @@ export default function ProjectDetailPage() {
   }
 
   const taskStatusColors: Record<string, string> = {
-    TODO: "bg-gray-100 text-gray-800",
+    TODO: "bg-zinc-100 text-zinc-800",
     IN_PROGRESS: "bg-blue-100 text-blue-800",
     DONE: "bg-green-100 text-green-800",
   }
@@ -367,9 +367,9 @@ export default function ProjectDetailPage() {
   }
 
   const quoteStatusColors: Record<string, string> = {
-    DRAFT: "bg-gray-100 text-gray-800",
+    DRAFT: "bg-zinc-100 text-zinc-800",
     SENT: "bg-blue-100 text-blue-800",
-    VIEWED: "bg-purple-100 text-purple-800",
+    VIEWED: "bg-violet-100 text-violet-800",
     ACCEPTED: "bg-green-100 text-green-800",
     REJECTED: "bg-red-100 text-red-800",
   }
@@ -404,16 +404,16 @@ export default function ProjectDetailPage() {
     <AppLayout>
       <div className="space-y-6">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/projects" className="hover:text-gray-700">פרויקטים</Link>
+        <div className="flex items-center gap-2 text-sm text-zinc-500">
+          <Link href="/projects" className="hover:text-zinc-700">פרויקטים</Link>
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-gray-900">{project.name}</span>
+          <span className="text-zinc-900">{project.name}</span>
         </div>
 
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{project.name}</h1>
+            <h1 className="text-3xl font-bold text-zinc-900">{project.name}</h1>
             <div className="flex items-center gap-3 mt-2">
               <span className={`text-xs px-3 py-1 rounded-full ${statusColors[project.status]}`}>
                 {statusLabels[project.status]}
@@ -421,7 +421,7 @@ export default function ProjectDetailPage() {
               {project.client && (
                 <Link 
                   href={`/clients/${project.client.id}`}
-                  className="text-sm text-purple-600 hover:text-purple-700 flex items-center gap-1"
+                  className="text-sm text-violet-600 hover:text-violet-700 flex items-center gap-1"
                 >
                   <User className="w-3 h-3" />
                   {project.client.name}
@@ -442,7 +442,7 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-zinc-200">
           <div className="flex gap-6">
             {[
               { key: "overview", label: "סקירה" },
@@ -455,8 +455,8 @@ export default function ProjectDetailPage() {
                 onClick={() => setActiveTab(tab.key as any)}
                 className={`pb-3 border-b-2 transition-colors ${
                   activeTab === tab.key
-                    ? "border-purple-600 text-purple-600 font-medium"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
+                    ? "border-purple-600 text-violet-600 font-medium"
+                    : "border-transparent text-zinc-500 hover:text-zinc-700"
                 }`}
               >
                 {tab.label}
@@ -479,16 +479,16 @@ export default function ProjectDetailPage() {
                   <CardContent className="space-y-4">
                     {project.description && (
                       <div>
-                        <Label className="text-gray-500 text-sm">תיאור</Label>
-                        <p className="text-gray-900 mt-1">{project.description}</p>
+                        <Label className="text-zinc-500 text-sm">תיאור</Label>
+                        <p className="text-zinc-900 mt-1">{project.description}</p>
                       </div>
                     )}
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-gray-500 text-sm">תאריך התחלה</Label>
+                        <Label className="text-zinc-500 text-sm">תאריך התחלה</Label>
                         <div className="flex items-center gap-2 mt-1">
-                          <Calendar className="w-4 h-4 text-gray-400" />
-                          <span className="text-gray-900">
+                          <Calendar className="w-4 h-4 text-zinc-400" />
+                          <span className="text-zinc-900">
                             {project.startDate 
                               ? new Date(project.startDate).toLocaleDateString('he-IL')
                               : "-"}
@@ -496,10 +496,10 @@ export default function ProjectDetailPage() {
                         </div>
                       </div>
                       <div>
-                        <Label className="text-gray-500 text-sm">תאריך סיום</Label>
+                        <Label className="text-zinc-500 text-sm">תאריך סיום</Label>
                         <div className="flex items-center gap-2 mt-1">
-                          <Calendar className="w-4 h-4 text-gray-400" />
-                          <span className="text-gray-900">
+                          <Calendar className="w-4 h-4 text-zinc-400" />
+                          <span className="text-zinc-900">
                             {project.endDate 
                               ? new Date(project.endDate).toLocaleDateString('he-IL')
                               : "-"}
@@ -511,16 +511,16 @@ export default function ProjectDetailPage() {
                     {/* Progress */}
                     <div>
                       <div className="flex items-center justify-between text-sm mb-2">
-                        <Label className="text-gray-500">התקדמות</Label>
+                        <Label className="text-zinc-500">התקדמות</Label>
                         <span className="font-medium">{projectProgress}%</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div className="w-full bg-zinc-200 rounded-full h-2.5">
                         <div 
-                          className={`h-full rounded-full transition-all duration-500 ${projectProgress === 100 ? 'bg-green-500' : 'bg-purple-600'}`}
+                          className={`h-full rounded-full transition-all duration-500 ${projectProgress === 100 ? 'bg-green-500' : 'bg-violet-600'}`}
                           style={{ width: `${projectProgress}%` }}
                         ></div>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-zinc-500 mt-1">
                         {completedTasks} מתוך {project.tasks.length} משימות הושלמו (כולל צ׳קליסט)
                       </p>
                     </div>
@@ -534,30 +534,30 @@ export default function ProjectDetailPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <DollarSign className="w-6 h-6 mx-auto text-gray-500 mb-2" />
-                        <p className="text-xs text-gray-500 mb-1">תקציב</p>
+                      <div className="text-center p-4 bg-zinc-50 rounded-lg">
+                        <DollarSign className="w-6 h-6 mx-auto text-zinc-500 mb-2" />
+                        <p className="text-xs text-zinc-500 mb-1">תקציב</p>
                         <p className="font-bold text-lg">
                           ₪{(project.budget || 0).toLocaleString()}
                         </p>
                       </div>
                       <div className="text-center p-4 bg-blue-50 rounded-lg">
                         <FileText className="w-6 h-6 mx-auto text-blue-500 mb-2" />
-                        <p className="text-xs text-gray-500 mb-1">הצעות מחיר</p>
+                        <p className="text-xs text-zinc-500 mb-1">הצעות מחיר</p>
                         <p className="font-bold text-lg text-blue-600">
                           ₪{totalQuotesValue.toLocaleString()}
                         </p>
                       </div>
                       <div className="text-center p-4 bg-green-50 rounded-lg">
                         <CheckCircle2 className="w-6 h-6 mx-auto text-green-500 mb-2" />
-                        <p className="text-xs text-gray-500 mb-1">שולם</p>
+                        <p className="text-xs text-zinc-500 mb-1">שולם</p>
                         <p className="font-bold text-lg text-green-600">
                           ₪{totalPaid.toLocaleString()}
                         </p>
                       </div>
                       <div className="text-center p-4 bg-orange-50 rounded-lg">
                         <Clock className="w-6 h-6 mx-auto text-orange-500 mb-2" />
-                        <p className="text-xs text-gray-500 mb-1">נותר לתשלום</p>
+                        <p className="text-xs text-zinc-500 mb-1">נותר לתשלום</p>
                         <p className="font-bold text-lg text-orange-600">
                           ₪{remainingToPay.toLocaleString()}
                         </p>
@@ -574,27 +574,27 @@ export default function ProjectDetailPage() {
                       variant="link" 
                       size="sm"
                       onClick={() => setActiveTab("tasks")}
-                      className="text-purple-600"
+                      className="text-violet-600"
                     >
                       הצג הכל
                     </Button>
                   </CardHeader>
                   <CardContent>
                     {project.tasks.length === 0 ? (
-                      <p className="text-gray-500 text-center py-4">אין משימות עדיין</p>
+                      <p className="text-zinc-500 text-center py-4">אין משימות עדיין</p>
                     ) : (
                       <div className="space-y-3">
                         {project.tasks.slice(0, 5).map((task) => (
                           <div 
                             key={task.id}
-                            className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                            className="flex items-center justify-between p-3 border rounded-lg hover:bg-zinc-50"
                           >
                             <div className="flex items-center gap-3">
                               <div className={`w-2 h-2 rounded-full ${
                                 task.status === 'DONE' ? 'bg-green-500' :
-                                task.status === 'IN_PROGRESS' ? 'bg-blue-500' : 'bg-gray-400'
+                                task.status === 'IN_PROGRESS' ? 'bg-blue-500' : 'bg-zinc-400'
                               }`}></div>
-                              <span className="font-medium text-gray-900">{task.title}</span>
+                              <span className="font-medium text-zinc-900">{task.title}</span>
                             </div>
                             <span className={`text-xs px-2 py-1 rounded-full ${taskStatusColors[task.status]}`}>
                               {taskStatusLabels[task.status]}
@@ -616,7 +616,7 @@ export default function ProjectDetailPage() {
                       </CardTitle>
                       <div className="h-6 flex items-center">
                         {notesSaveStatus === 'saving' && (
-                          <span className="flex items-center gap-1.5 text-xs text-gray-400 animate-pulse">
+                          <span className="flex items-center gap-1.5 text-xs text-zinc-400 animate-pulse">
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
                             שומר...
                           </span>
@@ -635,7 +635,7 @@ export default function ProjectDetailPage() {
                       value={project.notes || ""}
                       onChange={(e) => handleNotesChange(e.target.value)}
                       placeholder="הוסף הערות כלליות לפרויקט... לחץ כאן כדי לכתוב"
-                      className="w-full min-h-[150px] p-4 text-sm text-gray-700 bg-gray-50 rounded-lg border border-transparent hover:border-gray-200 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:bg-white outline-none resize-y transition-all leading-relaxed"
+                      className="w-full min-h-[150px] p-4 text-sm text-zinc-700 bg-zinc-50 rounded-lg border border-transparent hover:border-zinc-200 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:bg-white outline-none resize-y transition-all leading-relaxed"
                     />
                   </CardContent>
                 </Card>
@@ -647,16 +647,16 @@ export default function ProjectDetailPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-lg font-bold text-gray-900">משימות</h2>
+                    <h2 className="text-lg font-bold text-zinc-900">משימות</h2>
                     {project.tasks.length > 0 && (
-                      <p className="text-sm text-gray-500 mt-0.5">
+                      <p className="text-sm text-zinc-500 mt-0.5">
                         {completedTasks} מתוך {project.tasks.length} הושלמו
                       </p>
                     )}
                   </div>
                   <Button 
                     size="sm" 
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    className="bg-violet-600 hover:bg-violet-700 text-white"
                     onClick={() => setNewTaskOpen(true)}
                   >
                     <Plus className="w-4 h-4 ml-2" />
@@ -667,10 +667,10 @@ export default function ProjectDetailPage() {
                 {project.tasks.length > 0 && (
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600">התקדמות</span>
-                      <span className="font-semibold text-purple-600">{projectProgress}%</span>
+                      <span className="text-zinc-600">התקדמות</span>
+                      <span className="font-semibold text-violet-600">{projectProgress}%</span>
                     </div>
-                    <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-2.5 bg-zinc-200 rounded-full overflow-hidden">
                       <div 
                         className={`h-full rounded-full transition-all duration-500 ${projectProgress === 100 ? 'bg-green-500' : 'bg-gradient-to-r from-purple-500 to-blue-500'}`}
                         style={{ width: `${projectProgress}%` }}
@@ -709,8 +709,8 @@ export default function ProjectDetailPage() {
                   <CardContent>
                     {project.quotes.filter(q => !q.isInvoice).length === 0 ? (
                       <div className="text-center py-8">
-                        <FileText className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                        <p className="text-gray-500 mb-4">אין הצעות מחיר עדיין</p>
+                        <FileText className="w-12 h-12 mx-auto text-zinc-400 mb-4" />
+                        <p className="text-zinc-500 mb-4">אין הצעות מחיר עדיין</p>
                         <Button onClick={() => setNewQuoteOpen(true)} variant="outline">
                           <FileText className="w-4 h-4 ml-2" />
                           צור הצעת מחיר
@@ -721,12 +721,12 @@ export default function ProjectDetailPage() {
                         {project.quotes.filter(q => !q.isInvoice).map((quote) => (
                           <div
                             key={quote.id}
-                            className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                            className="p-4 border rounded-lg hover:bg-zinc-50 transition-colors"
                           >
                             <div className="flex justify-between items-start">
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-medium text-gray-900">
+                                  <span className="font-medium text-zinc-900">
                                     {quote.quoteNumber}
                                   </span>
                                   <span
@@ -735,12 +735,12 @@ export default function ProjectDetailPage() {
                                     {quoteStatusLabels[quote.status]}
                                   </span>
                                 </div>
-                                <p className="text-sm text-gray-600 mb-2">{quote.title}</p>
-                                <div className="flex items-center gap-4 text-xs text-gray-500">
+                                <p className="text-sm text-zinc-600 mb-2">{quote.title}</p>
+                                <div className="flex items-center gap-4 text-xs text-zinc-500">
                                   <span>
                                     {new Date(quote.createdAt).toLocaleDateString("he-IL")}
                                   </span>
-                                  <span className="font-semibold text-gray-900">
+                                  <span className="font-semibold text-zinc-900">
                                     ₪{quote.total.toLocaleString()}
                                   </span>
                                 </div>
@@ -777,8 +777,8 @@ export default function ProjectDetailPage() {
                   <CardContent>
                     {project.quotes.filter(q => q.isInvoice).length === 0 ? (
                       <div className="text-center py-8">
-                        <Receipt className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                        <p className="text-gray-500 mb-4">אין חשבונות עסקה עדיין</p>
+                        <Receipt className="w-12 h-12 mx-auto text-zinc-400 mb-4" />
+                        <p className="text-zinc-500 mb-4">אין חשבונות עסקה עדיין</p>
                         <Button onClick={() => setNewInvoiceOpen(true)} variant="outline">
                           <Receipt className="w-4 h-4 ml-2" />
                           צור חשבון עסקה
@@ -789,12 +789,12 @@ export default function ProjectDetailPage() {
                         {project.quotes.filter(q => q.isInvoice).map((invoice) => (
                           <div
                             key={invoice.id}
-                            className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                            className="p-4 border rounded-lg hover:bg-zinc-50 transition-colors"
                           >
                             <div className="flex justify-between items-start">
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-medium text-gray-900">
+                                  <span className="font-medium text-zinc-900">
                                     {invoice.quoteNumber}
                                   </span>
                                   <span
@@ -803,12 +803,12 @@ export default function ProjectDetailPage() {
                                     {quoteStatusLabels[invoice.status]}
                                   </span>
                                 </div>
-                                <p className="text-sm text-gray-600 mb-2">{invoice.title}</p>
-                                <div className="flex items-center gap-4 text-xs text-gray-500">
+                                <p className="text-sm text-zinc-600 mb-2">{invoice.title}</p>
+                                <div className="flex items-center gap-4 text-xs text-zinc-500">
                                   <span>
                                     {new Date(invoice.createdAt).toLocaleDateString("he-IL")}
                                   </span>
-                                  <span className="font-semibold text-gray-900">
+                                  <span className="font-semibold text-zinc-900">
                                     סה״כ: ₪{invoice.total.toLocaleString()}
                                   </span>
                                   <span className="text-green-600">
@@ -842,7 +842,7 @@ export default function ProjectDetailPage() {
                   </CardHeader>
                   <CardContent>
                     {project.payments.length === 0 ? (
-                      <p className="text-gray-500 text-center py-8">אין תשלומים עדיין</p>
+                      <p className="text-zinc-500 text-center py-8">אין תשלומים עדיין</p>
                     ) : (
                       <div className="space-y-3">
                         {project.payments.map((payment) => (
@@ -851,11 +851,11 @@ export default function ProjectDetailPage() {
                             className="flex items-center justify-between p-3 border rounded-lg"
                           >
                             <div>
-                              <p className="font-medium text-gray-900">
+                              <p className="font-medium text-zinc-900">
                                 ₪{payment.amount.toLocaleString()}
                               </p>
                               {payment.description && (
-                                <p className="text-xs text-gray-500">{payment.description}</p>
+                                <p className="text-xs text-zinc-500">{payment.description}</p>
                               )}
                             </div>
                             <div className="text-left">
@@ -867,7 +867,7 @@ export default function ProjectDetailPage() {
                                 {payment.status === "COMPLETED" ? "שולם" : "ממתין"}
                               </span>
                               {payment.paidAt && (
-                                <p className="text-xs text-gray-500 mt-1">
+                                <p className="text-xs text-zinc-500 mt-1">
                                   {new Date(payment.paidAt).toLocaleDateString('he-IL')}
                                 </p>
                               )}
@@ -889,7 +889,7 @@ export default function ProjectDetailPage() {
                 </CardHeader>
                 <CardContent>
                   {project.files.length === 0 ? (
-                    <p className="text-gray-500 text-center py-8">
+                    <p className="text-zinc-500 text-center py-8">
                       אין קבצים. העלה קבצים הקשורים לפרויקט זה.
                     </p>
                   ) : (
@@ -897,13 +897,13 @@ export default function ProjectDetailPage() {
                       {project.files.map((file) => (
                         <div 
                           key={file.id}
-                          className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                          className="flex items-center justify-between p-3 border rounded-lg hover:bg-zinc-50"
                         >
                           <div className="flex items-center gap-3">
-                            <FileText className="w-5 h-5 text-gray-400" />
+                            <FileText className="w-5 h-5 text-zinc-400" />
                             <div>
-                              <p className="font-medium text-gray-900">{file.name}</p>
-                              <p className="text-xs text-gray-500">
+                              <p className="font-medium text-zinc-900">{file.name}</p>
+                              <p className="text-xs text-zinc-500">
                                 {(file.size / 1024).toFixed(1)} KB • 
                                 {new Date(file.createdAt).toLocaleDateString('he-IL')}
                               </p>
@@ -931,18 +931,18 @@ export default function ProjectDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <Link href={`/clients/${project.client.id}`}>
-                    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
-                      <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                        <span className="text-purple-600 font-medium">
+                    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-50 cursor-pointer">
+                      <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                        <span className="text-violet-600 font-medium">
                           {project.client.name?.charAt(0) || "?"}
                         </span>
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">
+                        <div className="font-medium text-zinc-900">
                           {project.client.name}
                         </div>
                         {project.client.email && (
-                          <div className="text-sm text-gray-500">
+                          <div className="text-sm text-zinc-500">
                             {project.client.email}
                           </div>
                         )}
@@ -1003,23 +1003,23 @@ export default function ProjectDetailPage() {
             </Card>
 
             {/* Project Stats */}
-            <Card className="shadow-sm bg-purple-50 border-purple-200">
+            <Card className="shadow-sm bg-violet-50 border-purple-200">
               <CardContent className="pt-6">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">משימות</span>
+                    <span className="text-zinc-600">משימות</span>
                     <span className="font-bold">{completedTasks}/{project.tasks.length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">הצעות מחיר</span>
+                    <span className="text-zinc-600">הצעות מחיר</span>
                     <span className="font-bold">{project.quotes.filter(q => !q.isInvoice).length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">חשבונות</span>
+                    <span className="text-zinc-600">חשבונות</span>
                     <span className="font-bold">{project.quotes.filter(q => q.isInvoice).length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">תשלומים</span>
+                    <span className="text-zinc-600">תשלומים</span>
                     <span className="font-bold">{project.payments.length}</span>
                   </div>
                 </div>
@@ -1057,7 +1057,7 @@ export default function ProjectDetailPage() {
         <DialogContent className="sm:max-w-lg" dir="rtl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Edit className="w-5 h-5 text-purple-600" />
+              <Edit className="w-5 h-5 text-violet-600" />
               עריכת פרויקט
             </DialogTitle>
           </DialogHeader>

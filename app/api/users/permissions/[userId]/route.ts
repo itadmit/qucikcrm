@@ -1,29 +1,26 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת הרשאות של משתמש ספציפי
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.companyId) {
+    const { userId } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     // רק ADMIN יכול לראות הרשאות
-    if (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN") {
+    if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
     // בדיקה שהמשתמש שייך לאותה חברה
     const user = await prisma.user.findFirst({
       where: {
-        id: params.userId,
-        companyId: session.user.companyId,
+        id: userId,
+        companyId: user.companyId,
       },
     })
 
@@ -55,7 +52,7 @@ export async function GET(
     // קבלת הרשאות המשתמש
     const permissions = await prisma.userPermission.findMany({
       where: {
-        userId: params.userId,
+        userId: userId,
       },
       select: {
         permission: true,
@@ -84,18 +81,16 @@ export async function GET(
 }
 
 // PATCH - עדכון הרשאות של משתמש
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.companyId) {
+    const { userId } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     // רק ADMIN יכול לעדכן הרשאות
-    if (session.user.role !== "ADMIN" && session.user.role !== "SUPER_ADMIN") {
+    if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
@@ -105,8 +100,8 @@ export async function PATCH(
     // בדיקה שהמשתמש שייך לאותה חברה
     const user = await prisma.user.findFirst({
       where: {
-        id: params.userId,
-        companyId: session.user.companyId,
+        id: userId,
+        companyId: user.companyId,
       },
     })
 
@@ -135,7 +130,7 @@ export async function PATCH(
         return prisma.userPermission.upsert({
           where: {
             userId_permission: {
-              userId: params.userId,
+              userId: userId,
               permission: permission,
             },
           },
@@ -143,7 +138,7 @@ export async function PATCH(
             allowed: allowed as boolean,
           },
           create: {
-            userId: params.userId,
+            userId: userId,
             permission: permission,
             allowed: allowed as boolean,
           },
@@ -160,5 +155,4 @@ export async function PATCH(
     )
   }
 }
-
 

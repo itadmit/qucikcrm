@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+;
+;
 import { prisma } from '@/lib/prisma';
 import {
+import { getAuthUser } from "@/lib/mobile-auth"
   createInvoice4UClearingClient,
   ClearingType,
   CreditCardCompanyType,
@@ -16,8 +17,7 @@ import {
  */
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    const user = session?.user as { companyId?: string } | null;
+    const user = await getAuthUser(req)
     if (!user?.companyId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

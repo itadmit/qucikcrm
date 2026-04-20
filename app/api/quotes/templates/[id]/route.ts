@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // DELETE - מחיקת תבנית
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null;
+    const { id } = await params;
+    const user = await getAuthUser(req)
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -18,7 +14,7 @@ export async function DELETE(
     // בדיקה שהתבנית שייכת לחברה
     const template = await prisma.quote.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
         isTemplate: true,
       },
@@ -33,7 +29,7 @@ export async function DELETE(
 
     // מחיקת התבנית (הפריטים יימחקו אוטומטית בגלל onDelete: Cascade)
     await prisma.quote.delete({
-      where: { id: params.id },
+      where: { id: id },
     })
 
     return NextResponse.json({ success: true })

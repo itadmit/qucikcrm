@@ -135,7 +135,7 @@ export function EditColumnDialog({ column, open, onOpenChange, onUpdated, column
                   key={c}
                   onClick={() => setColor(c)}
                   className={`w-7 h-7 rounded-full border-2 transition-transform hover:scale-110 ${
-                    color === c ? 'border-gray-800 scale-110' : 'border-transparent'
+                    color === c ? 'border-zinc-800 scale-110' : 'border-transparent'
                   }`}
                   style={{ backgroundColor: c }}
                 />

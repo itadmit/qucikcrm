@@ -168,7 +168,7 @@ export function AssignTaskDialog({
                       <User className="w-4 h-4" />
                       <span>{user.name}</span>
                       {user.id === currentAssigneeId && (
-                        <span className="text-xs text-gray-500">(נוכחי)</span>
+                        <span className="text-xs text-zinc-500">(נוכחי)</span>
                       )}
                     </div>
                   </SelectItem>
@@ -176,7 +176,7 @@ export function AssignTaskDialog({
               </SelectContent>
             </Select>
             {currentAssigneeName && (
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-zinc-500 mt-1">
                 אחראי נוכחי: {currentAssigneeName}
               </p>
             )}

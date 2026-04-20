@@ -207,7 +207,7 @@ export default function AutomationsPage() {
     return (
       <AppLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-500">טוען אוטומציות...</div>
+          <div className="text-zinc-500">טוען אוטומציות...</div>
         </div>
       </AppLayout>
     )
@@ -217,11 +217,16 @@ export default function AutomationsPage() {
     <AppLayout>
       <div className="mb-8">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">אוטומציות</h1>
-            <p className="text-gray-500 mt-1">
-              נהל תהליכים אוטומטיים וחסוך זמן יקר
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-violet-600" strokeWidth={2.2} />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">אוטומציות</h1>
+              <p className="text-sm text-zinc-500 mt-0.5">
+                נהל תהליכים אוטומטיים וחסוך זמן יקר
+              </p>
+            </div>
           </div>
           <Button
             onClick={() => setShowNewDialog(true)}
@@ -237,7 +242,7 @@ export default function AutomationsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-500">סה"כ אוטומציות</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">סה"כ אוטומציות</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{automations.length}</div>
@@ -246,7 +251,7 @@ export default function AutomationsPage() {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-500">פעילות</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">פעילות</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
@@ -257,10 +262,10 @@ export default function AutomationsPage() {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-500">מושהות</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">מושהות</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-400">
+            <div className="text-2xl font-bold text-zinc-400">
               {automations.filter(a => !a.isActive).length}
             </div>
           </CardContent>
@@ -268,17 +273,17 @@ export default function AutomationsPage() {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-500">נוצרו לאחרונה</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">נוצרו לאחרונה</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">
+            <div className="text-2xl font-bold text-violet-600">
               {automations.filter(a => {
                 const createdDate = new Date(a.createdAt)
                 const daysDiff = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24))
                 return daysDiff <= 30
               }).length}
             </div>
-            <div className="text-xs text-gray-500 mt-1">ב-30 יום האחרונים</div>
+            <div className="text-xs text-zinc-500 mt-1">ב-30 יום האחרונים</div>
           </CardContent>
         </Card>
       </div>
@@ -287,9 +292,9 @@ export default function AutomationsPage() {
       {automations.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <Zap className="w-16 h-16 text-gray-400 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">אין אוטומציות עדיין</h3>
-            <p className="text-gray-500 text-center max-w-md mb-6">
+            <Zap className="w-16 h-16 text-zinc-400 mb-4" />
+            <h3 className="text-lg font-semibold text-zinc-900 mb-2">אין אוטומציות עדיין</h3>
+            <p className="text-zinc-500 text-center max-w-md mb-6">
               צור אוטומציות כדי לחסוך זמן ולהפוך תהליכים חוזרים לאוטומטיים
             </p>
             <Button
@@ -310,8 +315,8 @@ export default function AutomationsPage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-3">
-                      <div className={`p-2 rounded-lg ${automation.isActive ? 'bg-green-100' : 'bg-gray-100'}`}>
-                        <TriggerIcon className={`w-5 h-5 ${automation.isActive ? 'text-green-600' : 'text-gray-400'}`} />
+                      <div className={`p-2 rounded-lg ${automation.isActive ? 'bg-green-100' : 'bg-zinc-100'}`}>
+                        <TriggerIcon className={`w-5 h-5 ${automation.isActive ? 'text-green-600' : 'text-zinc-400'}`} />
                       </div>
                       <div>
                         <CardTitle className="text-lg mb-1">{automation.name}</CardTitle>
@@ -378,15 +383,15 @@ export default function AutomationsPage() {
                     {/* Trigger & Action */}
                     <div className="flex items-center gap-4">
                       <div className="flex-1">
-                        <div className="text-xs text-gray-500 mb-1">טריגר</div>
+                        <div className="text-xs text-zinc-500 mb-1">טריגר</div>
                         <div className="flex items-center gap-2 text-sm font-medium">
-                          <TriggerIcon className="w-4 h-4 text-purple-600" />
+                          <TriggerIcon className="w-4 h-4 text-violet-600" />
                           {getTriggerLabel(automation.trigger)}
                         </div>
                       </div>
-                      <div className="text-gray-400">←</div>
+                      <div className="text-zinc-400">←</div>
                       <div className="flex-1">
-                        <div className="text-xs text-gray-500 mb-1">פעולה</div>
+                        <div className="text-xs text-zinc-500 mb-1">פעולה</div>
                         <div className="flex items-center gap-2 text-sm font-medium">
                           <Mail className="w-4 h-4 text-blue-600" />
                           {getActionLabel(automation.actions)}
@@ -396,7 +401,7 @@ export default function AutomationsPage() {
 
                     {/* Stats */}
                     <div className="flex items-center justify-between pt-4 border-t">
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <div className="flex items-center gap-4 text-xs text-zinc-500">
                         <div className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           <span>

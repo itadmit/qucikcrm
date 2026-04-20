@@ -203,7 +203,7 @@ export function QuoteSettingsDialog({
 
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <div className="text-gray-500">טוען...</div>
+            <div className="text-zinc-500">טוען...</div>
           </div>
         ) : (
           <div className="space-y-6 mt-4" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
@@ -275,9 +275,9 @@ export function QuoteSettingsDialog({
                     </div>
                   ) : (
                     <div className="border-2 border-dashed rounded-lg p-4 text-center">
-                      <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
+                      <Upload className="w-8 h-8 mx-auto text-zinc-400 mb-2" />
                       <Label htmlFor="logo-upload" className="cursor-pointer">
-                        <span className="text-sm text-gray-600">העלה לוגו</span>
+                        <span className="text-sm text-zinc-600">העלה לוגו</span>
                         <input
                           id="logo-upload"
                           type="file"
@@ -375,9 +375,9 @@ export function QuoteSettingsDialog({
               <h3 className="text-lg font-semibold border-b pb-2">תבניות שמורות</h3>
               
               {templatesLoading ? (
-                <div className="text-center py-4 text-gray-500">טוען...</div>
+                <div className="text-center py-4 text-zinc-500">טוען...</div>
               ) : templates.length === 0 ? (
-                <div className="text-center py-4 text-gray-500">
+                <div className="text-center py-4 text-zinc-500">
                   אין תבניות שמורות. שמור תבנית ממודל העריכה של הצעה.
                 </div>
               ) : (
@@ -385,18 +385,18 @@ export function QuoteSettingsDialog({
                   {templates.map((template) => (
                     <div
                       key={template.id}
-                      className="flex items-start justify-between p-3 border rounded-lg hover:bg-gray-50 gap-3"
+                      className="flex items-start justify-between p-3 border rounded-lg hover:bg-zinc-50 gap-3"
                     >
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-gray-900 break-words">
+                        <div className="font-medium text-zinc-900 break-words">
                           {template.title}
                         </div>
                         {template.description && (
-                          <div className="text-sm text-gray-500 mt-1 break-words whitespace-pre-wrap">
+                          <div className="text-sm text-zinc-500 mt-1 break-words whitespace-pre-wrap">
                             {template.description}
                           </div>
                         )}
-                        <div className="text-xs text-gray-400 mt-1">
+                        <div className="text-xs text-zinc-400 mt-1">
                           {template.items.length} פריטים • {template.templateType === "professional" ? "תבנית מקצועית" : "תבנית פשוטה"}
                         </div>
                       </div>

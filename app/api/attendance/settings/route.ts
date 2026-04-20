@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+;
+;
 import { prisma } from '@/lib/prisma';
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת הגדרות עובד
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const user = await getAuthUser(req)
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const settings = await prisma.employeeSettings.findUnique({
-      where: { userId: session.user.id }
+      where: { userId: user.id }
     });
 
     // אם אין הגדרות, החזר ברירות מחדל
@@ -37,8 +38,8 @@ export async function GET(request: Request) {
 // POST/PUT - עדכון הגדרות עובד
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const user = await getAuthUser(req)
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -46,14 +47,14 @@ export async function POST(request: Request) {
     const { hourlyRate, monthlyHours, overtimeRate } = body;
 
     const settings = await prisma.employeeSettings.upsert({
-      where: { userId: session.user.id },
+      where: { userId: user.id },
       update: {
         hourlyRate: hourlyRate || 0,
         monthlyHours: monthlyHours || 186,
         overtimeRate: overtimeRate || 1.25
       },
       create: {
-        userId: session.user.id,
+        userId: user.id,
         hourlyRate: hourlyRate || 0,
         monthlyHours: monthlyHours || 186,
         overtimeRate: overtimeRate || 1.25
@@ -69,8 +70,4 @@ export async function POST(request: Request) {
     );
   }
 }
-
-
-
-
 

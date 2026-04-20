@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string; id?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -18,7 +14,7 @@ export async function POST(
     // Get the lead
     const lead = await prisma.lead.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })
@@ -58,7 +54,7 @@ export async function POST(
     // Update the lead status to WON and link to client
     await prisma.lead.update({
       where: {
-        id: params.id,
+        id: id,
       },
       data: {
         status: "WON",
@@ -69,7 +65,7 @@ export async function POST(
     // Transfer tasks from lead to client
     await prisma.task.updateMany({
       where: {
-        leadId: params.id,
+        leadId: id,
         clientId: null, // Only update tasks that don't already have a client
       },
       data: {
@@ -80,7 +76,7 @@ export async function POST(
     // Transfer files from lead to client
     await prisma.file.updateMany({
       where: {
-        leadId: params.id,
+        leadId: id,
         clientId: null, // Only update files that don't already have a client
       },
       data: {

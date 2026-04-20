@@ -8,16 +8,14 @@ import { join } from "path"
 import { existsSync } from "fs"
 
 // POST /api/quotes/[id]/approve - אישור הצעת מחיר
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const body = await req.json()
     const { signature } = body
 
     const quote = await prisma.quote.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         lead: true,
         company: true,
@@ -119,7 +117,7 @@ export async function POST(
 
     // עדכון ההצעה עם החתימה
     await prisma.quote.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         status: "VIEWED",
         viewedAt: new Date(),
@@ -130,7 +128,7 @@ export async function POST(
 
     // קריאה מחדש של ההצעה עם החתימה
     const updatedQuote = await prisma.quote.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         lead: {
           include: {
@@ -242,13 +240,11 @@ export async function POST(
 }
 
 // GET /api/quotes/[id]/approve - קבלת פרטי הצעה לאישור (ללא authentication)
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const quote = await prisma.quote.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         lead: {
           select: {

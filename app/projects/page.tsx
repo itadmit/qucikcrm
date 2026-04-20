@@ -69,7 +69,7 @@ export default function ProjectsPage() {
   )
 
   const statusColors: Record<string, string> = {
-    PLANNING: "bg-gray-100 text-gray-800",
+    PLANNING: "bg-zinc-100 text-zinc-800",
     IN_PROGRESS: "bg-blue-100 text-blue-800",
     ON_HOLD: "bg-yellow-100 text-yellow-800",
     COMPLETED: "bg-green-100 text-green-800",
@@ -141,9 +141,14 @@ export default function ProjectsPage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">פרויקטים</h1>
-            <p className="text-gray-500 mt-1">נהל את כל הפרויקטים שלך במקום אחד</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center">
+              <FolderKanban className="w-5 h-5 text-cyan-600" strokeWidth={2.2} />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">פרויקטים</h1>
+              <p className="text-sm text-zinc-500 mt-0.5">נהל את כל הפרויקטים שלך במקום אחד</p>
+            </div>
           </div>
           <NewProjectDialog onProjectCreated={fetchProjects} />
         </div>
@@ -153,7 +158,7 @@ export default function ProjectsPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">סה״כ פרויקטים</CardTitle>
-              <FolderKanban className="h-4 w-4 text-gray-500" />
+              <FolderKanban className="h-4 w-4 text-zinc-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{projects.length}</div>
@@ -184,7 +189,7 @@ export default function ProjectsPage() {
           <CardContent className="pt-6">
             <div className="flex gap-4">
               <div className="flex-1 relative">
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 w-4 h-4" />
                 <Input
                   placeholder="חיפוש לפי שם פרויקט או לקוח..."
                   className="pr-10"
@@ -204,11 +209,11 @@ export default function ProjectsPage() {
         {filteredProjects.length === 0 ? (
           <Card>
             <CardContent className="pt-12 pb-12 text-center">
-              <FolderKanban className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <FolderKanban className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+              <h3 className="text-lg font-medium text-zinc-900 mb-2">
                 {searchTerm ? "לא נמצאו פרויקטים" : "אין פרויקטים עדיין"}
               </h3>
-              <p className="text-gray-500 mb-4">
+              <p className="text-zinc-500 mb-4">
                 {searchTerm
                   ? "נסה לחפש במונח אחר"
                   : "התחל על ידי יצירת פרויקט חדש"}
@@ -227,14 +232,14 @@ export default function ProjectsPage() {
               return (
                 <Card 
                   key={project.id} 
-                  className="shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                  className="hover:shadow-md transition-shadow cursor-pointer"
                   onClick={() => router.push(`/projects/${project.id}`)}
                 >
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <CardTitle className="text-lg">{project.name}</CardTitle>
-                        <p className="text-sm text-gray-500 mt-1">
+                        <p className="text-sm text-zinc-500 mt-1">
                           {project.client?.name || "ללא לקוח"}
                         </p>
                       </div>
@@ -259,12 +264,12 @@ export default function ProjectsPage() {
                       {/* Progress */}
                       <div>
                         <div className="flex items-center justify-between text-sm mb-2">
-                          <span className="text-gray-600">התקדמות</span>
+                          <span className="text-zinc-600">התקדמות</span>
                           <span className="font-medium">{progress}%</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-zinc-200 rounded-full h-2">
                           <div 
-                            className="bg-purple-600 h-2 rounded-full transition-all"
+                            className="bg-violet-600 h-2 rounded-full transition-all"
                             style={{ width: `${progress}%` }}
                           ></div>
                         </div>
@@ -272,7 +277,7 @@ export default function ProjectsPage() {
 
                       {/* Tasks */}
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">משימות</span>
+                        <span className="text-zinc-600">משימות</span>
                         <span className="font-medium">
                           {completedTasks} / {project._count.tasks}
                         </span>
@@ -281,7 +286,7 @@ export default function ProjectsPage() {
                       {/* Budget */}
                       {project.budget && (
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600">תקציב</span>
+                          <span className="text-zinc-600">תקציב</span>
                           <span className="font-medium">
                             ₪{project.budget.toLocaleString("he-IL")}
                           </span>
@@ -291,7 +296,7 @@ export default function ProjectsPage() {
                       {/* Paid Amount */}
                       {project.paidAmount !== undefined && project.paidAmount > 0 && (
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600">שולם עד כה</span>
+                          <span className="text-zinc-600">שולם עד כה</span>
                           <span className="font-medium text-green-600">
                             ₪{project.paidAmount.toLocaleString("he-IL", {
                               minimumFractionDigits: 2,
@@ -302,7 +307,7 @@ export default function ProjectsPage() {
 
                       {/* Dates */}
                       {project.startDate && project.endDate && (
-                        <div className="text-xs text-gray-500 pt-2 border-t">
+                        <div className="text-xs text-zinc-500 pt-2 border-t">
                           {new Date(project.startDate).toLocaleDateString('he-IL')} - {new Date(project.endDate).toLocaleDateString('he-IL')}
                         </div>
                       )}

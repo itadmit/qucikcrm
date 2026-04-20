@@ -2,68 +2,73 @@
 
 import { AppLayout } from "@/components/AppLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { TrendingUp, TrendingDown, Users, Coins, CheckCircle2, FolderKanban } from "lucide-react"
+import { TrendingUp, TrendingDown, Users, Coins, CheckCircle2, FolderKanban, BarChart3 } from "lucide-react"
 
 export default function ReportsPage() {
   return (
     <AppLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">דוחות ואנליטיקה</h1>
-          <p className="text-gray-600 mt-1">מבט מקיף על הביצועים והתוצאות</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
+            <BarChart3 className="w-5 h-5 text-orange-600" strokeWidth={2.2} />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">דוחות ואנליטיקה</h1>
+            <p className="text-sm text-zinc-500 mt-0.5">מבט מקיף על הביצועים והתוצאות</p>
+          </div>
         </div>
 
         {/* KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="shadow-sm hover-lift">
+          <Card className="hover-lift">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">לידים חדשים (7 ימים)</CardTitle>
-              <Users className="h-5 w-5 text-purple-600" />
+              <Users className="h-5 w-5 text-violet-600" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">24</div>
-              <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+              <p className="text-xs text-zinc-500 mt-1 flex items-center gap-1">
                 <TrendingUp className="w-3 h-3 text-green-600" />
                 <span className="text-green-600">+12%</span>
               </p>
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm hover-lift">
+          <Card className="hover-lift">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">המרות ללקוחות</CardTitle>
-              <CheckCircle2 className="h-5 w-5 text-purple-600" />
+              <CheckCircle2 className="h-5 w-5 text-violet-600" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">8</div>
-              <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+              <p className="text-xs text-zinc-500 mt-1 flex items-center gap-1">
                 <TrendingUp className="w-3 h-3 text-green-600" />
                 <span className="text-green-600">+5%</span>
               </p>
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm hover-lift">
+          <Card className="hover-lift">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">פרויקטים פעילים</CardTitle>
-              <FolderKanban className="h-5 w-5 text-purple-600" />
+              <FolderKanban className="h-5 w-5 text-violet-600" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">15</div>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-zinc-500 mt-1">
                 ללא שינוי
               </p>
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm hover-lift">
+          <Card className="hover-lift">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">צפי הכנסות (חודש)</CardTitle>
-              <Coins className="h-5 w-5 text-purple-600" />
+              <Coins className="h-5 w-5 text-violet-600" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">125K ₪</div>
-              <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+              <p className="text-xs text-zinc-500 mt-1 flex items-center gap-1">
                 <TrendingUp className="w-3 h-3 text-green-600" />
                 <span className="text-green-600">+18%</span>
               </p>
@@ -73,10 +78,10 @@ export default function ReportsPage() {
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="shadow-sm hover-lift">
+          <Card className="hover-lift">
             <CardHeader>
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-purple-600" />
+                <TrendingUp className="w-5 h-5 text-violet-600" />
                 <CardTitle>מקורות לידים</CardTitle>
               </div>
             </CardHeader>
@@ -90,10 +95,10 @@ export default function ReportsPage() {
                 ].map((item) => (
                   <div key={item.source}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-sm font-medium text-gray-700">{item.source}</span>
-                      <span className="text-sm text-gray-600">{item.count} לידים</span>
+                      <span className="text-sm font-medium text-zinc-700">{item.source}</span>
+                      <span className="text-sm text-zinc-600">{item.count} לידים</span>
                     </div>
-                    <div className="w-full bg-gray-100 rounded-full h-3">
+                    <div className="w-full bg-zinc-100 rounded-full h-3">
                       <div 
                         className={`${item.color} h-3 rounded-full transition-all duration-300`}
                         style={{ width: `${item.percentage}%` }}
@@ -105,10 +110,10 @@ export default function ReportsPage() {
             </CardContent>
           </Card>
 
-          <Card className="shadow-sm hover-lift">
+          <Card className="hover-lift">
             <CardHeader>
               <div className="flex items-center gap-2">
-                <FolderKanban className="w-5 h-5 text-purple-600" />
+                <FolderKanban className="w-5 h-5 text-violet-600" />
                 <CardTitle>יחס המרה בפייפליין</CardTitle>
               </div>
             </CardHeader>
@@ -123,13 +128,13 @@ export default function ReportsPage() {
                 ].map((item) => (
                   <div key={item.stage}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-sm font-medium text-gray-700">{item.stage}</span>
+                      <span className="text-sm font-medium text-zinc-700">{item.stage}</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-600">{item.count}</span>
+                        <span className="text-sm text-zinc-600">{item.count}</span>
                         <span className="text-xs bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full font-medium">{item.conversion}%</span>
                       </div>
                     </div>
-                    <div className="w-full bg-gray-100 rounded-full h-3">
+                    <div className="w-full bg-zinc-100 rounded-full h-3">
                       <div 
                         className={`${item.color} h-3 rounded-full transition-all duration-300`}
                         style={{ width: `${item.conversion}%` }}
@@ -143,10 +148,10 @@ export default function ReportsPage() {
         </div>
 
         {/* Revenue Forecast */}
-        <Card className="shadow-sm hover-lift">
+        <Card className="hover-lift">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Coins className="w-5 h-5 text-purple-600" />
+              <Coins className="w-5 h-5 text-violet-600" />
               <CardTitle>צפי מול ביצוע - 6 חודשים אחרונים</CardTitle>
             </div>
           </CardHeader>
@@ -162,7 +167,7 @@ export default function ReportsPage() {
               ].map((item) => (
                 <div key={item.month} className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-gray-700">{item.month}</span>
+                    <span className="font-medium text-zinc-700">{item.month}</span>
                     <div className="flex gap-4">
                       <span className="text-sky-600 font-medium">צפי: {(item.forecast / 1000).toFixed(0)}K ₪</span>
                       <span className="text-emerald-600 font-medium">ביצוע: {(item.actual / 1000).toFixed(0)}K ₪</span>

@@ -116,7 +116,7 @@ export function EmployeeSettingsDialog({
 
         {loading ? (
           <div className="flex items-center justify-center py-8">
-            <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-violet-600" />
           </div>
         ) : (
           <div className="space-y-6">

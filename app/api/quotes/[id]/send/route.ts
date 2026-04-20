@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { sendEmail, getEmailTemplate } from "@/lib/email"
 import { generateQuotePDF } from "@/lib/pdf-generator"
 import { Session } from "next-auth"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession extends Session {
   user: {
@@ -18,13 +17,11 @@ interface ExtendedSession extends Session {
 }
 
 // POST /api/quotes/[id]/send - שליחה מחדש של הצעת מחיר במייל
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id || !session?.user?.companyId) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.id || !user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -38,8 +35,8 @@ export async function POST(
     // קבלת פרטי ההצעה
     const quote = await prisma.quote.findFirst({
       where: {
-        id: params.id,
-        companyId: session.user.companyId,
+        id: id,
+        companyId: user.companyId,
       },
       include: {
         lead: true,
@@ -125,7 +122,7 @@ export async function POST(
     // עדכון סטטוס ל-SENT אם עדיין בטיוטה
     if (quote.status === "DRAFT") {
       await prisma.quote.update({
-        where: { id: params.id },
+        where: { id: id },
         data: {
           status: "SENT",
           issuedAt: new Date(),

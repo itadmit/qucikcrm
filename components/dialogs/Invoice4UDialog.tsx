@@ -230,7 +230,7 @@ export function Invoice4UDialog({ clientId, clientName }: Invoice4UDialogProps) 
               ))}
             </div>
 
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg flex justify-between items-center">
+            <div className="mt-4 p-3 bg-zinc-50 rounded-lg flex justify-between items-center">
               <span className="font-medium">סה"כ:</span>
               <span className="text-lg font-bold">₪{calculateTotal().toFixed(2)}</span>
             </div>
@@ -246,7 +246,7 @@ export function Invoice4UDialog({ clientId, clientName }: Invoice4UDialogProps) 
               className="mt-2"
               dir="ltr"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-zinc-500 mt-1">
               המסמך יישלח גם ללקוח ולמשתמש הנוכחי
             </p>
           </div>

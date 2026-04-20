@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { Session } from "next-auth"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession extends Session {
   user: {
@@ -18,8 +17,8 @@ interface ExtendedSession extends Session {
 // GET /api/quotes - קבלת כל הצעות המחיר
 export async function GET(req: NextRequest) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id || !session?.user?.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.id || !user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -31,7 +30,7 @@ export async function GET(req: NextRequest) {
     const isInvoice = searchParams.get("isInvoice")
 
     const where: any = {
-      companyId: session.user.companyId,
+      companyId: user.companyId,
     }
 
     if (status) {
@@ -102,8 +101,8 @@ export async function GET(req: NextRequest) {
 // POST /api/quotes - יצירת הצעת מחיר חדשה
 export async function POST(req: NextRequest) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id || !session?.user?.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.id || !user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -152,8 +151,8 @@ export async function POST(req: NextRequest) {
     // ה-lock מבוסס על companyId כדי לאפשר מספרים שונים לכל חברה
     // יוצר hash פשוט מה-companyId עבור ה-advisory lock
     let companyIdHash = 0
-    for (let i = 0; i < session.user.companyId.length; i++) {
-      companyIdHash = ((companyIdHash << 5) - companyIdHash) + session.user.companyId.charCodeAt(i)
+    for (let i = 0; i < user.companyId.length; i++) {
+      companyIdHash = ((companyIdHash << 5) - companyIdHash) + user.companyId.charCodeAt(i)
       companyIdHash = companyIdHash & companyIdHash // Convert to 32bit integer
     }
     companyIdHash = Math.abs(companyIdHash)
@@ -165,7 +164,7 @@ export async function POST(req: NextRequest) {
       const result = await tx.$queryRaw<Array<{ quoteNumber: string }>>`
         SELECT "quoteNumber" 
         FROM quotes 
-        WHERE "companyId" = ${session.user.companyId} 
+        WHERE "companyId" = ${user.companyId} 
           AND "isTemplate" = false
           AND "quoteNumber" ~ '^Q-[0-9]{3,}$'
         ORDER BY CAST(SUBSTRING("quoteNumber" FROM 'Q-([0-9]+)') AS INTEGER) DESC
@@ -191,7 +190,7 @@ export async function POST(req: NextRequest) {
     // יצירת הצעת המחיר
     const quote = await prisma.quote.create({
       data: {
-        companyId: session.user.companyId,
+        companyId: user.companyId,
         leadId: leadId || null,
         clientId: clientId || null,
         projectId: projectId || null,
@@ -208,7 +207,7 @@ export async function POST(req: NextRequest) {
         validUntil: validUntil ? new Date(validUntil) : null,
         notes,
         terms,
-        createdBy: session.user.id,
+        createdBy: user.id,
         items: {
           create: processedItems,
         },

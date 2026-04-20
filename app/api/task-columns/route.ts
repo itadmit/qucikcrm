@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || !('companyId' in session.user) || !session.user.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    const user = session.user as { id: string; companyId: string }
 
     let columns = await prisma.taskColumn.findMany({
       where: { companyId: user.companyId },
@@ -42,11 +40,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || !('companyId' in session.user) || !session.user.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    const user = session.user as { id: string; companyId: string }
     const { name, color, status } = await req.json()
 
     const maxPos = await prisma.taskColumn.aggregate({
@@ -73,11 +70,10 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || !('companyId' in session.user) || !session.user.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    const user = session.user as { id: string; companyId: string }
     const { id, name, color, status } = await req.json()
 
     const column = await prisma.taskColumn.update({
@@ -98,11 +94,10 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user || !('companyId' in session.user) || !session.user.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    const user = session.user as { id: string; companyId: string }
     const { searchParams } = new URL(req.url)
     const id = searchParams.get('id')
     const moveToColumnId = searchParams.get('moveTo')

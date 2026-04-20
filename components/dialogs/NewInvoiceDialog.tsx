@@ -194,7 +194,7 @@ export function NewInvoiceDialog({
             <span className="text-orange-600">📋</span>
             חשבון עסקה / דרישת תשלום
           </DialogTitle>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-zinc-500">
             עבור: {clientName}
           </p>
         </DialogHeader>
@@ -203,15 +203,15 @@ export function NewInvoiceDialog({
         <div className="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-lg border border-orange-200 mb-4">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-xs text-gray-500 mb-1">תקציב פרויקט</p>
+              <p className="text-xs text-zinc-500 mb-1">תקציב פרויקט</p>
               <p className="font-bold text-lg">₪{projectBudget.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">שולם עד כה</p>
+              <p className="text-xs text-zinc-500 mb-1">שולם עד כה</p>
               <p className="font-bold text-lg text-green-600">₪{paidAmount.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">נותר לתשלום</p>
+              <p className="text-xs text-zinc-500 mb-1">נותר לתשלום</p>
               <p className="font-bold text-lg text-orange-600">₪{remainingAmount.toLocaleString()}</p>
             </div>
           </div>
@@ -280,7 +280,7 @@ export function NewInvoiceDialog({
               {items.map((item, index) => (
                 <div
                   key={index}
-                  className="p-4 border rounded-lg bg-gray-50 space-y-3"
+                  className="p-4 border rounded-lg bg-zinc-50 space-y-3"
                 >
                   <div className="flex justify-between items-start gap-3">
                     <div className="flex-1 space-y-2">
@@ -422,14 +422,14 @@ export function NewInvoiceDialog({
 
             <div className="bg-orange-50 p-4 rounded-lg space-y-2 border border-orange-200">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">סכום ביניים:</span>
+                <span className="text-zinc-600">סכום ביניים:</span>
                 <span className="font-medium">
                   ₪{subtotal.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                 </span>
               </div>
               {formData.discount > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">
+                  <span className="text-zinc-600">
                     הנחה ({formData.discount}%):
                   </span>
                   <span className="font-medium text-red-600">
@@ -441,7 +441,7 @@ export function NewInvoiceDialog({
                 </div>
               )}
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">מע״מ ({formData.tax}%):</span>
+                <span className="text-zinc-600">מע״מ ({formData.tax}%):</span>
                 <span className="font-medium">
                   ₪{taxAmount.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                 </span>

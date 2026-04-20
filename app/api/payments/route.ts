@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { AutomationEngine } from "@/lib/automation-engine"
 import { Session } from "next-auth"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession extends Session {
   user: {
@@ -19,8 +18,8 @@ interface ExtendedSession extends Session {
 // GET /api/payments - קבלת כל התשלומים
 export async function GET(req: NextRequest) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id || !session?.user?.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.id || !user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -29,7 +28,7 @@ export async function GET(req: NextRequest) {
     const projectId = searchParams.get("projectId")
 
     const where: any = {
-      companyId: session.user.companyId,
+      companyId: user.companyId,
     }
 
     if (status) {
@@ -76,8 +75,8 @@ export async function GET(req: NextRequest) {
 // POST /api/payments - יצירת תשלום חדש
 export async function POST(req: NextRequest) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id || !session?.user?.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.id || !user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -109,7 +108,7 @@ export async function POST(req: NextRequest) {
       const project = await prisma.project.findFirst({
         where: {
           id: projectId,
-          companyId: session.user.companyId,
+          companyId: user.companyId,
         },
       })
       if (!project) {
@@ -128,7 +127,7 @@ export async function POST(req: NextRequest) {
       quote = await prisma.quote.findFirst({
         where: {
           id: quoteId,
-          companyId: session.user.companyId,
+          companyId: user.companyId,
         },
         include: {
           lead: {
@@ -150,7 +149,7 @@ export async function POST(req: NextRequest) {
         const selectedProject = await prisma.project.findFirst({
           where: {
             id: finalProjectId,
-            companyId: session.user.companyId,
+            companyId: user.companyId,
           },
         })
         if (!selectedProject) {
@@ -170,7 +169,7 @@ export async function POST(req: NextRequest) {
           } else if (lead?.email) {
             const existingClient = await prisma.client.findFirst({
               where: {
-                companyId: session.user.companyId,
+                companyId: user.companyId,
                 email: lead.email,
               },
             })
@@ -199,7 +198,7 @@ export async function POST(req: NextRequest) {
           // מחפש לקוח קיים לפי email
           const existingClient = await prisma.client.findFirst({
             where: {
-              companyId: session.user.companyId,
+              companyId: user.companyId,
               email: lead.email,
             },
           })
@@ -215,7 +214,7 @@ export async function POST(req: NextRequest) {
             // יצירת לקוח חדש מהליד
             const newClient = await prisma.client.create({
               data: {
-                companyId: session.user.companyId,
+                companyId: user.companyId,
                 name: lead.name,
                 email: lead.email,
                 phone: lead.phone,
@@ -236,7 +235,7 @@ export async function POST(req: NextRequest) {
           // מחפש פרויקט קיים עם אותו לקוח
           const existingProject = await prisma.project.findFirst({
             where: {
-              companyId: session.user.companyId,
+              companyId: user.companyId,
               clientId: clientId,
             },
             orderBy: {
@@ -258,7 +257,7 @@ export async function POST(req: NextRequest) {
             
             const newProject = await prisma.project.create({
               data: {
-                companyId: session.user.companyId,
+                companyId: user.companyId,
                 clientId: clientId,
                 name: projectName,
                 description: quote.description,
@@ -282,8 +281,8 @@ export async function POST(req: NextRequest) {
                     budget: newProject.budget,
                     quoteId: quote.id,
                   },
-                  userId: session.user.id,
-                  companyId: session.user.companyId,
+                  userId: user.id,
+                  companyId: user.companyId,
                 })
               } catch (error) {
                 console.error("Error triggering project_created automations:", error)
@@ -307,7 +306,7 @@ export async function POST(req: NextRequest) {
 
     const payment = await prisma.payment.create({
       data: {
-        companyId: session.user.companyId,
+        companyId: user.companyId,
         projectId: finalProjectId,
         clientId: finalClientId,
         quoteId: quoteId || null,
@@ -319,7 +318,7 @@ export async function POST(req: NextRequest) {
         paymentReference: paymentReference || null,
         description: description || null,
         notes: notes || null,
-        processedBy: session.user.id,
+        processedBy: user.id,
         paidAt:
           paidAt
             ? new Date(paidAt)
@@ -368,8 +367,8 @@ export async function POST(req: NextRequest) {
               leadId: quote.leadId,
               projectId: finalProjectId,
             },
-            userId: session.user.id,
-            companyId: session.user.companyId,
+            userId: user.id,
+            companyId: user.companyId,
           })
         } catch (error) {
           console.error("Error triggering quote_accepted automations:", error)
@@ -468,7 +467,7 @@ export async function POST(req: NextRequest) {
               await prisma.auditLog.create({
                 data: {
                   companyId: lead.companyId,
-                  userId: session.user.id,
+                  userId: user.id,
                   action: "LEAD_CONVERTED_AUTO",
                   entityType: "Lead",
                   entityId: lead.id,
@@ -508,8 +507,8 @@ export async function POST(req: NextRequest) {
             transactionId: payment.transactionId || undefined,
             paymentReference: payment.paymentReference || undefined,
           },
-          userId: session.user.id,
-          companyId: session.user.companyId,
+          userId: user.id,
+          companyId: user.companyId,
         })
       } catch (error) {
         console.error("Error triggering payment_received automations:", error)

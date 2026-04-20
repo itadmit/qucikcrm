@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { generateQuotePDF } from "@/lib/pdf-generator"
 import { Session } from "next-auth"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession extends Session {
   user: {
@@ -17,18 +16,16 @@ interface ExtendedSession extends Session {
 }
 
 // GET /api/quotes/[id]/pdf - יצירת PDF של הצעת מחיר
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { companyId: true },
     })
 
@@ -38,7 +35,7 @@ export async function GET(
 
     const quote = await prisma.quote.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -70,7 +67,7 @@ export async function GET(
     // עדכון שההצעת מחיר נצפתה (אם היא נשלחה)
     if (quote.status === "SENT" && !quote.viewedAt) {
       await prisma.quote.update({
-        where: { id: params.id },
+        where: { id: id },
         data: {
           status: "VIEWED",
           viewedAt: new Date(),

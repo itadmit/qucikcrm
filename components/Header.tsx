@@ -42,29 +42,29 @@ export function Header({ title, onMenuToggle, externalUnreadCount }: HeaderProps
   }
 
   return (
-    <header className="h-14 lg:h-16 border-b border-gray-200 bg-white flex items-center justify-between px-3 lg:px-6 shrink-0">
+    <header className="h-14 lg:h-16 border-b border-zinc-200/70 bg-[#FAFAF7]/80 backdrop-blur-md flex items-center justify-between px-3 lg:px-6 shrink-0">
       <div className="flex items-center gap-2 lg:gap-4 flex-1 min-w-0">
         {/* Mobile hamburger */}
         <button
           onClick={onMenuToggle}
-          className="lg:hidden p-2 -mr-1 rounded-lg hover:bg-gray-100 text-gray-600"
+          className="lg:hidden p-2 -mr-1 rounded-lg hover:bg-zinc-100 text-zinc-600"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         {title && (
-          <h1 className="text-lg lg:text-2xl font-bold text-gray-900 truncate">{title}</h1>
+          <h1 className="text-lg lg:text-2xl font-bold text-zinc-900 truncate tracking-tight">{title}</h1>
         )}
       </div>
 
-      <div className="flex items-center gap-2 lg:gap-4">
+      <div className="flex items-center gap-1.5 lg:gap-3">
         {/* Search - hidden on small mobile */}
         <div className="relative hidden sm:block w-40 lg:w-64">
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
           <Input
             type="search"
             placeholder="חיפוש..."
-            className="pr-10 h-9 lg:h-10 text-sm"
+            className="pr-10 h-9 lg:h-9 text-sm bg-white border-zinc-200 focus-visible:ring-violet-500/20 focus-visible:border-zinc-900"
           />
         </div>
 
@@ -72,12 +72,12 @@ export function Header({ title, onMenuToggle, externalUnreadCount }: HeaderProps
         <Button
           variant="ghost"
           size="icon"
-          className="relative h-9 w-9"
+          className="relative h-9 w-9 rounded-lg hover:bg-zinc-100"
           onClick={() => setNotificationsOpen(true)}
         >
-          <Bell className="w-5 h-5" />
+          <Bell className="w-4 h-4 text-zinc-600" strokeWidth={2} />
           {unreadCount > 0 && (
-            <span className="absolute top-0.5 right-0.5 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+            <span className="absolute top-1 right-1 bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-sm">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
@@ -88,24 +88,24 @@ export function Header({ title, onMenuToggle, externalUnreadCount }: HeaderProps
         {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-1.5 lg:gap-2 hover:bg-gray-100 rounded-lg p-1.5 lg:p-2 transition-colors">
-              <Avatar className="w-8 h-8">
-                <AvatarFallback className="prodify-gradient text-white text-sm">
+            <button className="flex items-center gap-1.5 lg:gap-2 hover:bg-zinc-100 rounded-lg p-1 lg:p-1.5 transition-colors">
+              <Avatar className="w-8 h-8 ring-2 ring-white shadow-sm">
+                <AvatarFallback className="bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white text-xs font-semibold">
                   {session?.user?.name ? getUserInitials(session.user.name) : "U"}
                 </AvatarFallback>
               </Avatar>
               <div className="text-right hidden sm:block">
-                <div className="text-sm font-medium text-gray-900">
+                <div className="text-xs font-semibold text-zinc-900 leading-tight">
                   {session?.user?.name || "משתמש"}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-[10px] text-zinc-500 leading-tight mt-0.5">
                   {session?.user?.role === "SUPER_ADMIN" && "סופר אדמין"}
                   {session?.user?.role === "ADMIN" && "מנהל"}
                   {session?.user?.role === "MANAGER" && "מנהל צוות"}
                   {session?.user?.role === "USER" && "משתמש"}
                 </div>
               </div>
-              <ChevronDown className="w-4 h-4 text-gray-400 hidden sm:block" />
+              <ChevronDown className="w-3.5 h-3.5 text-zinc-400 hidden sm:block" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

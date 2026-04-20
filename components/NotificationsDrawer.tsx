@@ -155,7 +155,7 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
       case 'task':
         return 'text-blue-600 bg-blue-100'
       case 'meeting':
-        return 'text-purple-600 bg-purple-100'
+        return 'text-violet-600 bg-violet-100'
       case 'lead':
         return 'text-green-600 bg-green-100'
       case 'document':
@@ -167,7 +167,7 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
       case 'payment':
         return 'text-emerald-600 bg-emerald-100'
       default:
-        return 'text-gray-600 bg-gray-100'
+        return 'text-zinc-600 bg-zinc-100'
     }
   }
 
@@ -180,22 +180,22 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
         return (
           <div className="mt-2 space-y-1 text-sm">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-900">{lead.name}</span>
+              <span className="font-medium text-zinc-900">{lead.name}</span>
             </div>
             {lead.email && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <Mail className="w-4 h-4" />
                 {lead.email}
               </div>
             )}
             {lead.phone && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <Phone className="w-4 h-4" />
                 {lead.phone}
               </div>
             )}
             {lead.source && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <MapPin className="w-4 h-4" />
                 מקור: {lead.source}
               </div>
@@ -206,12 +206,12 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
         const quote = notification.entityDetails
         return (
           <div className="mt-2 space-y-1 text-sm">
-            <div className="font-medium text-gray-900">#{quote.quoteNumber}</div>
+            <div className="font-medium text-zinc-900">#{quote.quoteNumber}</div>
             {quote.title && (
-              <div className="text-gray-600">{quote.title}</div>
+              <div className="text-zinc-600">{quote.title}</div>
             )}
             {quote.total && (
-              <div className="text-gray-900 font-semibold">₪{quote.total.toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
+              <div className="text-zinc-900 font-semibold">₪{quote.total.toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
             )}
           </div>
         )
@@ -221,7 +221,7 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
           <div className="mt-2 space-y-1 text-sm">
             <div className="font-semibold text-emerald-600 text-lg">₪{(payment.amount ?? 0).toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
             {payment.transactionId && (
-              <div className="text-gray-600">מספר עסקה: {payment.transactionId}</div>
+              <div className="text-zinc-600">מספר עסקה: {payment.transactionId}</div>
             )}
           </div>
         )
@@ -229,9 +229,9 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
         const client = notification.entityDetails
         return (
           <div className="mt-2 space-y-1 text-sm">
-            <div className="font-medium text-gray-900">{client.name}</div>
+            <div className="font-medium text-zinc-900">{client.name}</div>
             {client.email && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <Mail className="w-4 h-4" />
                 {client.email}
               </div>
@@ -260,10 +260,10 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-purple-600" />
+              <Bell className="w-5 h-5 text-violet-600" />
               <h2 className="text-xl font-bold">התראות</h2>
               {unreadCount > 0 && (
-                <span className="bg-purple-600 text-white text-xs rounded-full px-2 py-0.5">
+                <span className="bg-violet-600 text-white text-xs rounded-full px-2 py-0.5">
                   {unreadCount}
                 </span>
               )}
@@ -278,12 +278,12 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-4">
             {loading ? (
-              <div className="text-center text-gray-500 py-8">טוען...</div>
+              <div className="text-center text-zinc-500 py-8">טוען...</div>
             ) : notifications.length === 0 ? (
               <div className="text-center py-12">
-                <Bell className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">אין התראות חדשות</h3>
-                <p className="text-gray-500">כל ההתראות שלך יופיעו כאן</p>
+                <Bell className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+                <h3 className="text-lg font-medium text-zinc-900 mb-2">אין התראות חדשות</h3>
+                <p className="text-zinc-500">כל ההתראות שלך יופיעו כאן</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -304,8 +304,8 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
                       key={notification.id} 
                       onClick={() => handleNotificationClick(notification)}
                       className={`shadow-sm hover:shadow-md transition-all cursor-pointer ${
-                        !notification.isRead ? "border-r-4 border-r-purple-600 bg-purple-50/30" : ""
-                      } hover:bg-gray-50`}
+                        !notification.isRead ? "border-r-4 border-r-purple-600 bg-violet-50/30" : ""
+                      } hover:bg-zinc-50`}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start gap-4">
@@ -315,22 +315,22 @@ export function NotificationsDrawer({ open, onOpenChange }: NotificationsDrawerP
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex-1 min-w-0">
-                                <h3 className={`font-medium ${!notification.isRead ? "text-gray-900" : "text-gray-600"}`}>
+                                <h3 className={`font-medium ${!notification.isRead ? "text-zinc-900" : "text-zinc-600"}`}>
                                   {notification.title}
                                 </h3>
-                                <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                                <p className="text-sm text-zinc-600 mt-1">{notification.message}</p>
                                 {details && (
-                                  <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                                  <div className="mt-2 p-2 bg-zinc-50 rounded-lg border border-zinc-200">
                                     {details}
                                   </div>
                                 )}
                               </div>
                               {!notification.isRead && (
-                                <div className="w-2 h-2 bg-purple-600 rounded-full flex-shrink-0 mt-1"></div>
+                                <div className="w-2 h-2 bg-violet-600 rounded-full flex-shrink-0 mt-1"></div>
                               )}
                             </div>
                             <div className="flex items-center gap-4 mt-3">
-                              <span className="text-xs text-gray-500">{timeAgo}</span>
+                              <span className="text-xs text-zinc-500">{timeAgo}</span>
                               {!notification.isRead && (
                                 <Button 
                                   variant="ghost" 

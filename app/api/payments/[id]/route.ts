@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+;
+;
 import { prisma } from '@/lib/prisma';
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession {
   user: {
@@ -13,18 +14,16 @@ interface ExtendedSession {
 /**
  * PATCH /api/payments/[id] - עדכון תשלום
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null;
-    if (!session?.user?.id) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { companyId: true },
     });
 
@@ -35,7 +34,7 @@ export async function PATCH(
     // בדיקה שהתשלום קיים ושייך לחברה
     const payment = await prisma.payment.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     });
@@ -69,7 +68,7 @@ export async function PATCH(
 
     // עדכון התשלום
     const updatedPayment = await prisma.payment.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         amount: parseFloat(amount),
         currency: currency || payment.currency,
@@ -102,18 +101,16 @@ export async function PATCH(
 /**
  * DELETE /api/payments/[id] - מחיקת תשלום
  */
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null;
-    if (!session?.user?.id) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { companyId: true },
     });
 
@@ -124,7 +121,7 @@ export async function DELETE(
     // בדיקה שהתשלום קיים ושייך לחברה
     const payment = await prisma.payment.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     });
@@ -138,7 +135,7 @@ export async function DELETE(
 
     // מחיקת התשלום
     await prisma.payment.delete({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     return NextResponse.json({ success: true });

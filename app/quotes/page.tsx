@@ -95,7 +95,7 @@ const statusConfig: Record<
 > = {
   DRAFT: { label: "מוכן לשליחה", color: "bg-sky-500", icon: FileText },
   SENT: { label: "נשלח ללקוח", color: "bg-blue-500", icon: Send },
-  VIEWED: { label: "נפתח", color: "bg-purple-500", icon: Eye },
+  VIEWED: { label: "נפתח", color: "bg-violet-500", icon: Eye },
   ACCEPTED: { label: "אושר ושולם", color: "bg-green-500", icon: CheckCircle },
   REJECTED: { label: "נדחה", color: "bg-red-500", icon: XCircle },
   EXPIRED: { label: "פג תוקף", color: "bg-orange-500", icon: Clock },
@@ -417,11 +417,16 @@ export default function QuotesPage() {
     <AppLayout>
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            מסמכים
-          </h1>
-          <p className="text-gray-600">נהל את הצעות המחיר וחשבונות העסקה שלך במקום אחד</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-emerald-600" strokeWidth={2.2} />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">
+              מסמכים
+            </h1>
+            <p className="text-sm text-zinc-500 mt-0.5">נהל את הצעות המחיר וחשבונות העסקה שלך במקום אחד</p>
+          </div>
         </div>
         <div className="flex gap-2">
           <Button
@@ -446,7 +451,7 @@ export default function QuotesPage() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium text-zinc-600">
                 סה״כ הצעות
               </CardTitle>
             </CardHeader>
@@ -457,7 +462,7 @@ export default function QuotesPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium text-zinc-600">
                 טיוטות
               </CardTitle>
             </CardHeader>
@@ -468,7 +473,7 @@ export default function QuotesPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium text-zinc-600">
                 נשלחו
               </CardTitle>
             </CardHeader>
@@ -479,7 +484,7 @@ export default function QuotesPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium text-zinc-600">
                 אושרו
               </CardTitle>
             </CardHeader>
@@ -490,7 +495,7 @@ export default function QuotesPage() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium text-zinc-600">
                 ערך מאושר
               </CardTitle>
             </CardHeader>
@@ -507,7 +512,7 @@ export default function QuotesPage() {
           <CardContent className="pt-6">
             <div className="flex gap-4">
               <div className="flex-1 relative">
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 w-4 h-4" />
                 <Input
                   placeholder="חיפוש לפי מספר הצעה, כותרת, לקוח, סכום..."
                   className="pr-10"
@@ -540,7 +545,7 @@ export default function QuotesPage() {
         {/* Selection Actions */}
         {selectedQuotes.size > 0 && (
           <div className="flex items-center justify-end gap-2 mb-6">
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-zinc-600">
               נבחרו {selectedQuotes.size} הצעות
             </span>
             <Button
@@ -560,11 +565,11 @@ export default function QuotesPage() {
           <CardContent className="pt-6">
             {filteredQuotes.length === 0 ? (
               <div className="text-center py-12">
-                <FileText className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <FileText className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+                <h3 className="text-lg font-medium text-zinc-900 mb-2">
                   {searchTerm || filterStatus !== "all" ? "לא נמצאו הצעות מחיר" : "אין הצעות מחיר להצגה"}
                 </h3>
-                <p className="text-gray-500 mb-4">
+                <p className="text-zinc-500 mb-4">
                   {searchTerm || filterStatus !== "all"
                     ? "נסה לחפש במונח אחר או שנה את הפילטר"
                     : "התחל על ידי יצירת הצעת מחיר חדשה"}
@@ -584,28 +589,28 @@ export default function QuotesPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b">
-                      <th className="text-right py-3 px-4 font-medium text-gray-700 w-12">
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700 w-12">
                         <button
                           onClick={() => handleSelectAll(!isAllSelected)}
                           className="flex items-center justify-center"
                           title={isAllSelected ? "בטל בחירה" : "בחר הכל"}
                         >
                           {isAllSelected ? (
-                            <CheckSquare className="w-5 h-5 text-purple-600" />
+                            <CheckSquare className="w-5 h-5 text-violet-600" />
                           ) : isIndeterminate ? (
-                            <div className="w-5 h-5 border-2 border-purple-600 rounded bg-purple-600/20" />
+                            <div className="w-5 h-5 border-2 border-purple-600 rounded bg-violet-600/20" />
                           ) : (
-                            <Square className="w-5 h-5 text-gray-400" />
+                            <Square className="w-5 h-5 text-zinc-400" />
                           )}
                         </button>
                       </th>
-                      <th className="text-right py-3 px-4 font-medium text-gray-700 w-32">מספר הצעה</th>
-                      <th className="text-right py-3 px-4 font-medium text-gray-700">כותרת</th>
-                      <th className="text-right py-3 px-4 font-medium text-gray-700">לקוח</th>
-                      <th className="text-right py-3 px-4 font-medium text-gray-700">סכום</th>
-                      <th className="text-right py-3 px-4 font-medium text-gray-700">סטטוס</th>
-                      <th className="text-right py-3 px-4 font-medium text-gray-700">תאריך יצירה</th>
-                      <th className="text-right py-3 px-4 font-medium text-gray-700">פעולות</th>
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700 w-32">מספר הצעה</th>
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700">כותרת</th>
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700">לקוח</th>
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700">סכום</th>
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700">סטטוס</th>
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700">תאריך יצירה</th>
+                      <th className="text-right py-3 px-4 font-medium text-zinc-700">פעולות</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -616,7 +621,7 @@ export default function QuotesPage() {
                       return (
                         <tr 
                           key={quote.id} 
-                          className={`border-b hover:bg-gray-50 cursor-pointer ${isSelected ? 'bg-purple-50' : ''}`}
+                          className={`border-b hover:bg-zinc-50 cursor-pointer ${isSelected ? 'bg-violet-50' : ''}`}
                         >
                           <td className="py-3 px-4">
                             <button
@@ -628,43 +633,43 @@ export default function QuotesPage() {
                               title={isSelected ? "בטל בחירה" : "בחר"}
                             >
                               {isSelected ? (
-                                <CheckSquare className="w-5 h-5 text-purple-600" />
+                                <CheckSquare className="w-5 h-5 text-violet-600" />
                               ) : (
-                                <Square className="w-5 h-5 text-gray-400" />
+                                <Square className="w-5 h-5 text-zinc-400" />
                               )}
                             </button>
                           </td>
                           <td className="py-3 px-4 w-32">
                             <div className="flex items-center gap-2">
-                              <FileText className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                              <span className="font-normal text-gray-900 truncate">
+                              <FileText className="w-4 h-4 text-zinc-400 flex-shrink-0" />
+                              <span className="font-normal text-zinc-900 truncate">
                                 {quote.quoteNumber}
                               </span>
                             </div>
                           </td>
                           <td className="py-3 px-4">
-                            <div className="font-normal text-gray-900">
+                            <div className="font-normal text-zinc-900">
                               {quote.title}
                             </div>
                           </td>
                           <td className="py-3 px-4">
                             {(quote.lead || quote.client) ? (
                               <div>
-                                <div className="font-normal text-gray-900">
+                                <div className="font-normal text-zinc-900">
                                   {quote.lead?.name || quote.client?.name}
                                 </div>
                                 {(quote.lead?.email || quote.client?.email) && (
-                                  <div className="text-sm text-gray-600 font-light">
+                                  <div className="text-sm text-zinc-600 font-light">
                                     {quote.lead?.email || quote.client?.email}
                                   </div>
                                 )}
                               </div>
                             ) : (
-                              <span className="text-gray-400">-</span>
+                              <span className="text-zinc-400">-</span>
                             )}
                           </td>
                           <td className="py-3 px-4">
-                            <span className="font-medium text-gray-900">
+                            <span className="font-medium text-zinc-900">
                               ₪{quote.total.toLocaleString()}
                             </span>
                           </td>
@@ -700,7 +705,7 @@ export default function QuotesPage() {
                               </SelectContent>
                             </Select>
                           </td>
-                          <td className="py-3 px-4 text-gray-600 font-normal">
+                          <td className="py-3 px-4 text-zinc-600 font-normal">
                             {new Date(quote.createdAt).toLocaleDateString(
                               "he-IL"
                             )}

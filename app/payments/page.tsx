@@ -69,7 +69,7 @@ const statusConfig: Record<
   PROCESSING: { label: "מעבד", color: "bg-blue-500", icon: Clock },
   COMPLETED: { label: "הושלם", color: "bg-green-500", icon: CheckCircle },
   FAILED: { label: "נכשל", color: "bg-red-500", icon: XCircle },
-  REFUNDED: { label: "הוחזר", color: "bg-gray-500", icon: AlertCircle },
+  REFUNDED: { label: "הוחזר", color: "bg-zinc-500", icon: AlertCircle },
 }
 
 const methodConfig: Record<string, string> = {
@@ -193,9 +193,14 @@ export default function PaymentsPage() {
     <AppLayout>
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">תשלומים</h1>
-          <p className="text-gray-600">נהל את כל התשלומים של הפרויקטים שלך</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+            <CreditCard className="w-5 h-5 text-amber-600" strokeWidth={2.2} />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">תשלומים</h1>
+            <p className="text-sm text-zinc-500 mt-0.5">נהל את כל התשלומים של הפרויקטים שלך</p>
+          </div>
         </div>
         <NewPaymentDialog onPaymentCreated={handlePaymentCreated} />
       </div>
@@ -204,7 +209,7 @@ export default function PaymentsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+            <CardTitle className="text-sm font-medium text-zinc-600">
               סה״כ תשלומים
             </CardTitle>
           </CardHeader>
@@ -215,7 +220,7 @@ export default function PaymentsPage() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+            <CardTitle className="text-sm font-medium text-zinc-600">
               הושלמו
             </CardTitle>
           </CardHeader>
@@ -228,7 +233,7 @@ export default function PaymentsPage() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+            <CardTitle className="text-sm font-medium text-zinc-600">
               ממתינים
             </CardTitle>
           </CardHeader>
@@ -241,12 +246,12 @@ export default function PaymentsPage() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+            <CardTitle className="text-sm font-medium text-zinc-600">
               סכום כולל
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">
+            <div className="text-2xl font-bold text-violet-600">
               ₪{stats.totalAmount.toLocaleString("he-IL", {
                 minimumFractionDigits: 2,
               })}
@@ -260,7 +265,7 @@ export default function PaymentsPage() {
         <CardContent className="pt-6">
           <div className="flex gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 w-4 h-4" />
               <Input
                 placeholder="חיפוש לפי מספר עסקה, פרויקט, הצעה..."
                 className="pr-10"
@@ -294,11 +299,11 @@ export default function PaymentsPage() {
         <CardContent className="pt-6">
           {filteredPayments.length === 0 ? (
             <div className="text-center py-12">
-              <CreditCard className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <CreditCard className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+              <h3 className="text-lg font-medium text-zinc-900 mb-2">
                 {searchQuery ? "לא נמצאו תשלומים" : "אין תשלומים עדיין"}
               </h3>
-              <p className="text-gray-500 mb-4">
+              <p className="text-zinc-500 mb-4">
                 {searchQuery
                   ? "נסה לחפש במונח אחר"
                   : "התחל על ידי יצירת תשלום חדש"}
@@ -310,13 +315,13 @@ export default function PaymentsPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">תאריך</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700 w-64">מספר עסקה</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">פרויקט/הצעה</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">סכום</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">שיטת תשלום</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">סטטוס</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">פעולות</th>
+                    <th className="text-right py-3 px-4 font-medium text-zinc-700">תאריך</th>
+                    <th className="text-right py-3 px-4 font-medium text-zinc-700 w-64">מספר עסקה</th>
+                    <th className="text-right py-3 px-4 font-medium text-zinc-700">פרויקט/הצעה</th>
+                    <th className="text-right py-3 px-4 font-medium text-zinc-700">סכום</th>
+                    <th className="text-right py-3 px-4 font-medium text-zinc-700">שיטת תשלום</th>
+                    <th className="text-right py-3 px-4 font-medium text-zinc-700">סטטוס</th>
+                    <th className="text-right py-3 px-4 font-medium text-zinc-700">פעולות</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -343,48 +348,48 @@ export default function PaymentsPage() {
                     return (
                       <tr
                         key={payment.id}
-                        className="border-b hover:bg-gray-50"
+                        className="border-b hover:bg-zinc-50"
                       >
                         <td className="py-3 px-4">
-                          <span className="font-normal text-gray-900">
+                          <span className="font-normal text-zinc-900">
                             {new Date(payment.createdAt).toLocaleDateString("he-IL")}
                           </span>
                         </td>
                         <td className="py-3 px-4">
-                          <span className="font-normal text-gray-900">
+                          <span className="font-normal text-zinc-900">
                             {payment.transactionId || payment.paymentReference || "-"}
                           </span>
                         </td>
                         <td className="py-3 px-4">
                           {payment.project ? (
                             <div>
-                              <div className="font-normal text-gray-900">
+                              <div className="font-normal text-zinc-900">
                                 {payment.project.name}
                               </div>
-                              <div className="text-sm text-gray-600 font-light">פרויקט</div>
+                              <div className="text-sm text-zinc-600 font-light">פרויקט</div>
                             </div>
                           ) : payment.quote ? (
                             <div>
-                              <div className="font-normal text-gray-900">
+                              <div className="font-normal text-zinc-900">
                                 {payment.quote.quoteNumber}
                               </div>
-                              <div className="text-sm text-gray-600 font-light">
+                              <div className="text-sm text-zinc-600 font-light">
                                 {payment.quote.title}
                               </div>
                             </div>
                           ) : (
-                            <span className="text-gray-400">-</span>
+                            <span className="text-zinc-400">-</span>
                           )}
                         </td>
                         <td className="py-3 px-4">
-                          <span className="font-medium text-gray-900">
+                          <span className="font-medium text-zinc-900">
                             ₪{payment.amount.toLocaleString("he-IL", {
                               minimumFractionDigits: 2,
                             })}
                           </span>
                         </td>
                         <td className="py-3 px-4">
-                          <span className="font-normal text-gray-900">
+                          <span className="font-normal text-zinc-900">
                             {methodConfig[payment.method] || payment.method}
                           </span>
                         </td>

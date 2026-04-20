@@ -83,12 +83,12 @@ export function PDFLoadingDialog({ open, onOpenChange }: PDFLoadingDialogProps) 
         <div className="flex flex-col items-center justify-center py-8 px-4">
           {/* Spinner */}
           <div className="mb-8">
-            <Loader2 className="h-16 w-16 animate-spin text-purple-600" />
+            <Loader2 className="h-16 w-16 animate-spin text-violet-600" />
           </div>
 
           {/* Progress Bar */}
           <div className="w-full max-w-xs mb-6">
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-2 bg-zinc-200 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-purple-600 to-blue-600 transition-all duration-500 ease-out rounded-full"
                 style={{ width: `${progress}%` }}
@@ -101,10 +101,10 @@ export function PDFLoadingDialog({ open, onOpenChange }: PDFLoadingDialogProps) 
             <div className="mb-4 flex justify-center">
               {(() => {
                 const IconComponent = currentStageData.icon
-                return <IconComponent className="h-12 w-12 text-purple-600" />
+                return <IconComponent className="h-12 w-12 text-violet-600" />
               })()}
             </div>
-            <DialogDescription className="text-lg font-medium text-gray-700">
+            <DialogDescription className="text-lg font-medium text-zinc-700">
               {currentStageData.text}
             </DialogDescription>
             
@@ -115,8 +115,8 @@ export function PDFLoadingDialog({ open, onOpenChange }: PDFLoadingDialogProps) 
                   key={index}
                   className={`h-2 w-2 rounded-full transition-all duration-300 ${
                     index <= currentStage
-                      ? "bg-purple-600 scale-125"
-                      : "bg-gray-300"
+                      ? "bg-violet-600 scale-125"
+                      : "bg-zinc-300"
                   }`}
                 />
               ))}

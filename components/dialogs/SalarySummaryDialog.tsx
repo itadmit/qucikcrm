@@ -148,11 +148,11 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
         <div className="space-y-6">
           {/* בחירת חודש */}
           <div className="flex items-center gap-3">
-            <Calendar className="w-5 h-5 text-gray-500" />
+            <Calendar className="w-5 h-5 text-zinc-500" />
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm"
+              className="flex-1 rounded-md border border-zinc-300 px-3 py-2 text-sm"
             >
               {getMonthOptions().map((month) => (
                 <option key={month.value} value={month.value}>
@@ -164,7 +164,7 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+              <Loader2 className="w-8 h-8 animate-spin text-violet-600" />
             </div>
           ) : stats ? (
             <>
@@ -194,7 +194,7 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
                     </div>
 
                     <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
-                      <div className="flex items-center gap-2 text-purple-700 mb-2">
+                      <div className="flex items-center gap-2 text-violet-700 mb-2">
                         <DollarSign className="w-4 h-4" />
                         <span className="text-sm font-medium">סך משכורות</span>
                       </div>
@@ -208,7 +208,7 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
                   <div className="border rounded-lg overflow-hidden">
                     <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
                       <table className="w-full text-sm">
-                        <thead className="bg-gray-50 border-b sticky top-0">
+                        <thead className="bg-zinc-50 border-b sticky top-0">
                           <tr>
                             <th className="text-right p-3 font-medium">עובד</th>
                             <th className="text-right p-3 font-medium">ימי עבודה</th>
@@ -221,24 +221,24 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
                         </thead>
                         <tbody className="divide-y">
                           {stats.employees.map((employee) => (
-                            <tr key={employee.userId} className="hover:bg-gray-50">
+                            <tr key={employee.userId} className="hover:bg-zinc-50">
                               <td className="p-3">
                                 <div className="font-medium">{employee.userName}</div>
-                                <div className="text-xs text-gray-500">{employee.userEmail}</div>
+                                <div className="text-xs text-zinc-500">{employee.userEmail}</div>
                               </td>
                               <td className="p-3 text-center">{employee.workDays}</td>
                               <td className="p-3 font-semibold">{employee.totalHours.toFixed(1)}</td>
                               <td className="p-3 text-green-700">{employee.regularHours.toFixed(1)}</td>
                               <td className="p-3 text-orange-600">{employee.overtimeHours.toFixed(1)}</td>
                               <td className="p-3">₪{employee.hourlyRate}</td>
-                              <td className="p-3 font-bold text-purple-700">
+                              <td className="p-3 font-bold text-violet-700">
                                 {formatCurrency(employee.totalSalary)}
                               </td>
                             </tr>
                           ))}
                           {stats.employees.length === 0 && (
                             <tr>
-                              <td colSpan={7} className="text-center p-8 text-gray-500">
+                              <td colSpan={7} className="text-center p-8 text-zinc-500">
                                 אין נתונים לחודש זה
                               </td>
                             </tr>
@@ -297,14 +297,14 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
 
                     {/* סך משכורת */}
                     <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
-                      <div className="flex items-center gap-2 text-purple-700 mb-2">
+                      <div className="flex items-center gap-2 text-violet-700 mb-2">
                         <DollarSign className="w-4 h-4" />
                         <span className="text-sm font-medium">סך משכורת</span>
                       </div>
                       <div className="text-2xl font-bold text-purple-900">
                         {formatCurrency(stats.totalSalary || 0)}
                       </div>
-                      <div className="text-xs text-purple-600 mt-1">
+                      <div className="text-xs text-violet-600 mt-1">
                         {(stats.hourlyRate || 0) > 0 ? `${stats.hourlyRate}₪/שעה` : 'לא הוגדר שכר'}
                       </div>
                     </div>
@@ -312,15 +312,15 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
 
                   {/* פירוט נוסף */}
                   <div className="border-t pt-4 space-y-2 text-sm">
-                    <div className="flex justify-between text-gray-600">
+                    <div className="flex justify-between text-zinc-600">
                       <span>שכר לשעה:</span>
                       <span className="font-medium">{stats.hourlyRate || 0}₪</span>
                     </div>
-                    <div className="flex justify-between text-gray-600">
+                    <div className="flex justify-between text-zinc-600">
                       <span>נורמת שעות חודשית:</span>
                       <span className="font-medium">{stats.monthlyHours || 186} שעות</span>
                     </div>
-                    <div className="flex justify-between text-gray-600">
+                    <div className="flex justify-between text-zinc-600">
                       <span>מקדם שעות נוספות:</span>
                       <span className="font-medium">×{stats.overtimeRate || 1.25}</span>
                     </div>
@@ -336,7 +336,7 @@ export function SalarySummaryDialog({ triggerButton }: SalarySummaryDialogProps)
               )}
             </>
           ) : (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-zinc-500">
               לא נמצאו נתונים לחודש זה
             </div>
           )}

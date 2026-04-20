@@ -474,13 +474,18 @@ export default function SettingsPage() {
     <AppLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">הגדרות</h1>
-          <p className="text-gray-500 mt-1">נהל את הגדרות המערכת והחשבון שלך</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center">
+            <SettingsIcon className="w-5 h-5 text-zinc-600" strokeWidth={2.2} />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">הגדרות</h1>
+            <p className="text-sm text-zinc-500 mt-0.5">נהל את הגדרות המערכת והחשבון שלך</p>
+          </div>
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-zinc-200">
           <div className="flex gap-6">
             {[
               { key: "general", label: "כללי", icon: SettingsIcon },
@@ -496,8 +501,8 @@ export default function SettingsPage() {
                   onClick={() => setActiveTab(tab.key as any)}
                   className={`flex items-center gap-2 pb-3 border-b-2 transition-colors ${
                     activeTab === tab.key
-                      ? "border-purple-600 text-purple-600 font-medium"
-                      : "border-transparent text-gray-500 hover:text-gray-700"
+                      ? "border-purple-600 text-violet-600 font-medium"
+                      : "border-transparent text-zinc-500 hover:text-zinc-700"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -512,7 +517,7 @@ export default function SettingsPage() {
         {activeTab === "general" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Profile Settings */}
-            <Card className="shadow-sm">
+            <Card className="">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -538,8 +543,8 @@ export default function SettingsPage() {
                   </div>
                   <div>
                     <Label>אימייל</Label>
-                    <p className="text-sm text-gray-600 mt-1">{session?.user?.email}</p>
-                    <p className="text-xs text-gray-400 mt-1">לא ניתן לשנות אימייל</p>
+                    <p className="text-sm text-zinc-600 mt-1">{session?.user?.email}</p>
+                    <p className="text-xs text-zinc-400 mt-1">לא ניתן לשנות אימייל</p>
                   </div>
                   <div className="flex gap-2 mt-4">
                     <Button 
@@ -563,15 +568,15 @@ export default function SettingsPage() {
               ) : (
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm text-gray-500">שם</p>
+                    <p className="text-sm text-zinc-500">שם</p>
                     <p className="font-medium">{session?.user?.name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">אימייל</p>
+                    <p className="text-sm text-zinc-500">אימייל</p>
                     <p className="font-medium">{session?.user?.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">תפקיד</p>
+                    <p className="text-sm text-zinc-500">תפקיד</p>
                     <p className="font-medium">
                       {session?.user?.role === 'ADMIN' ? 'מנהל' : 
                        session?.user?.role === 'MANAGER' ? 'מנהל צוות' : 'משתמש'}
@@ -591,7 +596,7 @@ export default function SettingsPage() {
           </Card>
 
           {/* Integrations */}
-          <Card className="shadow-sm">
+          <Card className="">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
@@ -620,11 +625,11 @@ export default function SettingsPage() {
         {activeTab === "quotes" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Quote Defaults */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                    <Percent className="w-5 h-5 text-purple-600" />
+                  <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
+                    <Percent className="w-5 h-5 text-violet-600" />
                   </div>
                   <div>
                     <CardTitle>ברירות מחדל להצעות מחיר</CardTitle>
@@ -644,7 +649,7 @@ export default function SettingsPage() {
                       <Label htmlFor="depositPercent" className="text-base font-medium">
                         אחוז מקדמה (%)
                       </Label>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-zinc-500">
                         אחוז המקדמה שהלקוח ישלם בעת אישור ההצעה
                       </p>
                       <div className="flex items-center gap-3">
@@ -661,8 +666,8 @@ export default function SettingsPage() {
                           })}
                           className="w-32"
                         />
-                        <span className="text-gray-500">%</span>
-                        <div className="flex-1 text-left text-sm text-gray-400">
+                        <span className="text-zinc-500">%</span>
+                        <div className="flex-1 text-left text-sm text-zinc-400">
                           לדוגמה: על הצעה של ₪10,000 → מקדמה של ₪{(10000 * quoteDefaults.depositPercent / 100).toLocaleString('he-IL')}
                         </div>
                       </div>
@@ -673,7 +678,7 @@ export default function SettingsPage() {
                       <Label htmlFor="defaultTax" className="text-base font-medium">
                         מע״מ (%)
                       </Label>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-zinc-500">
                         אחוז המע״מ שיתווסף להצעות מחיר
                       </p>
                       <div className="flex items-center gap-3">
@@ -690,7 +695,7 @@ export default function SettingsPage() {
                           })}
                           className="w-32"
                         />
-                        <span className="text-gray-500">%</span>
+                        <span className="text-zinc-500">%</span>
                       </div>
                     </div>
 
@@ -699,7 +704,7 @@ export default function SettingsPage() {
                       <Label htmlFor="validityDays" className="text-base font-medium">
                         תוקף ההצעה (ימים)
                       </Label>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-zinc-500">
                         כמה ימים ההצעה תהיה תקפה כברירת מחדל
                       </p>
                       <div className="flex items-center gap-3">
@@ -716,7 +721,7 @@ export default function SettingsPage() {
                           })}
                           className="w-32"
                         />
-                        <span className="text-gray-500">ימים</span>
+                        <span className="text-zinc-500">ימים</span>
                       </div>
                     </div>
 
@@ -724,7 +729,7 @@ export default function SettingsPage() {
                       <Button 
                         onClick={handleSaveQuoteDefaults}
                         disabled={savingQuoteDefaults}
-                        className="bg-purple-600 hover:bg-purple-700"
+                        className="bg-violet-600 hover:bg-violet-700"
                       >
                         {savingQuoteDefaults ? (
                           <>
@@ -742,7 +747,7 @@ export default function SettingsPage() {
             </Card>
 
             {/* Info Card */}
-            <Card className="shadow-sm h-fit">
+            <Card className="h-fit">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -755,7 +760,7 @@ export default function SettingsPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 text-sm text-gray-600">
+                <div className="space-y-4 text-sm text-zinc-600">
                   <p>
                     <strong>אחוז המקדמה</strong> קובע כמה מהסכום הכולל הלקוח ישלם בעת אישור ההצעה.
                     לדוגמה: אם ההצעה היא ₪10,000 והמקדמה 40%, הלקוח ישלם ₪4,000.
@@ -764,8 +769,8 @@ export default function SettingsPage() {
                     <strong>ניתן לשנות</strong> את אחוז המקדמה גם בעת יצירת/עריכת הצעה ספציפית.
                     ההגדרות כאן הן רק ברירת מחדל.
                   </p>
-                  <div className="bg-purple-50 p-3 rounded-lg mt-4">
-                    <p className="text-purple-700">
+                  <div className="bg-violet-50 p-3 rounded-lg mt-4">
+                    <p className="text-violet-700">
                       💡 <strong>טיפ:</strong> אם תרצה לגבות 100% מראש, הגדר מקדמה של 100%.
                       אם אתה רוצה שהלקוח יוכל לשלם רק אחרי ביצוע העבודה, הגדר 0%.
                     </p>
@@ -780,7 +785,7 @@ export default function SettingsPage() {
         {activeTab === "communication" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Email Configuration */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -794,14 +799,14 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                  <div className="bg-zinc-50 p-4 rounded-lg space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">SMTP Server</span>
-                      <span className="text-sm text-gray-600">smtp.gmail.com</span>
+                      <span className="text-sm text-zinc-600">smtp.gmail.com</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">משתמש</span>
-                      <span className="text-sm text-gray-600">quickcrmil@gmail.com</span>
+                      <span className="text-sm text-zinc-600">quickcrmil@gmail.com</span>
                     </div>
                     {emailStatus && (
                       <div className="flex items-center gap-2 mt-2">
@@ -831,11 +836,11 @@ export default function SettingsPage() {
             </Card>
 
             {/* Notifications */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                    <Bell className="w-5 h-5 text-purple-600" />
+                  <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
+                    <Bell className="w-5 h-5 text-violet-600" />
                   </div>
                   <div>
                     <CardTitle>התראות</CardTitle>
@@ -867,7 +872,7 @@ export default function SettingsPage() {
         {activeTab === "security" && (
           <div className="space-y-6">
             {/* Security Settings */}
-            <Card className="shadow-sm">
+            <Card className="">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
@@ -885,10 +890,10 @@ export default function SettingsPage() {
                   <div className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <Key className="w-5 h-5 text-gray-600" />
+                        <Key className="w-5 h-5 text-zinc-600" />
                         <div>
-                          <h3 className="font-medium text-gray-900">שינוי סיסמה</h3>
-                          <p className="text-sm text-gray-500">עדכן את סיסמת החשבון שלך</p>
+                          <h3 className="font-medium text-zinc-900">שינוי סיסמה</h3>
+                          <p className="text-sm text-zinc-500">עדכן את סיסמת החשבון שלך</p>
                         </div>
                       </div>
                       {!showChangePassword && (
@@ -963,10 +968,10 @@ export default function SettingsPage() {
                   <div className="border rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <Shield className="w-5 h-5 text-gray-600" />
+                        <Shield className="w-5 h-5 text-zinc-600" />
                         <div>
-                          <h3 className="font-medium text-gray-900">אימות דו-שלבי</h3>
-                          <p className="text-sm text-gray-500">הוסף שכבת אבטחה נוספת לחשבון שלך</p>
+                          <h3 className="font-medium text-zinc-900">אימות דו-שלבי</h3>
+                          <p className="text-sm text-zinc-500">הוסף שכבת אבטחה נוספת לחשבון שלך</p>
                         </div>
                       </div>
                       <Button variant="outline" size="sm" disabled>
@@ -980,11 +985,11 @@ export default function SettingsPage() {
 
             {/* User Permissions Management - Only for Admins */}
             {isAdmin && (
-              <Card className="shadow-sm">
+              <Card className="">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                      <Users className="w-5 h-5 text-purple-600" />
+                    <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
+                      <Users className="w-5 h-5 text-violet-600" />
                     </div>
                     <div>
                       <CardTitle>ניהול הרשאות משתמשים</CardTitle>
@@ -996,10 +1001,10 @@ export default function SettingsPage() {
                   {loadingUsers ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
-                      <p className="mt-2 text-gray-600">טוען משתמשים...</p>
+                      <p className="mt-2 text-zinc-600">טוען משתמשים...</p>
                     </div>
                   ) : users.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500">
+                    <div className="text-center py-8 text-zinc-500">
                       אין משתמשים
                     </div>
                   ) : (
@@ -1013,13 +1018,13 @@ export default function SettingsPage() {
                           <div key={user.id} className="border rounded-lg p-4">
                             <div className="flex items-center justify-between mb-4">
                               <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                  <User className="w-5 h-5 text-purple-600" />
+                                <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                                  <User className="w-5 h-5 text-violet-600" />
                                 </div>
                                 <div>
-                                  <h3 className="font-medium text-gray-900">{user.name}</h3>
-                                  <p className="text-sm text-gray-500">{user.email}</p>
-                                  <p className="text-xs text-gray-400 mt-1">
+                                  <h3 className="font-medium text-zinc-900">{user.name}</h3>
+                                  <p className="text-sm text-zinc-500">{user.email}</p>
+                                  <p className="text-xs text-zinc-400 mt-1">
                                     {user.role === 'ADMIN' ? 'מנהל' : 
                                      user.role === 'SUPER_ADMIN' ? 'מנהל ראשי' :
                                      user.role === 'MANAGER' ? 'מנהל צוות' : 'משתמש'}
@@ -1089,7 +1094,7 @@ export default function SettingsPage() {
                                           id={`perm-${user.id}-${perm.key}`}
                                           checked={hasPermission}
                                           onChange={() => handleTogglePermission(user.id, perm.key, hasPermission)}
-                                          className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                                          className="w-4 h-4 text-violet-600 rounded focus:ring-purple-500"
                                         />
                                         <label
                                           htmlFor={`perm-${user.id}-${perm.key}`}
@@ -1101,8 +1106,8 @@ export default function SettingsPage() {
                                     )
                                   })}
                                 </div>
-                                <div className="bg-gray-50 border rounded-lg p-3">
-                                  <p className="text-xs text-gray-600">
+                                <div className="bg-zinc-50 border rounded-lg p-3">
+                                  <p className="text-xs text-zinc-600">
                                     <strong>הערה:</strong> הרשאות "בית" ו"התראות" תמיד פעילות ולא ניתן לשנותן
                                   </p>
                                 </div>
@@ -1117,7 +1122,7 @@ export default function SettingsPage() {
                                       className={`flex items-center gap-2 text-sm px-2 py-1 rounded ${
                                         hasPermission
                                           ? 'bg-green-50 text-green-700'
-                                          : 'bg-gray-50 text-gray-500'
+                                          : 'bg-zinc-50 text-zinc-500'
                                       }`}
                                     >
                                       {hasPermission ? (
@@ -1146,7 +1151,7 @@ export default function SettingsPage() {
         {activeTab === "advanced" && isAdmin && (
           <div className="space-y-6">
           {/* Danger Zone */}
-          <Card className="shadow-sm border-red-200 bg-red-50">
+          <Card className="border-red-200 bg-red-50">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
@@ -1165,10 +1170,10 @@ export default function SettingsPage() {
                 <div className="flex items-start gap-3">
                   <Database className="w-5 h-5 text-red-600 mt-0.5" />
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900 mb-1">
+                    <h3 className="font-medium text-zinc-900 mb-1">
                       איפוס כל הנתונים
                     </h3>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-sm text-zinc-600 mb-3">
                       פעולה זו תמחק את כל הלידים, לקוחות, פרויקטים, משימות והתראות.
                       הפעולה בלתי הפיכה!
                     </p>
@@ -1219,17 +1224,17 @@ export default function SettingsPage() {
                 <div className="flex items-start gap-3">
                   <Database className="w-5 h-5 text-blue-600 mt-0.5" />
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900 mb-1">
+                    <h3 className="font-medium text-zinc-900 mb-1">
                       טען נתוני דמו
                     </h3>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <p className="text-sm text-zinc-600 mb-3">
                       טען נתונים לדוגמה: לידים, לקוחות, פרויקטים, משימות ועוד
                     </p>
                     <div className="bg-white p-3 rounded border border-blue-200 mb-3">
-                      <p className="text-xs text-gray-700 mb-2">
+                      <p className="text-xs text-zinc-700 mb-2">
                         <strong>נתונים שייווצרו:</strong>
                       </p>
-                      <ul className="text-xs text-gray-600 space-y-1 grid grid-cols-2 gap-x-4">
+                      <ul className="text-xs text-zinc-600 space-y-1 grid grid-cols-2 gap-x-4">
                         <li>• 5 לידים עם סטטוסים שונים</li>
                         <li>• 4 לקוחות פעילים</li>
                         <li>• 4 פרויקטים בשלבים שונים</li>

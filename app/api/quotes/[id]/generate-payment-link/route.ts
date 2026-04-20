@@ -6,17 +6,15 @@ import { createPayPlusClient } from "@/lib/payplus"
  * POST /api/quotes/[id]/generate-payment-link
  * Generate PayPlus payment link for quote approval (without requiring session)
  */
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const body = await req.json()
     const { currency = "ILS", customer } = body
 
     // קבלת פרטי ההצעה
     const quote = await prisma.quote.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         lead: true,
       },
@@ -77,8 +75,8 @@ export async function POST(
     // יצירת callback URLs
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "http://localhost:3000"
     const callbackUrl = `${baseUrl}/api/payments/payplus/callback`
-    const successUrl = `${baseUrl}/quotes/${params.id}/payment/success`
-    const failureUrl = `${baseUrl}/quotes/${params.id}/approve?error=payment_failed`
+    const successUrl = `${baseUrl}/quotes/${id}/payment/success`
+    const failureUrl = `${baseUrl}/quotes/${id}/approve?error=payment_failed`
 
     // חישוב סכום תשלום - אם נשלח amount, נשתמש בו, אחרת לפי אחוז המקדמה של ההצעה
     const depositPercent = quote.depositPercent || 40
@@ -97,7 +95,7 @@ export async function POST(
       sendEmailFailure: false,
       language_code: "he",
       more_info: quote.quoteNumber,
-      more_info_2: params.id,
+      more_info_2: id,
       customer: customer || (quote.lead ? {
         customer_name: quote.lead.name,
         email: quote.lead.email || undefined,

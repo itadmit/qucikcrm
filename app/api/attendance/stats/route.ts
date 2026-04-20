@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+;
+;
 import { prisma } from '@/lib/prisma';
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת סטטיסטיקות חודשיות
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const user = await getAuthUser(req)
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -29,7 +30,7 @@ export async function GET(request: Request) {
 
     // בדיקה אם המשתמש הוא מנהל
     const currentUser = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: user.id }
     });
 
     const isAdmin = currentUser?.role === 'ADMIN' || currentUser?.role === 'SUPER_ADMIN';
@@ -113,7 +114,7 @@ export async function GET(request: Request) {
     // משתמש רגיל - מחזיר רק את הנתונים שלו
     const attendances = await prisma.attendance.findMany({
       where: {
-        userId: session.user.id,
+        userId: user.id,
         date: {
           gte: startDate,
           lte: endDate
@@ -127,7 +128,7 @@ export async function GET(request: Request) {
 
     // שליפת הגדרות עובד
     const settings = await prisma.employeeSettings.findUnique({
-      where: { userId: session.user.id }
+      where: { userId: user.id }
     });
 
     const hourlyRate = settings?.hourlyRate || 0;
@@ -171,8 +172,4 @@ export async function GET(request: Request) {
     );
   }
 }
-
-
-
-
 

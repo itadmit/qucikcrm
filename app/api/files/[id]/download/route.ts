@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { readFile } from "fs/promises"
 import { join } from "path"
 import { existsSync } from "fs"
 import { Session } from "next-auth"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession extends Session {
   user: {
@@ -18,22 +17,20 @@ interface ExtendedSession extends Session {
   }
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    const fileId = params.id
-    console.log("📥 Downloading file:", fileId, "Session:", session?.user?.id ? "authenticated" : "not authenticated")
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    const fileId = id
+    console.log("📥 Downloading file:", fileId, "Session:", user?.id ? "authenticated" : "not authenticated")
 
     // מציאת הקובץ - אם יש session, נבדוק גם לפי companyId
     let file
-    if (session?.user?.id) {
+    if (user?.id) {
       file = await prisma.file.findFirst({
         where: {
           id: fileId,
-          companyId: session.user.companyId,
+          companyId: user.companyId,
         },
         include: {
           lead: {
@@ -77,7 +74,7 @@ export async function GET(
     }
 
     // אם יש session, נבדוק שהקובץ שייך לחברה של המשתמש
-    if (session?.user?.id && file.companyId !== session.user.companyId) {
+    if (user?.id && file.companyId !== user.companyId) {
       console.error("❌ File belongs to different company")
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
     }

@@ -205,7 +205,7 @@ export default function NotificationsPage() {
       case 'task':
         return 'text-blue-600 bg-blue-100'
       case 'meeting':
-        return 'text-purple-600 bg-purple-100'
+        return 'text-violet-600 bg-violet-100'
       case 'lead':
         return 'text-green-600 bg-green-100'
       case 'document':
@@ -217,7 +217,7 @@ export default function NotificationsPage() {
       case 'payment':
         return 'text-emerald-600 bg-emerald-100'
       default:
-        return 'text-gray-600 bg-gray-100'
+        return 'text-zinc-600 bg-zinc-100'
     }
   }
 
@@ -230,22 +230,22 @@ export default function NotificationsPage() {
         return (
           <div className="mt-2 space-y-1 text-sm">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-900">{lead.name}</span>
+              <span className="font-medium text-zinc-900">{lead.name}</span>
             </div>
             {lead.email && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <Mail className="w-4 h-4" />
                 {lead.email}
               </div>
             )}
             {lead.phone && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <Phone className="w-4 h-4" />
                 {lead.phone}
               </div>
             )}
             {lead.source && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <MapPin className="w-4 h-4" />
                 מקור: {lead.source}
               </div>
@@ -256,12 +256,12 @@ export default function NotificationsPage() {
         const quote = notification.entityDetails
         return (
           <div className="mt-2 space-y-1 text-sm">
-            <div className="font-medium text-gray-900">#{quote.quoteNumber}</div>
+            <div className="font-medium text-zinc-900">#{quote.quoteNumber}</div>
             {quote.title && (
-              <div className="text-gray-600">{quote.title}</div>
+              <div className="text-zinc-600">{quote.title}</div>
             )}
             {quote.total && (
-              <div className="text-gray-900 font-semibold">₪{quote.total.toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
+              <div className="text-zinc-900 font-semibold">₪{quote.total.toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
             )}
           </div>
         )
@@ -271,7 +271,7 @@ export default function NotificationsPage() {
           <div className="mt-2 space-y-1 text-sm">
             <div className="font-semibold text-emerald-600 text-lg">₪{(payment.amount ?? 0).toLocaleString('he-IL', { minimumFractionDigits: 2 })}</div>
             {payment.transactionId && (
-              <div className="text-gray-600">מספר עסקה: {payment.transactionId}</div>
+              <div className="text-zinc-600">מספר עסקה: {payment.transactionId}</div>
             )}
           </div>
         )
@@ -279,9 +279,9 @@ export default function NotificationsPage() {
         const client = notification.entityDetails
         return (
           <div className="mt-2 space-y-1 text-sm">
-            <div className="font-medium text-gray-900">{client.name}</div>
+            <div className="font-medium text-zinc-900">{client.name}</div>
             {client.email && (
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-zinc-600">
                 <Mail className="w-4 h-4" />
                 {client.email}
               </div>
@@ -307,9 +307,14 @@ export default function NotificationsPage() {
     <AppLayout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">התראות</h1>
-            <p className="text-gray-500 mt-1">עדכונים חשובים ותזכורות</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-fuchsia-50 flex items-center justify-center">
+              <Bell className="w-5 h-5 text-fuchsia-600" strokeWidth={2.2} />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">התראות</h1>
+              <p className="text-sm text-zinc-500 mt-0.5">עדכונים חשובים ותזכורות</p>
+            </div>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={markAllAsRead}>
@@ -328,27 +333,27 @@ export default function NotificationsPage() {
 
         {/* Filter Tabs */}
         <div className="flex gap-2 border-b">
-          <button className="px-4 py-2 border-b-2 border-purple-600 text-purple-600 font-medium">
+          <button className="px-4 py-2 border-b-2 border-purple-600 text-violet-600 font-medium">
             הכל ({notifications.length})
           </button>
-          <button className="px-4 py-2 text-gray-500 hover:text-gray-700">
+          <button className="px-4 py-2 text-zinc-500 hover:text-zinc-700">
             לא נקראו ({unreadNotifications.length})
           </button>
-          <button className="px-4 py-2 text-gray-500 hover:text-gray-700">
+          <button className="px-4 py-2 text-zinc-500 hover:text-zinc-700">
             משימות
           </button>
-          <button className="px-4 py-2 text-gray-500 hover:text-gray-700">
+          <button className="px-4 py-2 text-zinc-500 hover:text-zinc-700">
             פגישות
           </button>
         </div>
 
         {/* Notifications List */}
         {notifications.length === 0 ? (
-          <Card className="shadow-sm">
+          <Card>
             <CardContent className="p-12 text-center">
-              <Bell className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">אין התראות חדשות</h3>
-              <p className="text-gray-500">כל ההתראות שלך יופיעו כאן</p>
+              <Bell className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+              <h3 className="text-lg font-medium text-zinc-900 mb-2">אין התראות חדשות</h3>
+              <p className="text-zinc-500">כל ההתראות שלך יופיעו כאן</p>
             </CardContent>
           </Card>
         ) : (
@@ -369,9 +374,9 @@ export default function NotificationsPage() {
                 <Card 
                   key={notification.id} 
                   onClick={() => handleNotificationClick(notification)}
-                  className={`shadow-sm hover:shadow-md transition-all cursor-pointer ${
-                    !notification.isRead ? "border-r-4 border-r-purple-600 bg-purple-50/30" : ""
-                  } hover:bg-gray-50`}
+                  className={`hover:shadow-md transition-all cursor-pointer ${
+                    !notification.isRead ? "border-r-4 border-r-purple-600 bg-violet-50/30" : ""
+                  } hover:bg-zinc-50`}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-start gap-4">
@@ -381,22 +386,22 @@ export default function NotificationsPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
-                            <h3 className={`font-medium ${!notification.isRead ? "text-gray-900" : "text-gray-600"}`}>
+                            <h3 className={`font-medium ${!notification.isRead ? "text-zinc-900" : "text-zinc-600"}`}>
                               {notification.title}
                             </h3>
-                            <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                            <p className="text-sm text-zinc-600 mt-1">{notification.message}</p>
                             {details && (
-                              <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                              <div className="mt-2 p-2 bg-zinc-50 rounded-lg border border-zinc-200">
                                 {details}
                               </div>
                             )}
                           </div>
                           {!notification.isRead && (
-                            <div className="w-2 h-2 bg-purple-600 rounded-full flex-shrink-0 mt-1"></div>
+                            <div className="w-2 h-2 bg-violet-600 rounded-full flex-shrink-0 mt-1"></div>
                           )}
                         </div>
                         <div className="flex items-center gap-4 mt-3">
-                          <span className="text-xs text-gray-500">{timeAgo}</span>
+                          <span className="text-xs text-zinc-500">{timeAgo}</span>
                           {!notification.isRead && (
                             <Button 
                               variant="ghost" 

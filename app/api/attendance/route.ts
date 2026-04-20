@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+;
+;
 import { prisma } from '@/lib/prisma';
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת כל רישומי הנוכחות
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const user = await getAuthUser(req)
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -16,7 +17,7 @@ export async function GET(request: Request) {
     const userId = searchParams.get('userId');
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: user.id }
     });
 
     if (!user) {
@@ -77,13 +78,13 @@ export async function GET(request: Request) {
 // POST - יצירת רישום נוכחות חדש
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const user = await getAuthUser(req)
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: user.id }
     });
 
     if (!user) {
@@ -172,8 +173,4 @@ export async function POST(request: Request) {
     );
   }
 }
-
-
-
-
 

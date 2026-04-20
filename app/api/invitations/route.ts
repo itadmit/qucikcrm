@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { sendEmail } from "@/lib/email"
 import crypto from "crypto"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת כל ההזמנות של החברה
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const user = await getAuthUser(req)
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -50,8 +48,7 @@ export async function GET(req: NextRequest) {
 // POST - יצירת הזמנה חדשה
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string; id?: string; name?: string } | null
+    const user = await getAuthUser(req)
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -158,5 +155,4 @@ export async function POST(req: NextRequest) {
     )
   }
 }
-
 

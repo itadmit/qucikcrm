@@ -1,19 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { AutomationEngine } from "@/lib/automation-engine"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 /**
  * Manually run an automation
  */
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string; id?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -22,7 +18,7 @@ export async function POST(
     // Get the automation
     const automation = await prisma.automation.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })

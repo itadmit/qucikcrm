@@ -515,7 +515,7 @@ export function NewQuoteDialog({
         </DialogHeader>
 
         {showTemplateSelector && (
-          <div className="mb-4 p-4 border rounded-lg bg-gray-50" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+          <div className="mb-4 p-4 border rounded-lg bg-zinc-50" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold">בחר תבנית</h3>
               <Button
@@ -539,11 +539,11 @@ export function NewQuoteDialog({
                   <div className="flex-1 min-w-0">
                     <div className="font-medium break-words">{template.title}</div>
                     {template.description && (
-                      <div className="text-xs text-gray-500 break-words whitespace-pre-wrap">
+                      <div className="text-xs text-zinc-500 break-words whitespace-pre-wrap">
                         {template.description}
                       </div>
                     )}
-                    <div className="text-xs text-gray-400 mt-1">
+                    <div className="text-xs text-zinc-400 mt-1">
                       {template.items.length} פריטים
                     </div>
                   </div>
@@ -564,7 +564,7 @@ export function NewQuoteDialog({
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowNewLeadForm(!showNewLeadForm)}
-                  className="gap-1 text-purple-600 hover:text-purple-700 h-auto py-1"
+                  className="gap-1 text-violet-600 hover:text-violet-700 h-auto py-1"
                 >
                   <UserPlus className="w-3 h-3" />
                   {showNewLeadForm ? "ביטול" : "ליד חדש"}
@@ -572,7 +572,7 @@ export function NewQuoteDialog({
               </div>
               
               {showNewLeadForm ? (
-                <div className="p-3 border rounded-lg bg-purple-50 space-y-3">
+                <div className="p-3 border rounded-lg bg-violet-50 space-y-3">
                   <Input
                     placeholder="שם הליד *"
                     value={newLeadData.name}
@@ -594,7 +594,7 @@ export function NewQuoteDialog({
                     size="sm"
                     onClick={handleCreateLead}
                     disabled={creatingLead}
-                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    className="w-full bg-violet-600 hover:bg-violet-700"
                   >
                     {creatingLead ? "יוצר..." : "צור ליד"}
                   </Button>
@@ -707,7 +707,7 @@ export function NewQuoteDialog({
                 <SelectItem value="professional">תבנית מקצועית (כרטיסים)</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-zinc-500">
               {formData.templateType === "professional"
                 ? "תבנית מקצועית עם כרטיסי פריטים מפורטים - מומלץ להצעות מחיר מורכבות"
                 : "תבנית פשוטה עם טבלת פריטים - מומלץ להצעות מחיר בסיסיות"}
@@ -741,7 +741,7 @@ export function NewQuoteDialog({
               {items.map((item, index) => (
                 <div
                   key={index}
-                  className="p-4 border rounded-lg bg-gray-50 space-y-3"
+                  className="p-4 border rounded-lg bg-zinc-50 space-y-3"
                 >
                   <div className="flex justify-between items-start gap-3">
                     <div className="flex-1 space-y-2">
@@ -910,16 +910,16 @@ export function NewQuoteDialog({
               </div>
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+            <div className="bg-zinc-50 p-4 rounded-lg space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">סכום ביניים:</span>
+                <span className="text-zinc-600">סכום ביניים:</span>
                 <span className="font-medium">
                   ₪{subtotal.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                 </span>
               </div>
               {formData.discount > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">
+                  <span className="text-zinc-600">
                     הנחה ({formData.discount}%):
                   </span>
                   <span className="font-medium text-red-600">
@@ -931,7 +931,7 @@ export function NewQuoteDialog({
                 </div>
               )}
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">מע״מ ({formData.tax}%):</span>
+                <span className="text-zinc-600">מע״מ ({formData.tax}%):</span>
                 <span className="font-medium">
                   ₪{taxAmount.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                 </span>
@@ -939,7 +939,7 @@ export function NewQuoteDialog({
               <div className="border-t pt-2 mt-2">
                 <div className="flex justify-between text-lg font-bold">
                   <span>סה״כ לתשלום:</span>
-                  <span className="text-purple-600">
+                  <span className="text-violet-600">
                     ₪{total.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -999,7 +999,7 @@ export function NewQuoteDialog({
                 type="submit"
                 disabled={loading}
                 variant="outline"
-                className="border-purple-600 text-purple-600 hover:bg-purple-50"
+                className="border-purple-600 text-violet-600 hover:bg-violet-50"
               >
                 {loading ? "יוצר..." : "צור הצעת מחיר"}
               </Button>

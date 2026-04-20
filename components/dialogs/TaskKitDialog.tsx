@@ -164,7 +164,7 @@ export function TaskKitDialog({ projectId, clientId, onTasksCreated }: TaskKitDi
           <div>
             <h3 className="font-medium mb-3">קיטים מוכנים</h3>
             {loading ? (
-              <div className="text-center py-4 text-gray-500">טוען תבניות...</div>
+              <div className="text-center py-4 text-zinc-500">טוען תבניות...</div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {taskKits.map((kit) => (
@@ -173,18 +173,18 @@ export function TaskKitDialog({ projectId, clientId, onTasksCreated }: TaskKitDi
                   onClick={() => handleSelectKit(kit.id)}
                   className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
                     selectedKit === kit.id
-                      ? "border-purple-600 bg-purple-50"
-                      : "border-gray-200 hover:border-purple-300"
+                      ? "border-purple-600 bg-violet-50"
+                      : "border-zinc-200 hover:border-purple-300"
                   }`}
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-medium text-gray-900">{kit.name}</h4>
+                    <h4 className="font-medium text-zinc-900">{kit.name}</h4>
                     {selectedKit === kit.id && (
-                      <Check className="w-5 h-5 text-purple-600" />
+                      <Check className="w-5 h-5 text-violet-600" />
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">{kit.description}</p>
-                  <div className="text-xs text-gray-500">
+                  <p className="text-sm text-zinc-600 mb-3">{kit.description}</p>
+                  <div className="text-xs text-zinc-500">
                     {kit.tasks.length} משימות
                   </div>
                 </div>
@@ -194,7 +194,7 @@ export function TaskKitDialog({ projectId, clientId, onTasksCreated }: TaskKitDi
 
             {/* Show selected kit tasks */}
             {selectedKit && (
-              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <div className="mt-4 p-4 bg-zinc-50 rounded-lg">
                 <h4 className="font-medium mb-2">משימות בקיט:</h4>
                 <ul className="space-y-2">
                   {taskKits.find(k => k.id === selectedKit)?.tasks.map((task, idx) => (
@@ -211,10 +211,10 @@ export function TaskKitDialog({ projectId, clientId, onTasksCreated }: TaskKitDi
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-zinc-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">או</span>
+              <span className="px-2 bg-white text-zinc-500">או</span>
             </div>
           </div>
 

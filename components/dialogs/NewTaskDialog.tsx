@@ -185,7 +185,7 @@ export function NewTaskDialog({
           </Button>
           <Button
             type="submit"
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+            className="bg-violet-600 hover:bg-violet-700 text-white"
             disabled={loading || !formData.title.trim()}
           >
             {loading ? (
@@ -219,7 +219,7 @@ export function NewTaskDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       {showTrigger && (
         <DialogTrigger asChild>
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Button className="bg-violet-600 hover:bg-violet-700 text-white">
             <Plus className="w-4 h-4 ml-2" />
             משימה חדשה
           </Button>

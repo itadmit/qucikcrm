@@ -135,7 +135,7 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl flex items-center gap-2">
-            <Zap className="w-6 h-6 text-purple-600" />
+            <Zap className="w-6 h-6 text-violet-600" />
             ערוך אוטומציה
           </DialogTitle>
           <DialogDescription>
@@ -146,28 +146,28 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-4 my-6">
           <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 1 ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 1 ? 'bg-violet-600 text-white' : 'bg-zinc-200'}`}>
               1
             </div>
-            <span className={step >= 1 ? 'font-semibold' : 'text-gray-500'}>פרטים בסיסיים</span>
+            <span className={step >= 1 ? 'font-semibold' : 'text-zinc-500'}>פרטים בסיסיים</span>
           </div>
           
-          <div className="w-12 h-0.5 bg-gray-300" />
+          <div className="w-12 h-0.5 bg-zinc-300" />
           
           <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 2 ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 2 ? 'bg-violet-600 text-white' : 'bg-zinc-200'}`}>
               2
             </div>
-            <span className={step >= 2 ? 'font-semibold' : 'text-gray-500'}>טריגר</span>
+            <span className={step >= 2 ? 'font-semibold' : 'text-zinc-500'}>טריגר</span>
           </div>
           
-          <div className="w-12 h-0.5 bg-gray-300" />
+          <div className="w-12 h-0.5 bg-zinc-300" />
           
           <div className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 3 ? 'bg-purple-600 text-white' : 'bg-gray-200'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step >= 3 ? 'bg-violet-600 text-white' : 'bg-zinc-200'}`}>
               3
             </div>
-            <span className={step >= 3 ? 'font-semibold' : 'text-gray-500'}>פעולה</span>
+            <span className={step >= 3 ? 'font-semibold' : 'text-zinc-500'}>פעולה</span>
           </div>
         </div>
 
@@ -221,15 +221,15 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
                       onClick={() => setFormData({ ...formData, trigger: trigger.value })}
                       className={`p-4 border-2 rounded-lg text-right transition-all ${
                         isSelected
-                          ? 'border-purple-600 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-300'
+                          ? 'border-purple-600 bg-violet-50'
+                          : 'border-zinc-200 hover:border-purple-300'
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <Icon className={`w-5 h-5 ${isSelected ? 'text-purple-600' : 'text-gray-400'}`} />
+                        <Icon className={`w-5 h-5 ${isSelected ? 'text-violet-600' : 'text-zinc-400'}`} />
                         <div>
                           <div className="font-semibold">{trigger.label}</div>
-                          <div className="text-sm text-gray-600">{trigger.desc}</div>
+                          <div className="text-sm text-zinc-600">{trigger.desc}</div>
                         </div>
                       </div>
                     </button>
@@ -260,15 +260,15 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
                       onClick={() => setFormData({ ...formData, action: action.value })}
                       className={`p-4 border-2 rounded-lg text-right transition-all ${
                         isSelected
-                          ? 'border-purple-600 bg-purple-50'
-                          : 'border-gray-200 hover:border-purple-300'
+                          ? 'border-purple-600 bg-violet-50'
+                          : 'border-zinc-200 hover:border-purple-300'
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <Icon className={`w-5 h-5 ${isSelected ? 'text-purple-600' : 'text-gray-400'}`} />
+                        <Icon className={`w-5 h-5 ${isSelected ? 'text-violet-600' : 'text-zinc-400'}`} />
                         <div>
                           <div className="font-semibold">{action.label}</div>
-                          <div className="text-sm text-gray-600">{action.desc}</div>
+                          <div className="text-sm text-zinc-600">{action.desc}</div>
                         </div>
                       </div>
                     </button>
@@ -278,7 +278,7 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
 
               {/* Action-specific fields */}
               {formData.action === 'send_email' && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <div className="mt-4 p-4 bg-zinc-50 rounded-lg">
                   <Label htmlFor="emailTemplateId">תבנית אימייל</Label>
                   <Input
                     id="emailTemplateId"
@@ -290,7 +290,7 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
               )}
 
               {formData.action === 'create_task' && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg space-y-3">
+                <div className="mt-4 p-4 bg-zinc-50 rounded-lg space-y-3">
                   <div>
                     <Label htmlFor="taskTitle">כותרת המשימה</Label>
                     <Input
@@ -334,7 +334,7 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
                       <div className="space-y-1.5 mb-3">
                         {formData.taskChecklist.map((item, index) => (
                           <div key={index} className="flex items-center gap-2 group">
-                            <span className="text-xs text-gray-400 w-5 text-center">{index + 1}</span>
+                            <span className="text-xs text-zinc-400 w-5 text-center">{index + 1}</span>
                             <Input
                               value={item}
                               onChange={(e) => {
@@ -397,7 +397,7 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
                     </div>
 
                     {formData.taskChecklist.length > 0 && (
-                      <p className="text-xs text-gray-400 mt-1.5">
+                      <p className="text-xs text-zinc-400 mt-1.5">
                         {formData.taskChecklist.length} פריטים בצ׳קליסט
                       </p>
                     )}
@@ -406,7 +406,7 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
               )}
 
               {formData.action === 'send_notification' && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <div className="mt-4 p-4 bg-zinc-50 rounded-lg">
                   <Label htmlFor="notificationMessage">הודעת ההתראה</Label>
                   <Textarea
                     id="notificationMessage"
@@ -415,14 +415,14 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
                     placeholder="למשל: ליד חדש נוצר: {{name}}"
                     rows={2}
                   />
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-zinc-500 mt-1">
                     ניתן להשתמש במשתנים: {`{{name}}, {{email}}, {{phone}}`}
                   </p>
                 </div>
               )}
 
               {formData.action === 'update_status' && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <div className="mt-4 p-4 bg-zinc-50 rounded-lg">
                   <Label htmlFor="statusValue">סטטוס חדש</Label>
                   <Input
                     id="statusValue"
@@ -434,7 +434,7 @@ export function EditAutomationDialog({ open, onOpenChange, automation, onSuccess
               )}
 
               {formData.action === 'add_tag' && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <div className="mt-4 p-4 bg-zinc-50 rounded-lg">
                   <Label htmlFor="tagName">שם התג</Label>
                   <Input
                     id="tagName"

@@ -98,7 +98,7 @@ function PaymentSuccessContent() {
           <Card className="shadow-lg">
             <CardContent className="py-12 text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">מעבד את התשלום...</p>
+              <p className="text-zinc-600">מעבד את התשלום...</p>
             </CardContent>
           </Card>
         </div>
@@ -119,49 +119,49 @@ function PaymentSuccessContent() {
                 </div>
               </div>
             </div>
-            <CardTitle className="text-3xl font-bold text-gray-900 mb-2">
+            <CardTitle className="text-3xl font-bold text-zinc-900 mb-2">
               התשלום הושלם בהצלחה!
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="text-center">
-              <p className="text-lg text-gray-700 mb-2">
+              <p className="text-lg text-zinc-700 mb-2">
                 תודה על התשלום!
               </p>
-              <p className="text-gray-600">
+              <p className="text-zinc-600">
                 ההצעה אושרה והפרויקט נוצר במערכת.
               </p>
             </div>
 
             {paymentData && (
-              <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
+              <div className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <Receipt className="w-5 h-5 text-gray-600" />
-                  <h3 className="font-semibold text-gray-900">פרטי התשלום</h3>
+                  <Receipt className="w-5 h-5 text-zinc-600" />
+                  <h3 className="font-semibold text-zinc-900">פרטי התשלום</h3>
                 </div>
                 
                 {paymentData.amount && (
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                    <span className="text-gray-600">סכום:</span>
-                    <span className="font-bold text-lg text-gray-900">
+                  <div className="flex justify-between items-center py-2 border-b border-zinc-100">
+                    <span className="text-zinc-600">סכום:</span>
+                    <span className="font-bold text-lg text-zinc-900">
                       {formatAmount(paymentData.amount)}
                     </span>
                   </div>
                 )}
 
                 {paymentData.approvalNum && (
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                    <span className="text-gray-600">מספר אישור:</span>
-                    <span className="font-mono font-semibold text-gray-900">
+                  <div className="flex justify-between items-center py-2 border-b border-zinc-100">
+                    <span className="text-zinc-600">מספר אישור:</span>
+                    <span className="font-mono font-semibold text-zinc-900">
                       {paymentData.approvalNum}
                     </span>
                   </div>
                 )}
 
                 {paymentData.voucherNum && (
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                    <span className="text-gray-600">מספר קבלה:</span>
-                    <span className="font-mono font-semibold text-gray-900">
+                  <div className="flex justify-between items-center py-2 border-b border-zinc-100">
+                    <span className="text-zinc-600">מספר קבלה:</span>
+                    <span className="font-mono font-semibold text-zinc-900">
                       {paymentData.voucherNum}
                     </span>
                   </div>
@@ -169,8 +169,8 @@ function PaymentSuccessContent() {
 
                 {paymentData.transactionUid && (
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-gray-600">מספר עסקה:</span>
-                    <span className="font-mono text-sm text-gray-700 break-all text-left">
+                    <span className="text-zinc-600">מספר עסקה:</span>
+                    <span className="font-mono text-sm text-zinc-700 break-all text-left">
                       {paymentData.transactionUid}
                     </span>
                   </div>
@@ -187,7 +187,7 @@ function PaymentSuccessContent() {
                 <Printer className="w-4 h-4" />
                 הדפס קבלה
               </Button>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-zinc-500">
                 תוכל לסגור את החלון הזה
               </p>
             </div>
@@ -203,8 +203,8 @@ export default function PaymentSuccessPage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center" dir="rtl">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">טוען...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-zinc-900 mx-auto mb-4"></div>
+          <p className="text-zinc-600">טוען...</p>
         </div>
       </div>
     }>

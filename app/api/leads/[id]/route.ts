@@ -1,31 +1,20 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { triggerAutomation } from "@/lib/automation-engine"
+import { getAuthUser } from "@/lib/mobile-auth"
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
-    
-    console.log('GET Lead API called:', { 
-      leadId: params.id, 
-      hasSession: !!session,
-      companyId: user?.companyId 
-    })
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
-      console.log('Unauthorized: No session or companyId')
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const lead = await prisma.lead.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -48,7 +37,7 @@ export async function GET(
     console.log('Lead found:', !!lead)
 
     if (!lead) {
-      console.log('Lead not found for:', { leadId: params.id, companyId: user.companyId })
+      console.log('Lead not found for:', { leadId: id, companyId: user.companyId })
       return NextResponse.json({ error: "Lead not found" }, { status: 404 })
     }
 
@@ -63,13 +52,10 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string; id?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -80,7 +66,7 @@ export async function PATCH(
 
     // Get old lead data to check for status changes
     const oldLead = await prisma.lead.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         owner: true,
         stage: true,
@@ -89,7 +75,7 @@ export async function PATCH(
 
     const lead = await prisma.lead.update({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       data: {
@@ -137,13 +123,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -151,7 +134,7 @@ export async function DELETE(
 
     await prisma.lead.delete({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
     })

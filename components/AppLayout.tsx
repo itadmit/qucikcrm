@@ -72,7 +72,7 @@ export function AppLayout({ children, title, hideSidebar = false, hideHeader = f
 
   if (hideSidebar && hideHeader) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#f7f9fe' }} dir="rtl">
+      <div className="min-h-screen bg-[#FAFAF7]" dir="rtl">
         <main className="flex items-center justify-center py-12">
           <div className="w-full max-w-md px-4">
             {children}
@@ -83,7 +83,7 @@ export function AppLayout({ children, title, hideSidebar = false, hideHeader = f
   }
 
   return (
-    <div className="flex h-screen" style={{ backgroundColor: '#f7f9fe' }} dir="rtl">
+    <div className="flex h-screen bg-[#FAFAF7]" dir="rtl">
       {!hideSidebar && (
         <Sidebar
           mobileOpen={mobileMenuOpen}

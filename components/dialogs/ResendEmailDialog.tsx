@@ -100,15 +100,15 @@ export function ResendEmailDialog({
       <DialogContent className="sm:max-w-md" dir="rtl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
-            <Mail className="w-5 h-5 text-purple-600" />
+            <Mail className="w-5 h-5 text-violet-600" />
             שליחת מסמך במייל
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <p className="text-sm text-gray-600">מסמך מספר:</p>
-            <p className="font-semibold text-gray-900">{quoteNumber}</p>
+          <div className="bg-zinc-50 p-3 rounded-lg">
+            <p className="text-sm text-zinc-600">מסמך מספר:</p>
+            <p className="font-semibold text-zinc-900">{quoteNumber}</p>
           </div>
 
           <div className="space-y-2">
@@ -122,7 +122,7 @@ export function ResendEmailDialog({
               dir="ltr"
               className="text-left"
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-zinc-500">
               ניתן לערוך את כתובת האימייל לפני השליחה
             </p>
           </div>

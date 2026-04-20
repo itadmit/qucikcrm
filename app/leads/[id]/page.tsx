@@ -140,7 +140,7 @@ export default function LeadDetailPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">טוען פרטי ליד...</p>
+            <p className="mt-4 text-zinc-600">טוען פרטי ליד...</p>
           </div>
         </div>
       </AppLayout>
@@ -151,8 +151,8 @@ export default function LeadDetailPage() {
     return (
       <AppLayout>
         <div className="text-center py-12">
-          <UserPlus className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">ליד לא נמצא</h3>
+          <UserPlus className="w-16 h-16 mx-auto text-zinc-300 mb-4" />
+          <h3 className="text-lg font-medium text-zinc-900 mb-2">ליד לא נמצא</h3>
           <Link href="/leads">
             <Button variant="outline">חזרה ללידים</Button>
           </Link>
@@ -164,7 +164,7 @@ export default function LeadDetailPage() {
   const statusColors: Record<string, string> = {
     NEW: "bg-blue-100 text-blue-800",
     CONTACTED: "bg-yellow-100 text-yellow-800",
-    QUALIFIED: "bg-purple-100 text-purple-800",
+    QUALIFIED: "bg-violet-100 text-violet-800",
     PROPOSAL: "bg-orange-100 text-orange-800",
     WON: "bg-green-100 text-green-800",
     LOST: "bg-red-100 text-red-800",
@@ -183,22 +183,22 @@ export default function LeadDetailPage() {
     <AppLayout>
       <div className="space-y-6">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/leads" className="hover:text-gray-700">לידים</Link>
+        <div className="flex items-center gap-2 text-sm text-zinc-500">
+          <Link href="/leads" className="hover:text-zinc-700">לידים</Link>
           <ArrowRight className="w-4 h-4" />
-          <span className="text-gray-900">{lead.name}</span>
+          <span className="text-zinc-900">{lead.name}</span>
         </div>
 
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{lead.name}</h1>
+            <h1 className="text-3xl font-bold text-zinc-900">{lead.name}</h1>
             <div className="flex items-center gap-3 mt-2">
               <span className={`text-xs px-3 py-1 rounded-full ${statusColors[lead.status]}`}>
                 {statusLabels[lead.status]}
               </span>
               {lead.tags && lead.tags.map((tag, index) => (
-                <span key={index} className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-700 flex items-center gap-1">
+                <span key={index} className="text-xs px-3 py-1 rounded-full bg-zinc-100 text-zinc-700 flex items-center gap-1">
                   <Tag className="w-3 h-3" />
                   {tag}
                 </span>
@@ -231,7 +231,7 @@ export default function LeadDetailPage() {
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-zinc-200">
           <div className="flex gap-6">
             {[
               { key: "overview", label: "סקירה" },
@@ -244,8 +244,8 @@ export default function LeadDetailPage() {
                 onClick={() => setActiveTab(tab.key as any)}
                 className={`pb-3 border-b-2 transition-colors ${
                   activeTab === tab.key
-                    ? "border-purple-600 text-purple-600 font-medium"
-                    : "border-transparent text-gray-500 hover:text-gray-700"
+                    ? "border-purple-600 text-violet-600 font-medium"
+                    : "border-transparent text-zinc-500 hover:text-zinc-700"
                 }`}
               >
                 {tab.label}
@@ -268,28 +268,28 @@ export default function LeadDetailPage() {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-gray-500 text-sm">אימייל</Label>
+                    <Label className="text-zinc-500 text-sm">אימייל</Label>
                     <div className="flex items-center gap-2 mt-1">
-                      <Mail className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">{lead.email || "-"}</span>
+                      <Mail className="w-4 h-4 text-zinc-400" />
+                      <span className="text-zinc-900">{lead.email || "-"}</span>
                     </div>
                   </div>
                   <div>
-                    <Label className="text-gray-500 text-sm">טלפון</Label>
+                    <Label className="text-zinc-500 text-sm">טלפון</Label>
                     <div className="flex items-center gap-2 mt-1">
-                      <Phone className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">{lead.phone || "-"}</span>
+                      <Phone className="w-4 h-4 text-zinc-400" />
+                      <span className="text-zinc-900">{lead.phone || "-"}</span>
                     </div>
                   </div>
                   <div>
-                    <Label className="text-gray-500 text-sm">מקור</Label>
+                    <Label className="text-zinc-500 text-sm">מקור</Label>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-gray-900">{lead.source || "-"}</span>
+                      <span className="text-zinc-900">{lead.source || "-"}</span>
                     </div>
                   </div>
                   {lead.stage && (
                     <div>
-                      <Label className="text-gray-500 text-sm">שלב בפייפליין</Label>
+                      <Label className="text-zinc-500 text-sm">שלב בפייפליין</Label>
                       <div className="flex items-center gap-2 mt-1">
                         <span 
                           className="text-xs px-3 py-1 rounded-full"
@@ -304,10 +304,10 @@ export default function LeadDetailPage() {
                     </div>
                   )}
                   <div>
-                    <Label className="text-gray-500 text-sm">תאריך יצירה</Label>
+                    <Label className="text-zinc-500 text-sm">תאריך יצירה</Label>
                     <div className="flex items-center gap-2 mt-1">
-                      <Calendar className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">
+                      <Calendar className="w-4 h-4 text-zinc-400" />
+                      <span className="text-zinc-900">
                         {new Date(lead.createdAt).toLocaleDateString('he-IL')}
                       </span>
                     </div>
@@ -335,7 +335,7 @@ export default function LeadDetailPage() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-700 whitespace-pre-wrap">
+                  <p className="text-zinc-700 whitespace-pre-wrap">
                     {lead.notes || "אין הערות"}
                   </p>
                 )}
@@ -355,16 +355,16 @@ export default function LeadDetailPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-gray-900">ליד נוצר</h4>
-                        <span className="text-xs text-gray-500">
+                        <h4 className="font-medium text-zinc-900">ליד נוצר</h4>
+                        <span className="text-xs text-zinc-500">
                           {new Date(lead.createdAt).toLocaleDateString('he-IL')}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-sm text-zinc-600 mt-1">
                         הליד נוצר במערכת
                         {lead.source && ` דרך ${lead.source}`}
                       </p>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-zinc-500">
                         {lead.owner?.name || "מערכת"}
                       </span>
                     </div>
@@ -382,7 +382,7 @@ export default function LeadDetailPage() {
                   <CardTitle>משימות</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-500 text-center py-8">
+                  <p className="text-zinc-500 text-center py-8">
                     אין משימות עדיין. צור משימות בדף המשימות וקשר אותן לליד זה.
                   </p>
                 </CardContent>
@@ -406,8 +406,8 @@ export default function LeadDetailPage() {
                 <CardContent>
                   {quotes.length === 0 ? (
                     <div className="text-center py-8">
-                      <FileText className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                      <p className="text-gray-500 mb-4">
+                      <FileText className="w-12 h-12 mx-auto text-zinc-400 mb-4" />
+                      <p className="text-zinc-500 mb-4">
                         אין הצעות מחיר עדיין. צור הצעת מחיר חדשה.
                       </p>
                       <Button
@@ -423,12 +423,12 @@ export default function LeadDetailPage() {
                       {quotes.map((quote) => (
                         <div
                           key={quote.id}
-                          className="p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                          className="p-4 border rounded-lg hover:bg-zinc-50 transition-colors"
                         >
                           <div className="flex justify-between items-start">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
-                                <span className="font-medium text-gray-900">
+                                <span className="font-medium text-zinc-900">
                                   {quote.quoteNumber}
                                 </span>
                                 <span
@@ -440,7 +440,7 @@ export default function LeadDetailPage() {
                                       : quote.status === "SENT" ||
                                         quote.status === "VIEWED"
                                       ? "bg-blue-100 text-blue-800"
-                                      : "bg-gray-100 text-gray-800"
+                                      : "bg-zinc-100 text-zinc-800"
                                   }`}
                                 >
                                   {quote.status === "DRAFT"
@@ -456,16 +456,16 @@ export default function LeadDetailPage() {
                                     : quote.status}
                                 </span>
                               </div>
-                              <p className="text-sm text-gray-600 mb-2">
+                              <p className="text-sm text-zinc-600 mb-2">
                                 {quote.title}
                               </p>
-                              <div className="flex items-center gap-4 text-xs text-gray-500">
+                              <div className="flex items-center gap-4 text-xs text-zinc-500">
                                 <span>
                                   {new Date(quote.createdAt).toLocaleDateString(
                                     "he-IL"
                                   )}
                                 </span>
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-zinc-900">
                                   ₪{quote.total.toLocaleString()}
                                 </span>
                               </div>
@@ -491,7 +491,7 @@ export default function LeadDetailPage() {
                   <CardTitle>קבצים ומסמכים</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-500 text-center py-8">
+                  <p className="text-zinc-500 text-center py-8">
                     אין קבצים. העלה קבצים הקשורים לליד זה.
                   </p>
                 </CardContent>
@@ -508,16 +508,16 @@ export default function LeadDetailPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                    <span className="text-purple-600 font-medium">
+                  <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                    <span className="text-violet-600 font-medium">
                       {lead.owner?.name?.charAt(0) || "?"}
                     </span>
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">
+                    <div className="font-medium text-zinc-900">
                       {lead.owner?.name || "לא משוייך"}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-zinc-500">
                       {lead.owner?.email || "-"}
                     </div>
                   </div>
@@ -567,8 +567,8 @@ export default function LeadDetailPage() {
                     <CheckCircle2 className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-1">המר ללקוח</h4>
-                    <p className="text-sm text-gray-600">
+                    <h4 className="font-medium text-zinc-900 mb-1">המר ללקוח</h4>
+                    <p className="text-sm text-zinc-600">
                       כשתסיים את התהליך עם הליד, תוכל להמיר אותו ללקוח ולהתחיל בפרויקט
                     </p>
                   </div>

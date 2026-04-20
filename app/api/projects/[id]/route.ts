@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -17,7 +13,7 @@ export async function GET(
 
     const project = await prisma.project.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -109,13 +105,10 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -126,7 +119,7 @@ export async function PATCH(
 
     const project = await prisma.project.update({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       data: {
@@ -149,13 +142,10 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions)
-    const user = session?.user as { companyId?: string } | null
+    const { id } = await params;
+    const user = await getAuthUser(req)
     
     if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -164,7 +154,7 @@ export async function DELETE(
     // Verify project exists and belongs to company
     const project = await prisma.project.findFirst({
       where: {
-        id: params.id,
+        id: id,
         companyId: user.companyId,
       },
       include: {
@@ -190,7 +180,7 @@ export async function DELETE(
     // Delete files associated with the project
     await prisma.file.deleteMany({
       where: {
-        projectId: params.id,
+        projectId: id,
         companyId: user.companyId,
       },
     })
@@ -198,7 +188,7 @@ export async function DELETE(
     // Delete payments associated with the project
     await prisma.payment.deleteMany({
       where: {
-        projectId: params.id,
+        projectId: id,
         companyId: user.companyId,
       },
     })
@@ -206,7 +196,7 @@ export async function DELETE(
     // Delete budgets associated with the project
     await prisma.budget.deleteMany({
       where: {
-        projectId: params.id,
+        projectId: id,
         companyId: user.companyId,
       },
     })
@@ -214,7 +204,7 @@ export async function DELETE(
     // Delete tasks associated with the project (will cascade delete task files)
     await prisma.task.deleteMany({
       where: {
-        projectId: params.id,
+        projectId: id,
         companyId: user.companyId,
       },
     })
@@ -222,11 +212,11 @@ export async function DELETE(
     // Finally, delete the project itself
     await prisma.project.delete({
       where: {
-        id: params.id,
+        id: id,
       },
     })
 
-    console.log(`✅ Project ${params.id} deleted successfully with all related data`)
+    console.log(`✅ Project ${id} deleted successfully with all related data`)
 
     return NextResponse.json({ 
       success: true,

@@ -1,21 +1,20 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+;
+;
 import { prisma } from '@/lib/prisma';
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // PUT - עדכון רישום נוכחות
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: user.id }
     });
 
     if (!user) {
@@ -32,7 +31,7 @@ export async function PUT(
 
     // ודא שהרישום שייך למשתמש או שהמשתמש הוא מנהל
     const attendance = await prisma.attendance.findUnique({
-      where: { id: params.id }
+      where: { id: id }
     });
 
     if (!attendance) {
@@ -61,7 +60,7 @@ export async function PUT(
 
     // עדכון הנוכחות
     const updated = await prisma.attendance.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         clockIn: clockInDate,
         clockOut: clockOutDate,
@@ -84,7 +83,7 @@ export async function PUT(
     try {
       await prisma.attendanceHistory.create({
         data: {
-          attendanceId: params.id,
+          attendanceId: id,
           editedBy: user.id,
           action: 'updated',
           changes
@@ -105,18 +104,16 @@ export async function PUT(
 }
 
 // DELETE - מחיקת רישום נוכחות
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    const { id } = await params;
+    const user = await getAuthUser(req)
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: user.id }
     });
 
     if (!user) {
@@ -125,7 +122,7 @@ export async function DELETE(
 
     // ודא שהרישום שייך למשתמש או שהמשתמש הוא מנהל
     const attendance = await prisma.attendance.findUnique({
-      where: { id: params.id }
+      where: { id: id }
     });
 
     if (!attendance) {
@@ -140,7 +137,7 @@ export async function DELETE(
     try {
       await prisma.attendanceHistory.create({
         data: {
-          attendanceId: params.id,
+          attendanceId: id,
           editedBy: user.id,
           action: 'deleted',
           changes: {
@@ -159,7 +156,7 @@ export async function DELETE(
     }
 
     await prisma.attendance.delete({
-      where: { id: params.id }
+      where: { id: id }
     });
 
     return NextResponse.json({ success: true });
@@ -171,8 +168,4 @@ export async function DELETE(
     );
   }
 }
-
-
-
-
 

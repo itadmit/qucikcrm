@@ -1,19 +1,18 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 // GET - קבלת כל המשתמשים בחברה
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.companyId) {
+    const user = await getAuthUser(req)
+    if (!user?.companyId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const users = await prisma.user.findMany({
       where: {
-        companyId: session.user.companyId,
+        companyId: user.companyId,
       },
       select: {
         id: true,
@@ -36,5 +35,4 @@ export async function GET(req: NextRequest) {
     )
   }
 }
-
 

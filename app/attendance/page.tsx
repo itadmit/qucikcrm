@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Clock, Calendar, TrendingUp, DollarSign, Plus, Edit, Trash, History, Settings } from "lucide-react"
+import { Clock, Calendar, TrendingUp, DollarSign, Plus, Edit, Trash, History, Settings, UserCheck } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import { format } from "date-fns"
 import { he } from "date-fns/locale"
@@ -262,11 +262,16 @@ export default function AttendancePage() {
       <div className="space-y-6">
         {/* כותרת */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl lg:text-3xl font-bold">שעון נוכחות</h1>
-            <p className="text-muted-foreground mt-1 text-sm lg:text-base">
-              רישום שעות עבודה וחישוב משכורת
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center">
+              <UserCheck className="w-5 h-5 text-teal-600" strokeWidth={2.2} />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight">שעון נוכחות</h1>
+              <p className="text-sm text-zinc-500 mt-0.5">
+                רישום שעות עבודה וחישוב משכורת
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-2 lg:gap-3">
             <SalarySummaryDialog />
@@ -312,7 +317,7 @@ export default function AttendancePage() {
               <CardTitle className="text-sm font-medium">שכר שעתי</CardTitle>
               <EmployeeSettingsDialog 
                 triggerButton={
-                  <button className="text-muted-foreground hover:text-purple-600 transition-colors">
+                  <button className="text-muted-foreground hover:text-violet-600 transition-colors">
                     <Edit className="h-4 w-4" />
                   </button>
                 }

@@ -244,26 +244,26 @@ export function EditTaskTemplatesDialog() {
               </div>
               <div className="space-y-3">
                 {templates.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-zinc-500">
                     אין תבניות עדיין. הוסף תבנית חדשה להתחיל.
                   </div>
                 ) : (
                   templates.map((template) => (
                     <div
                       key={template.id}
-                      className="border rounded-lg p-4 hover:bg-gray-50"
+                      className="border rounded-lg p-4 hover:bg-zinc-50"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h4 className="font-medium text-gray-900 mb-1">
+                          <h4 className="font-medium text-zinc-900 mb-1">
                             {template.name}
                           </h4>
                           {template.description && (
-                            <p className="text-sm text-gray-600 mb-2">
+                            <p className="text-sm text-zinc-600 mb-2">
                               {template.description}
                             </p>
                           )}
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-zinc-500">
                             {template.tasks.length} משימות
                           </div>
                         </div>
@@ -294,7 +294,7 @@ export function EditTaskTemplatesDialog() {
 
           {/* טופס עריכה/הוספה */}
           {(newTemplate || editingId) && (
-            <div className="border rounded-lg p-4 bg-gray-50">
+            <div className="border rounded-lg p-4 bg-zinc-50">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium">
                   {editingId ? "ערוך תבנית" : "תבנית חדשה"}

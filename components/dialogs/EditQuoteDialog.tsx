@@ -426,7 +426,7 @@ export function EditQuoteDialog({
                 <SelectItem value="professional">תבנית מקצועית (כרטיסים)</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-zinc-500">
               {formData.templateType === "professional"
                 ? "תבנית מקצועית עם כרטיסי פריטים מפורטים - מומלץ להצעות מחיר מורכבות"
                 : "תבנית פשוטה עם טבלת פריטים - מומלץ להצעות מחיר בסיסיות"}
@@ -460,7 +460,7 @@ export function EditQuoteDialog({
               {items.map((item, index) => (
                 <div
                   key={index}
-                  className="p-4 border rounded-lg bg-gray-50 space-y-3"
+                  className="p-4 border rounded-lg bg-zinc-50 space-y-3"
                 >
                   <div className="flex justify-between items-start gap-3">
                     <div className="flex-1 space-y-2">
@@ -629,16 +629,16 @@ export function EditQuoteDialog({
               </div>
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+            <div className="bg-zinc-50 p-4 rounded-lg space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">סכום ביניים:</span>
+                <span className="text-zinc-600">סכום ביניים:</span>
                 <span className="font-medium">
                   ₪{subtotal.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                 </span>
               </div>
               {formData.discount > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">
+                  <span className="text-zinc-600">
                     הנחה ({formData.discount}%):
                   </span>
                   <span className="font-medium text-red-600">
@@ -650,7 +650,7 @@ export function EditQuoteDialog({
                 </div>
               )}
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">מע״מ ({formData.tax}%):</span>
+                <span className="text-zinc-600">מע״מ ({formData.tax}%):</span>
                 <span className="font-medium">
                   ₪{taxAmount.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                 </span>
@@ -658,7 +658,7 @@ export function EditQuoteDialog({
               <div className="border-t pt-2 mt-2">
                 <div className="flex justify-between text-lg font-bold">
                   <span>סה״כ לתשלום:</span>
-                  <span className="text-purple-600">
+                  <span className="text-violet-600">
                     ₪{total.toLocaleString("he-IL", { minimumFractionDigits: 2 })}
                   </span>
                 </div>

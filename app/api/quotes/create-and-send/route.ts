@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { sendEmail, getEmailTemplate } from "@/lib/email"
 import { generateQuotePDF } from "@/lib/pdf-generator"
 import { Session } from "next-auth"
+import { getAuthUser } from "@/lib/mobile-auth"
 
 interface ExtendedSession extends Session {
   user: {
@@ -20,13 +19,13 @@ interface ExtendedSession extends Session {
 // POST /api/quotes/create-and-send - יצירת הצעת מחיר ושילוח במייל
 export async function POST(req: NextRequest) {
   try {
-    const session = (await getServerSession(authOptions)) as ExtendedSession | null
-    if (!session?.user?.id) {
+    const user = await getAuthUser(req)
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: user.id },
       select: { companyId: true },
     })
 
@@ -154,7 +153,7 @@ export async function POST(req: NextRequest) {
             notes: notes || null,
             terms: terms || null,
             issuedAt: new Date(),
-            createdBy: session.user.id,
+            createdBy: user.id,
             items: {
               create: processedItems,
             },
