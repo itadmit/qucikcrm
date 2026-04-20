@@ -42,7 +42,8 @@ export function Header({ title, onMenuToggle, externalUnreadCount }: HeaderProps
   }
 
   return (
-    <header className="h-14 lg:h-16 border-b border-zinc-200/70 bg-[#FAFAF7]/80 backdrop-blur-md flex items-center justify-between px-3 lg:px-6 shrink-0">
+    <header className="h-14 lg:h-16 border-b border-zinc-200/70 bg-[#FAFAF7]/80 backdrop-blur-md shrink-0 px-3 lg:px-6">
+      <div className="h-full max-w-7xl mx-auto flex items-center justify-between">
       <div className="flex items-center gap-2 lg:gap-4 flex-1 min-w-0">
         {/* Mobile hamburger */}
         <button
@@ -143,6 +144,7 @@ export function Header({ title, onMenuToggle, externalUnreadCount }: HeaderProps
           open={inviteDialogOpen}
           onOpenChange={setInviteDialogOpen}
         />
+      </div>
       </div>
     </header>
   )
