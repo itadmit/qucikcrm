@@ -145,10 +145,10 @@ export default function HomePage() {
               </div>
               <div className="bg-zinc-100">
                 <Image
-                  src="/images/quickcrm-dashboard.png"
+                  src="/images/quickcrm-dashboard.webp"
                   alt="ממשק Quick CRM — דשבורד וניהול לידים"
-                  width={1920}
-                  height={1080}
+                  width={2938}
+                  height={2208}
                   className="w-full h-auto object-top max-h-[min(85vh,900px)] object-cover sm:object-contain"
                   priority
                   sizes="(max-width: 1280px) 100vw, 1152px"

@@ -222,10 +222,10 @@ export default function LoginPage() {
                 </div>
                 <div className="bg-zinc-100">
                   <Image
-                    src="/images/quickcrm-dashboard.png"
+                    src="/images/quickcrm-dashboard.webp"
                     alt="ממשק Quick CRM"
-                    width={1200}
-                    height={800}
+                    width={2938}
+                    height={2208}
                     className="w-full h-auto object-top max-h-[min(70vh,560px)] object-cover"
                     priority
                     sizes="(max-width: 1024px) 100vw, 512px"
