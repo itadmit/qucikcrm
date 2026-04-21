@@ -31,6 +31,14 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -173,6 +181,29 @@ body {
 
 [dir="rtl"] .animate-marquee {
   animation: marquee 40s linear infinite reverse;
+}
+
+/* Floating animation for hero/phone decorative cards */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  50%      { transform: translateY(-10px) rotate(var(--tilt, 0deg)); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  50%      { transform: translateY(-7px) rotate(var(--tilt, 0deg)); }
+}
+
+.animate-float-slow   { animation: float-slow 6s ease-in-out infinite; }
+.animate-float-medium { animation: float-medium 4.5s ease-in-out infinite; }
+.animate-float-delayed { animation: float-slow 6s ease-in-out infinite; animation-delay: 1.5s; }
+.animate-float-delayed-2 { animation: float-medium 5s ease-in-out infinite; animation-delay: 0.8s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow,
+  .animate-float-medium,
+  .animate-float-delayed,
+  .animate-float-delayed-2 { animation: none; }
 }
 
 /* Project colors */

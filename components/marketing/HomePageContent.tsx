@@ -1,8 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import {
+  MARKETING_HERO_IMAGE,
+  MARKETING_HERO_IMAGE_ALT,
+  MARKETING_HERO_IMAGE_HEIGHT,
+  MARKETING_HERO_IMAGE_WIDTH,
+} from "@/lib/marketing-hero-image"
+import { BrandLogoMark } from "@/components/BrandLogoMark"
+import { cn } from "@/lib/utils"
 import {
   Sparkles,
   ArrowLeft,
@@ -30,42 +38,160 @@ import {
   CheckCircle2,
   TrendingUp,
   Building,
+  ArrowUpLeft,
+  MessageCircle,
+  UserPlus,
+  Menu,
+  X,
 } from "lucide-react"
+
+const TESTIMONIALS = [
+  {
+    quote: '״חיפשנו משהו פשוט שיצמח איתנו. Quick CRM זה הראשון שהצוות באמת אימץ — תוך שבוע כולם עבדו במערכת, בלי הדרכות ארוכות ובלי בלגן.״',
+    name: 'רועי לוי',
+    initials: 'ר.ל',
+    role: 'מנכ״ל · סטודיו אמברלה, תל אביב',
+    gradient: 'from-emerald-500 to-teal-500',
+    stars: 5,
+  },
+  {
+    quote: '״עברתי מ-Monday ל-Quick CRM והחסכתי כמעט 70% בחודש. הממשק בעברית מרגיש טבעי, ולקח לי 20 דקות להעביר את כל הלידים.״',
+    name: 'מיכל אברהם',
+    initials: 'מ.א',
+    role: 'בעלת עסק · פרילנסרית שיווק דיגיטלי',
+    gradient: 'from-violet-500 to-fuchsia-500',
+    stars: 5,
+  },
+  {
+    quote: '״הפיצ׳ר של הצעות מחיר שנשלחות ללקוח ומאושרות בלחיצה — שינה לנו את המשחק. הלקוחות מתרשמים ואנחנו סוגרים מהר יותר.״',
+    name: 'יונתן כהן',
+    initials: 'י.כ',
+    role: 'שותף מייסד · דיגיטל פלוס, רמת גן',
+    gradient: 'from-amber-500 to-orange-500',
+    stars: 5,
+  },
+  {
+    quote: '״התמיכה בעברית ובטלפון הייתה שיקול מרכזי. תוך יום קיבלתי מענה אנושי שעזר לי להגדיר אוטומציות — אצל המתחרים חיכיתי שבועות.״',
+    name: 'שרון דוד',
+    initials: 'ש.ד',
+    role: 'מנהלת תפעול · קבוצת נדל״ן SD',
+    gradient: 'from-cyan-500 to-blue-500',
+    stars: 5,
+  },
+  {
+    quote: '״מנהל 8 עובדים ו-Quick CRM הפך את הבלגן לסדר. הקנבן, ניהול הפרויקטים, והתזכורות האוטומטיות — כאילו הוספתי עוד עובד לצוות.״',
+    name: 'אלון ברק',
+    initials: 'א.ב',
+    role: 'CEO · סוכנות ברק קריאייטיב, חיפה',
+    gradient: 'from-rose-500 to-pink-500',
+    stars: 5,
+  },
+] as const
+
+const NAV_LINKS = [
+  { href: "#product", label: "המוצר" },
+  { href: "#workflow", label: "איך זה עובד" },
+  { href: "#apps", label: "אפליקציה" },
+  { href: "#pricing", label: "מחירים" },
+  { href: "#faq", label: "שאלות נפוצות" },
+  { href: "#customers", label: "לקוחות" },
+] as const
 
 export default function HomePageContent() {
   const [seatCount, setSeatCount] = useState(3)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [testimonialFade, setTestimonialFade] = useState(true)
+  const testimonialTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const goToTestimonial = useCallback((idx: number) => {
+    setTestimonialFade(false)
+    setTimeout(() => {
+      setActiveTestimonial(idx)
+      setTestimonialFade(true)
+    }, 300)
+  }, [])
+
+  useEffect(() => {
+    testimonialTimer.current = setTimeout(() => {
+      goToTestimonial((activeTestimonial + 1) % TESTIMONIALS.length)
+    }, 6000)
+    return () => {
+      if (testimonialTimer.current) clearTimeout(testimonialTimer.current)
+    }
+  }, [activeTestimonial, goToTestimonial])
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [mobileMenuOpen])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [mobileMenuOpen])
+
   return (
     <div className="min-h-screen bg-[#FAFAF7] text-zinc-900" dir="rtl">
       {/* Nav */}
       <nav className="sticky top-0 z-50 backdrop-blur-md bg-[#FAFAF7]/80 border-b border-zinc-200/60">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-lg flex items-center justify-center shadow-sm">
-              <Sparkles className="w-4 h-4 text-white" strokeWidth={2.5} />
-            </div>
-            <span className="text-xl font-pacifico" style={{ letterSpacing: '0.5px' }}>
-              Quick crm
-            </span>
-            <span className="text-[10px] font-bold text-violet-700 bg-violet-100 px-1.5 py-0.5 rounded">
-              v2
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-1 text-sm text-zinc-600">
-            <a href="#product" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">המוצר</a>
-            <a href="#workflow" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">איך זה עובד</a>
-            <a href="#apps" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">אפליקציה</a>
-            <a href="#pricing" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">מחירים</a>
-            <a href="#faq" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">שאלות נפוצות</a>
-            <a href="#customers" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">לקוחות</a>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 gap-3">
+          {/* ב־RTL: שני בני flex בלבד (לוגו+המבורגר | CTA) — התפריט המרכזי בדסקטופ ב-absolute שלא יתפוס מקום במובייל */}
+          <div className="relative z-10 flex items-center gap-1 shrink-0 min-w-0">
+            <button
+              type="button"
+              className="md:hidden relative inline-flex items-center justify-center w-10 h-10 -ms-0.5 text-zinc-800 bg-transparent hover:bg-transparent active:bg-transparent rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50 touch-manipulation shrink-0"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-site-nav"
+              aria-label={mobileMenuOpen ? "סגור תפריט" : "פתח תפריט"}
+              onClick={() => setMobileMenuOpen((o) => !o)}
+            >
+              <span className="inline-flex transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none motion-reduce:duration-150">
+                {mobileMenuOpen ? (
+                  <X className="w-6 h-6 animate-in fade-in zoom-in-95 duration-200" strokeWidth={2} />
+                ) : (
+                  <Menu className="w-6 h-6 animate-in fade-in zoom-in-95 duration-200" strokeWidth={2} />
+                )}
+              </span>
+            </button>
+            <Link href="/" className="flex items-center gap-2 min-w-0">
+              <BrandLogoMark className="w-8 h-8 rounded-lg shadow-sm" size={32} priority />
+              <span className="text-xl font-pacifico" style={{ letterSpacing: '0.5px' }}>
+                Quick crm
+              </span>
+            </Link>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-[5] hidden h-16 items-center justify-center md:flex">
+            <div className="pointer-events-auto flex items-center gap-1 text-sm text-zinc-600">
+              {NAV_LINKS.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative z-10 flex items-center gap-1.5 sm:gap-2 shrink-0">
             <Link
               href="/login"
               className="hidden sm:inline-block text-sm text-zinc-700 hover:text-zinc-900 px-3 py-1.5 rounded-md hover:bg-zinc-100"
             >
-              כניסה
+              כניסה ללקוחות
             </Link>
             <Link
               href="/register"
@@ -78,73 +204,139 @@ export default function HomePageContent() {
         </div>
       </nav>
 
+      {/* מחוץ ל־nav — תמיד ב־DOM במובייל לאנימציית פתיחה/סגירה */}
+      <div
+        className={cn(
+          "fixed inset-0 top-16 z-[100] bg-zinc-900/40 backdrop-blur-[2px] md:hidden transition-opacity duration-300 ease-out motion-reduce:transition-none",
+          mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        )}
+        aria-hidden={!mobileMenuOpen}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+      <div
+        id="mobile-site-nav"
+        role="navigation"
+        aria-label="ניווט באתר"
+        aria-hidden={!mobileMenuOpen}
+        inert={mobileMenuOpen ? undefined : true}
+        className={cn(
+          "md:hidden fixed top-16 left-0 right-0 z-[110] border-b border-zinc-200 bg-[#FAFAF7] shadow-xl shadow-zinc-900/10 max-h-[min(70vh,calc(100dvh-4rem))] overflow-y-auto overscroll-contain isolate",
+          "transition-[opacity,transform,visibility] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none motion-reduce:duration-150",
+          mobileMenuOpen
+            ? "visible translate-y-0 opacity-100"
+            : "invisible pointer-events-none -translate-y-3 opacity-0"
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-1">
+          {NAV_LINKS.map((item, i) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "block px-3 py-3 rounded-xl text-base font-medium leading-normal text-zinc-800 hover:bg-zinc-100 text-right",
+                "transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none",
+                mobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+              )}
+              style={{
+                transitionDelay: mobileMenuOpen ? `${Math.min(i, 8) * 40}ms` : "0ms",
+              }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item.label}
+            </a>
+          ))}
+          <Link
+            href="/login"
+            className={cn(
+              "block px-3 py-3 rounded-xl text-base font-medium leading-normal text-zinc-700 hover:bg-zinc-100 text-right border-t border-zinc-200/80 mt-1 pt-3",
+              "transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none",
+              mobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            )}
+            style={{
+              transitionDelay: mobileMenuOpen ? `${Math.min(NAV_LINKS.length, 8) * 40 + 40}ms` : "0ms",
+            }}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            כניסה ללקוחות
+          </Link>
+        </div>
+      </div>
+
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-8 lg:pt-24 lg:pb-12">
+        {/* Ambient background */}
+        <div aria-hidden className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-1/4 w-[36rem] h-[36rem] rounded-full bg-violet-200/30 blur-3xl" />
+          <div className="absolute top-20 left-1/4 w-[32rem] h-[32rem] rounded-full bg-fuchsia-200/25 blur-3xl" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 lg:pt-20 lg:pb-14">
           <div className="text-center max-w-3xl mx-auto">
+            {/* Announcement pill */}
             <Link
-              href="/register"
-              className="inline-flex items-center gap-2 bg-white border border-zinc-200 rounded-full pl-4 pr-1 py-1 mb-8 hover:border-zinc-300 transition-colors shadow-sm"
+              href="#pricing"
+              className="group inline-flex items-center gap-2 bg-white/80 backdrop-blur border border-zinc-200/80 rounded-full p-1 pr-3 mb-8 hover:border-violet-300 hover:bg-white transition-all shadow-sm"
             >
-              <span className="text-xs text-zinc-600">בנוי לעסקים של עד 10 עובדים · בלי מינימום מושבים</span>
-              <span className="bg-violet-100 text-violet-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                גלה →
+              <span className="bg-violet-100 text-violet-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">חדש</span>
+              <span className="text-xs text-zinc-700 font-medium">
+                מבצע השקה — מסלול סולו ב־<span className="text-zinc-900 font-bold">₪99</span> לחודש
               </span>
+              <ArrowLeft className="w-3.5 h-3.5 text-zinc-400 group-hover:text-violet-600 group-hover:-translate-x-0.5 transition-all" />
             </Link>
 
-            <p className="text-sm md:text-base font-semibold text-violet-800/90 mb-4 tracking-tight">
-              מערכת CRM בעברית לעסקים קטנים · עצמאים, פרילנסרים וצוותים עד 10 עובדים
-            </p>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] text-zinc-900 mb-6">
-              ניהול לקוחות שמתאים
-              <br />
-              <span className="relative">
+            {/* Eyebrow */}
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px] font-medium text-violet-700/80 mb-5">
+              <span>CRM בעברית</span>
+              <span className="text-violet-300">·</span>
+              <span>ניהול לקוחות</span>
+              <span className="text-violet-300">·</span>
+              <span>הצעות מחיר</span>
+              <span className="text-violet-300">·</span>
+              <span>פרויקטים</span>
+            </div>
+
+            {/* Headline */}
+            <h1 className="text-[3rem] sm:text-5xl md:text-[4.25rem] lg:text-[4.75rem] font-black tracking-tight text-zinc-900 mb-6 text-balance max-sm:word-spacing-[0.12em] max-sm:tracking-wide max-sm:leading-[1.15] sm:leading-[1.05] md:leading-[1.02]">
+              <span className="block">ה־CRM היחידי</span>
+              <span className="block mt-1 sm:mt-0.5">
                 <span className="bg-gradient-to-br from-violet-600 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent">
-                  לעסק הקטן שלך.
+                  שעובד בשבילך
                 </span>
+                <span className="text-zinc-900">.</span>
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-zinc-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-              לידים, לקוחות, הצעות מחיר, פרויקטים ותשלומים — במערכת אחת בעברית, מהירה ופשוטה להטמעה.
-              <br className="hidden md:block" />
-              מתחילים מ־<span className="font-semibold text-zinc-900">₪79 לחודש</span> · בלי מינימום משתמשים · ניסיון 14 יום חינם.
+
+            {/* Subheadline */}
+            <p className="text-base md:text-lg text-zinc-600 max-w-xl mx-auto mb-9 leading-relaxed">
+              נהל לידים, לקוחות, הצעות מחיר, פרויקטים ותשלומים במערכת אחת ישראלית, בעברית, ומהירה.
+              <span className="block mt-1 text-zinc-500">ממשק נקי, מחיר שקוף, ותמיכה מקומית — בלי סיבוכים מיותרים.</span>
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+            {/* CTA */}
+            <div className="flex justify-center items-center mb-5">
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center gap-2 bg-zinc-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-zinc-800 transition-colors shadow-sm"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-zinc-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-zinc-800 transition-all shadow-lg shadow-zinc-900/15 hover:shadow-xl hover:-translate-y-0.5"
               >
                 התחל ניסיון חינם
                 <ArrowLeft className="w-4 h-4" />
               </Link>
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center gap-2 bg-white border border-zinc-200 text-zinc-900 px-6 py-3 rounded-lg font-medium hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
-              >
-                צפה בדמו
-              </Link>
             </div>
 
-            <div className="flex items-center justify-center gap-6 text-xs text-zinc-500">
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
-                14 יום חינם
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
-                ללא כרטיס אשראי
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
-                ביטול בכל עת
-              </span>
+            {/* Trust row */}
+            <div className="inline-flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-zinc-600">
+              {['14 יום חינם', 'ללא כרטיס אשראי', 'ביטול בכל עת'].map((t, i) => (
+                <span key={i} className="flex items-center gap-1.5">
+                  <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={3} />
+                  {t}
+                </span>
+              ))}
             </div>
           </div>
         </div>
 
         {/* App screenshot — real product UI */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-16 lg:pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-20">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-violet-200/30 via-fuchsia-200/20 to-pink-200/30 blur-3xl rounded-3xl" aria-hidden />
             <div className="relative mx-auto max-w-6xl rounded-2xl border border-zinc-200 bg-white shadow-2xl overflow-hidden ring-1 ring-zinc-900/5">
@@ -162,10 +354,10 @@ export default function HomePageContent() {
               </div>
               <div className="bg-zinc-100">
                 <Image
-                  src="/images/quickcrm-dashboard.webp"
-                  alt="ממשק Quick CRM — דשבורד וניהול לידים"
-                  width={2938}
-                  height={2208}
+                  src={MARKETING_HERO_IMAGE}
+                  alt={MARKETING_HERO_IMAGE_ALT}
+                  width={MARKETING_HERO_IMAGE_WIDTH}
+                  height={MARKETING_HERO_IMAGE_HEIGHT}
                   className="w-full h-auto object-top max-h-[min(85vh,900px)] object-cover sm:object-contain"
                   priority
                   sizes="(max-width: 1280px) 100vw, 1152px"
@@ -177,8 +369,8 @@ export default function HomePageContent() {
       </section>
 
       {/* WORKFLOW — pipeline visualization */}
-      <section id="workflow" className="border-y border-zinc-200 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+      <section id="workflow" className="scroll-mt-20 border-y border-zinc-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-14 max-w-2xl mx-auto">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               איך זה עובד
@@ -305,7 +497,7 @@ export default function HomePageContent() {
 
       {/* PRODUCT — features with mockups */}
       <section id="product" className="bg-[#FAFAF7]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center mb-16 max-w-2xl mx-auto">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               המוצר
@@ -327,7 +519,7 @@ export default function HomePageContent() {
                 <span className="text-xs font-semibold text-zinc-700">ניהול פרויקטים</span>
               </div>
               <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
-                Kanban בעברית. בסוף.
+                הכי פשוט לנהל משימות. בעברית.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
                 גרור משימות בין סטטוסים, הקצה לעובדים, הוסף תאריכי יעד. הכל מתעדכן בזמן אמת לכל הצוות.
@@ -356,15 +548,15 @@ export default function HomePageContent() {
                         <span className="text-[10px] text-zinc-500">פרויקט · סטודיו פיקסל</span>
                       </div>
                     </div>
-                    <div className="flex -space-x-1.5">
-                      <div className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-white text-[9px] font-bold">ד</div>
-                      <div className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-[9px] font-bold">ש</div>
-                      <div className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-[9px] font-bold">מ</div>
+                    <div className="flex -space-x-2 space-x-reverse">
+                      <div className="w-7 h-7 rounded-full ring-2 ring-white bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-white text-[10px] font-bold leading-none">ד</div>
+                      <div className="w-7 h-7 rounded-full ring-2 ring-white bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-[10px] font-bold leading-none">ש</div>
+                      <div className="w-7 h-7 rounded-full ring-2 ring-white bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-[10px] font-bold leading-none">מ</div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
-                    {[
+                    {([
                       {
                         title: 'לביצוע',
                         count: 3,
@@ -397,7 +589,13 @@ export default function HomePageContent() {
                           { t: 'חתימה על חוזה', priority: 'HIGH', done: true },
                         ],
                       },
-                    ].map((col, i) => {
+                    ] as Array<{
+                      title: string
+                      count: number
+                      dot: string
+                      header: string
+                      tasks: Array<{ t: string; priority: string; assignee?: string; project?: string; due?: string; done?: boolean }>
+                    }>).map((col, i) => {
                       const priBorder: Record<string, string> = {
                         URGENT: 'border-r-rose-500',
                         HIGH: 'border-r-amber-400',
@@ -609,10 +807,16 @@ export default function HomePageContent() {
                 הצעות מחיר ש<span className="font-black text-fuchsia-600">סוגרות</span> עסקאות.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
-                תבניות מקצועיות עם הלוגו והמיתוג שלך. ייצוא ל-PDF בלחיצה. חתימה דיגיטלית של הלקוח ישר מהמייל.
+                תבניות מקצועיות עם הלוגו והמיתוג שלך. הלקוח חותם דיגיטלית בסריקת QR ומשלם מקדמה באותו רגע — בלי טלפונים ובלי דחיות.
               </p>
               <ul className="space-y-2.5">
-                {['תבניות מעוצבות (פשוטה / מקצועית)', 'PDF אוטומטי עם QR לאישור', 'חתימה דיגיטלית בטלפון', 'המרה אוטומטית לחשבונית מס'].map((f, i) => (
+                {[
+                  'תבניות מעוצבות (פשוטה / מקצועית)',
+                  'חתימה דיגיטלית בסריקת QR מהנייד',
+                  'תשלום מקדמה מיידי עם אישור ההצעה',
+                  'הגדרת אחוז מקדמה או סכום קבוע מראש',
+                  'המרה אוטומטית לחשבונית מס כשהתשלום מתקבל',
+                ].map((f, i) => (
                   <li key={i} className="flex items-center gap-2.5 text-sm text-zinc-700">
                     <Check className="w-4 h-4 text-emerald-600 flex-shrink-0" strokeWidth={3} />
                     {f}
@@ -668,11 +872,40 @@ export default function HomePageContent() {
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between items-center pt-4 border-t border-zinc-200">
-                      <span className="text-sm font-semibold text-zinc-700">סה״כ לתשלום</span>
-                      <span className="text-xl sm:text-2xl font-bold tabular-nums text-zinc-900">₪28,500</span>
+                    <div className="pt-4 border-t border-zinc-200 space-y-1.5">
+                      <div className="flex justify-between items-center text-xs text-zinc-500">
+                        <span>סכום להצעה</span>
+                        <span className="tabular-nums">₪28,500</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="inline-flex items-center gap-1.5 text-violet-700 font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
+                          מקדמה לתשלום מיידי <span className="text-zinc-400 font-normal">· 30%</span>
+                        </span>
+                        <span className="tabular-nums font-semibold text-violet-700">₪8,550</span>
+                      </div>
+                      <div className="flex justify-between items-center pt-2 mt-1 border-t border-dashed border-zinc-200">
+                        <span className="text-sm font-semibold text-zinc-700">סה״כ לתשלום</span>
+                        <span className="text-xl sm:text-2xl font-bold tabular-nums text-zinc-900">₪28,500</span>
+                      </div>
                     </div>
-                    <div className="mt-4 grid grid-cols-2 gap-2">
+                    <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50/60 p-3 flex items-center gap-3">
+                      <div className="w-14 h-14 rounded-lg bg-white border border-zinc-200 p-1.5 flex-shrink-0 grid grid-cols-5 grid-rows-5 gap-[1px]" aria-hidden>
+                        {[
+                          1,1,1,0,1, 1,0,1,0,1, 1,1,0,1,1, 0,1,1,1,0, 1,0,1,0,1,
+                        ].map((v, i) => (
+                          <span key={i} className={`rounded-[1px] ${v ? 'bg-zinc-900' : 'bg-transparent'}`} />
+                        ))}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[11px] font-semibold text-zinc-900 flex items-center gap-1.5">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          סרוק לחתימה ותשלום מקדמה
+                        </div>
+                        <div className="text-[10px] text-zinc-500 mt-0.5 leading-snug">חתימה דיגיטלית וסליקה מאובטחת מהטלפון · ללא הורדת אפליקציה</div>
+                      </div>
+                    </div>
+                    <div className="mt-3 grid grid-cols-2 gap-2">
                       <button type="button" className="bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium py-2.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition-colors">
                         <Check className="w-3.5 h-3.5" strokeWidth={2.5} />
                         אישור וחתימה
@@ -691,7 +924,7 @@ export default function HomePageContent() {
 
       {/* TESTIMONIAL */}
       <section id="customers" className="bg-white border-y border-zinc-200">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8 py-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {[
               { v: '12 שעות', l: 'נחסכות בשבוע בממוצע' },
@@ -707,30 +940,63 @@ export default function HomePageContent() {
             ))}
           </div>
 
-          <blockquote className="text-2xl md:text-3xl font-medium text-zinc-900 leading-relaxed text-center max-w-3xl mx-auto mb-8">
-            ״חיפשנו משהו פשוט שיצמח איתנו. Quick CRM זה הראשון שהצוות באמת אימץ — תוך שבוע כולם עבדו במערכת, בלי הדרכות ארוכות ובלי בלגן.״
-          </blockquote>
+          <div className="min-h-[220px] sm:min-h-[200px] flex flex-col items-center justify-center">
+            <blockquote
+              className={cn(
+                "text-xl sm:text-2xl md:text-3xl font-medium text-zinc-900 leading-relaxed text-center max-w-3xl mx-auto mb-8 transition-opacity duration-300 ease-in-out motion-reduce:transition-none",
+                testimonialFade ? "opacity-100" : "opacity-0"
+              )}
+            >
+              {TESTIMONIALS[activeTestimonial].quote}
+            </blockquote>
 
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold">
-              ר.ל
+            <div
+              className={cn(
+                "flex items-center justify-center gap-3 transition-opacity duration-300 ease-in-out motion-reduce:transition-none",
+                testimonialFade ? "opacity-100" : "opacity-0"
+              )}
+            >
+              <div className={cn("w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center text-white font-bold text-sm", TESTIMONIALS[activeTestimonial].gradient)}>
+                {TESTIMONIALS[activeTestimonial].initials}
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-sm">{TESTIMONIALS[activeTestimonial].name}</div>
+                <div className="text-xs text-zinc-500">{TESTIMONIALS[activeTestimonial].role}</div>
+              </div>
+              <div className="border-r border-zinc-200 h-10 mx-2" />
+              <div className="flex gap-0.5">
+                {Array.from({ length: TESTIMONIALS[activeTestimonial].stars }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
             </div>
-            <div className="text-right">
-              <div className="font-bold text-sm">רועי לוי</div>
-              <div className="text-xs text-zinc-500">מנכ״ל · סטודיו אמברלה, תל אביב</div>
-            </div>
-            <div className="border-r border-zinc-200 h-10 mx-2"></div>
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4, 5].map(i => (
-                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-              ))}
-            </div>
+          </div>
+
+          {/* נקודות ניווט */}
+          <div className="flex items-center justify-center gap-2 mt-8">
+            {TESTIMONIALS.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={`ביקורת ${i + 1} מתוך ${TESTIMONIALS.length}`}
+                className={cn(
+                  "rounded-full transition-all duration-300",
+                  i === activeTestimonial
+                    ? "w-7 h-2.5 bg-violet-600"
+                    : "w-2.5 h-2.5 bg-zinc-300 hover:bg-zinc-400"
+                )}
+                onClick={() => {
+                  if (testimonialTimer.current) clearTimeout(testimonialTimer.current)
+                  goToTestimonial(i)
+                }}
+              />
+            ))}
           </div>
         </div>
       </section>
 
       {/* Mobile apps — coming soon */}
-      <section id="apps" className="relative overflow-hidden bg-zinc-950 text-white">
+      <section id="apps" className="scroll-mt-20 relative overflow-hidden bg-zinc-950 text-white">
         {/* Decorative gradients */}
         <div aria-hidden className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-40 -right-40 w-[32rem] h-[32rem] rounded-full bg-violet-600/30 blur-3xl" />
@@ -738,7 +1004,7 @@ export default function HomePageContent() {
           <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-28">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Copy + waitlist */}
             <div className="lg:col-span-6 order-2 lg:order-1">
@@ -757,7 +1023,7 @@ export default function HomePageContent() {
                 </span>
               </h2>
               <p className="text-lg text-zinc-300 leading-relaxed mb-8 max-w-lg">
-                אפליקציה ילידית לאייפון ולאנדרואיד — אותה חוויית ניהול לקוחות, משימות, הצעות מחיר והתראות,
+                אפליקציה יעודית לאייפון ולאנדרואיד — אותה חוויית ניהול לקוחות, משימות, הצעות מחיר והתראות,
                 רק מהירה יותר ומותאמת למסך הקטן.
               </p>
 
@@ -799,9 +1065,17 @@ export default function HomePageContent() {
                 </button>
               </form>
               <div className="flex items-center gap-3 mt-4 text-xs text-zinc-400">
-                <div className="flex -space-x-1.5">
-                  {['from-violet-500 to-fuchsia-500', 'from-amber-500 to-orange-500', 'from-blue-500 to-cyan-500', 'from-emerald-500 to-teal-500'].map((g, i) => (
-                    <div key={i} className={`w-6 h-6 rounded-full bg-gradient-to-br ${g} ring-2 ring-zinc-950`} />
+                <div className="flex -space-x-2 space-x-reverse">
+                  {[47, 32, 12, 5].map((id, i) => (
+                    <img
+                      key={i}
+                      src={`https://i.pravatar.cc/80?img=${id}`}
+                      alt=""
+                      width={28}
+                      height={28}
+                      loading="lazy"
+                      className="w-7 h-7 rounded-full ring-2 ring-zinc-950 object-cover bg-zinc-800"
+                    />
                   ))}
                 </div>
                 <span>
@@ -809,29 +1083,22 @@ export default function HomePageContent() {
                 </span>
               </div>
 
-              {/* Store badges */}
-              <div className="flex flex-wrap gap-3 mt-6">
-                <div className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.03] backdrop-blur px-4 py-2.5 opacity-70">
-                  <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d="M17.05 20.28c-.98.95-2.05.88-3.08.38-1.09-.5-2.08-.53-3.24 0-1.44.62-2.2.44-3.06-.38C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-                  </svg>
-                  <div className="text-right">
-                    <div className="text-[9px] text-zinc-400 leading-none">זמין בקרוב ב־</div>
-                    <div className="text-sm font-semibold text-white leading-tight mt-0.5">App Store</div>
-                  </div>
-                </div>
-                <div className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.03] backdrop-blur px-4 py-2.5 opacity-70">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" aria-hidden>
-                    <path fill="#34A853" d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92z" />
-                    <path fill="#FBBC04" d="M16.81 15.017l-2.413-2.413-2.413 2.413 5.447 3.145a1.001 1.001 0 00.997-.002l.002-.001 3.31-1.912a1 1 0 000-1.732l-3.31-1.913a1 1 0 00-.999 0l-5.447 3.145 2.413 2.413 2.413-2.413z" opacity=".65" />
-                    <path fill="#EA4335" d="M20.16 10.485l-3.31-1.913a1 1 0 00-.999 0l-5.447 3.145L12.813 14l4.87-2.812a1 1 0 00.001-1.732z" />
-                    <path fill="#4285F4" d="M3.61 1.814l10.183 10.186 2.414-2.414L6.02 1.257a1 1 0 00-2.41.557z" />
-                  </svg>
-                  <div className="text-right">
-                    <div className="text-[9px] text-zinc-400 leading-none">זמין בקרוב ב־</div>
-                    <div className="text-sm font-semibold text-white leading-tight mt-0.5">Google Play</div>
-                  </div>
-                </div>
+              {/* Store badges (local SVG assets) */}
+              <div className="flex flex-wrap gap-3 mt-6 items-center">
+                <Image
+                  src="/images/store-badges/appstore.svg"
+                  alt="זמין בקרוב ב-App Store"
+                  width={168}
+                  height={57}
+                  className="h-10 sm:h-11 w-auto opacity-70"
+                />
+                <Image
+                  src="/images/store-badges/googleplay.svg"
+                  alt="זמין בקרוב ב-Google Play"
+                  width={168}
+                  height={58}
+                  className="h-10 sm:h-11 w-auto opacity-70"
+                />
               </div>
             </div>
 
@@ -843,79 +1110,106 @@ export default function HomePageContent() {
 
                 {/* Phone frame */}
                 <div className="relative rounded-[2.8rem] bg-zinc-900 p-2.5 shadow-[0_30px_90px_-20px_rgba(139,92,246,0.45)] ring-1 ring-white/10">
-                  <div className="relative rounded-[2.2rem] bg-[#FAFAF7] overflow-hidden aspect-[9/19.5]">
+                  <div className="relative rounded-[2.2rem] bg-white overflow-hidden aspect-[9/19.5]">
                     {/* Dynamic Island */}
                     <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-7 bg-zinc-900 rounded-full z-20" />
-                    {/* Status bar */}
-                    <div className="flex items-center justify-between px-7 pt-3 pb-1 text-[10px] font-semibold text-zinc-900 relative z-10">
-                      <span className="tabular-nums">9:41</span>
-                      <div className="flex items-center gap-1">
-                        <div className="flex gap-0.5 items-end">
-                          <div className="w-0.5 h-1.5 bg-zinc-900 rounded-sm" />
-                          <div className="w-0.5 h-2 bg-zinc-900 rounded-sm" />
-                          <div className="w-0.5 h-2.5 bg-zinc-900 rounded-sm" />
-                          <div className="w-0.5 h-3 bg-zinc-900 rounded-sm" />
+
+                    {/* Status bar (iOS-like, battery+wifi+signal on LEFT as shown in Hebrew iOS) */}
+                    <div className="flex items-center justify-between px-6 pt-3 pb-1 relative z-10" dir="ltr">
+                      <div className="flex items-center gap-1.5">
+                        {/* Battery */}
+                        <div className="flex items-center gap-[1px]">
+                          <div className="relative w-[22px] h-[11px] rounded-[3px] border border-zinc-900/90 p-[1.5px]">
+                            <div className="h-full w-[80%] rounded-[1.5px] bg-zinc-900" />
+                          </div>
+                          <div className="w-[1px] h-[4px] rounded-sm bg-zinc-900/90" />
                         </div>
-                        <div className="w-5 h-2.5 border border-zinc-900 rounded-sm relative">
-                          <div className="absolute inset-0.5 bg-zinc-900 rounded-[1px] w-[70%]" />
+                        {/* Wi-Fi (3 arcs + dot) */}
+                        <svg viewBox="0 0 16 12" className="w-[14px] h-[11px] fill-zinc-900" aria-hidden>
+                          <path d="M8 2.3c2.4 0 4.7.9 6.4 2.4.2.2.2.5 0 .7l-.9.9a.5.5 0 01-.7 0A7 7 0 008 4a7 7 0 00-4.8 2.3.5.5 0 01-.7 0l-.9-.9a.5.5 0 010-.7A9.4 9.4 0 018 2.3z" />
+                          <path d="M8 5.6c1.5 0 3 .6 4.1 1.6.2.2.2.5 0 .7l-.9.9a.5.5 0 01-.7 0A4.6 4.6 0 008 7.3a4.6 4.6 0 00-2.5.5.5.5 0 01-.7 0l-.9-.9a.5.5 0 010-.7A6 6 0 018 5.6z" />
+                          <circle cx="8" cy="10" r="1.3" />
+                        </svg>
+                        {/* Signal bars */}
+                        <div className="flex items-end gap-[1.5px] h-[11px]">
+                          <div className="w-[3px] h-[4px] bg-zinc-900 rounded-[1px]" />
+                          <div className="w-[3px] h-[6px] bg-zinc-900 rounded-[1px]" />
+                          <div className="w-[3px] h-[8px] bg-zinc-900 rounded-[1px]" />
+                          <div className="w-[3px] h-[10px] bg-zinc-900/30 rounded-[1px]" />
                         </div>
                       </div>
+                      <span className="tabular-nums font-semibold text-[11px] text-zinc-900">11:50</span>
                     </div>
 
-                    {/* App content */}
-                    <div className="px-4 pt-6 pb-20">
-                      {/* Greeting */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <div className="text-[10px] text-zinc-500 font-medium">יום שלישי, 21 באפריל</div>
-                          <div className="text-lg font-bold text-zinc-900 leading-tight">שלום, דני</div>
-                        </div>
-                        <div className="relative">
-                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">ד.כ</div>
-                          <div className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-rose-500 border-2 border-[#FAFAF7]" />
+                    {/* App content — scrollable area */}
+                    <div className="px-4 pt-3 pb-20">
+                      {/* Header: bell (left visual) + greeting (right visual) */}
+                      <div className="flex items-start justify-between mb-4">
+                        <button type="button" className="w-10 h-10 rounded-full bg-white border border-zinc-200 shadow-sm flex items-center justify-center text-zinc-700">
+                          <Bell className="w-4 h-4" strokeWidth={2} />
+                        </button>
+                        <div className="text-right">
+                          <div className="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-medium mb-0.5">
+                            <span className="w-1 h-1 rounded-full bg-emerald-500" />
+                            יום שלישי, 21 באפריל
+                          </div>
+                          <div className="text-xl font-bold text-zinc-900 leading-tight tracking-tight">שלום, דני.</div>
+                          <div className="text-[11px] text-zinc-500 mt-0.5">איך אני יכול לעזור לך היום?</div>
                         </div>
                       </div>
 
-                      {/* Stat cards */}
+                      {/* Stat cards 2x2 */}
                       <div className="grid grid-cols-2 gap-2 mb-4">
-                        <div className="rounded-xl bg-white border border-zinc-200/70 p-2.5">
-                          <div className="flex items-center justify-between mb-1">
-                            <TrendingUp className="w-3 h-3 text-emerald-600" strokeWidth={2.5} />
-                            <span className="text-[8px] font-semibold text-emerald-600 tabular-nums">+12%</span>
+                        {[
+                          { v: '12', l: 'לקוחות', Icon: Building, bg: 'bg-violet-50', fg: 'text-violet-600' },
+                          { v: '4', l: 'לידים פעילים', Icon: Users, bg: 'bg-fuchsia-50', fg: 'text-fuchsia-600' },
+                          { v: '₪28K', l: 'תקציב', Icon: TrendingUp, bg: 'bg-emerald-50', fg: 'text-emerald-600' },
+                          { v: '3', l: 'פרויקטים פעילים', Icon: FolderKanban, bg: 'bg-cyan-50', fg: 'text-cyan-600' },
+                        ].map((s, i) => (
+                          <div key={i} className="rounded-2xl bg-white border border-zinc-200/70 p-3 relative">
+                            <ArrowUpLeft className="absolute top-2.5 left-2.5 w-3 h-3 text-zinc-300" strokeWidth={2.2} />
+                            <div className="flex justify-end mb-1">
+                              <div className={`w-6 h-6 rounded-lg ${s.bg} flex items-center justify-center`}>
+                                <s.Icon className={`w-3 h-3 ${s.fg}`} strokeWidth={2.2} />
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-lg font-bold text-zinc-900 tabular-nums leading-tight">{s.v}</div>
+                              <div className="text-[10px] text-zinc-500 mt-0.5">{s.l}</div>
+                            </div>
                           </div>
-                          <div className="text-sm font-bold text-zinc-900 tabular-nums">₪300K</div>
-                          <div className="text-[9px] text-zinc-500">תקציבים</div>
-                        </div>
-                        <div className="rounded-xl bg-white border border-zinc-200/70 p-2.5">
-                          <div className="flex items-center justify-between mb-1">
-                            <Users className="w-3 h-3 text-violet-600" strokeWidth={2.5} />
-                            <span className="text-[8px] font-semibold text-violet-600 tabular-nums">+4</span>
-                          </div>
-                          <div className="text-sm font-bold text-zinc-900 tabular-nums">46</div>
-                          <div className="text-[9px] text-zinc-500">לקוחות פעילים</div>
-                        </div>
+                        ))}
                       </div>
 
-                      {/* Tasks card */}
-                      <div className="rounded-xl bg-white border border-zinc-200/70 p-3 mb-3">
-                        <div className="flex items-center justify-between mb-2">
+                      {/* "המשימות שלי" card */}
+                      <div className="rounded-2xl bg-white border border-zinc-200/70 overflow-hidden">
+                        <div className="flex items-center justify-between px-3 py-2.5 border-b border-zinc-100">
+                          <span className="text-[10px] text-zinc-500 flex items-center gap-0.5">
+                            ראה הכל
+                            <svg className="w-2.5 h-2.5" viewBox="0 0 10 10" aria-hidden>
+                              <path d="M6 2L3 5l3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                            </svg>
+                          </span>
                           <div className="flex items-center gap-1.5">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-violet-600" strokeWidth={2.5} />
                             <span className="text-[11px] font-bold text-zinc-900">המשימות שלי</span>
+                            <div className="w-5 h-5 rounded-md bg-violet-50 flex items-center justify-center">
+                              <CheckCircle2 className="w-3 h-3 text-violet-600" strokeWidth={2.5} />
+                            </div>
                           </div>
-                          <span className="text-[9px] bg-cyan-50 text-cyan-700 font-semibold px-1.5 py-0.5 rounded-md">3 פעילות</span>
                         </div>
-                        <div className="space-y-1.5">
+                        <div>
                           {[
-                            { t: 'ליצור הצעה ללקוחות משופצים', border: 'border-r-rose-500' },
-                            { t: 'גביית תשלום מגמר חשבון', border: 'border-r-amber-400' },
-                            { t: 'יצירת משתמש חדש בקווין', border: 'border-r-blue-400' },
+                            'לייבא לקוחות קיימים משופיפיי',
+                            'התכתבות עם לקוח אקספרס',
+                            'לחזור להצעת מחיר סטודיו פיקסל',
+                            'לעדכן תקציב פרויקט ויזיון',
+                            'תיקונים לאורגניה — מה שאורי שלח',
                           ].map((t, i) => (
-                            <div key={i} className={`rounded-lg bg-zinc-50 border border-zinc-200/60 border-r-[3px] ${t.border} px-2 py-1.5`}>
-                              <div className="text-[10px] font-semibold text-zinc-900 leading-tight">{t.t}</div>
-                              <div className="flex items-center gap-1 mt-1">
-                                <div className="w-3 h-3 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 ring-1 ring-white" />
-                                <span className="text-[8px] text-zinc-500">דני כהן</span>
+                            <div key={i} className="flex items-center gap-2 px-3 py-2 border-b border-zinc-50 last:border-0">
+                              <div className="w-3.5 h-3.5 rounded-full border-[1.5px] border-blue-500 shrink-0" />
+                              <div className="flex-1 min-w-0 text-right">
+                                <div className="text-[11px] text-zinc-900 leading-tight truncate">{t}</div>
+                                <div className="text-[9px] text-blue-600 font-medium mt-0.5">רגילה</div>
                               </div>
                             </div>
                           ))}
@@ -923,18 +1217,26 @@ export default function HomePageContent() {
                       </div>
                     </div>
 
-                    {/* Bottom tab bar */}
-                    <div className="absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur border-t border-zinc-200/60 px-4 py-2.5 flex items-center justify-around">
+                    {/* Bottom tab bar (RTL: בית on the right) */}
+                    <div className="absolute bottom-0 inset-x-0 bg-white border-t border-zinc-200/60 px-2 pt-1.5 pb-4 flex items-center justify-around" dir="rtl">
                       {[
-                        { icon: Sparkles, active: true },
-                        { icon: Users, active: false },
-                        { icon: FileText, active: false },
-                        { icon: Bell, active: false, badge: true },
+                        { label: 'בית', active: true, icon: (cls: string) => (
+                          <svg viewBox="0 0 24 24" className={cls} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10l9-7 9 7v10a2 2 0 01-2 2h-4a1 1 0 01-1-1v-5h-4v5a1 1 0 01-1 1H5a2 2 0 01-2-2V10z"/></svg>
+                        ) },
+                        { label: 'משימות', icon: (cls: string) => (
+                          <svg viewBox="0 0 24 24" className={cls} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
+                        ) },
+                        { label: 'לוח שנה', icon: (cls: string) => (
+                          <svg viewBox="0 0 24 24" className={cls} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        ) },
+                        { label: 'עוד', icon: (cls: string) => (
+                          <svg viewBox="0 0 24 24" className={cls} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                        ), badge: '4' },
                       ].map((t, i) => (
                         <div key={i} className="relative flex flex-col items-center gap-0.5">
-                          <t.icon className={`w-5 h-5 ${t.active ? 'text-violet-600' : 'text-zinc-400'}`} strokeWidth={t.active ? 2.5 : 2} />
-                          {t.active && <div className="w-1 h-1 rounded-full bg-violet-600" />}
-                          {t.badge && <div className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-rose-500" />}
+                          {t.badge && <span className="absolute -top-0.5 right-2 min-w-[14px] h-[14px] px-1 rounded-full bg-rose-500 text-white text-[8px] font-bold flex items-center justify-center">{t.badge}</span>}
+                          {t.icon(`w-5 h-5 ${t.active ? 'text-violet-600' : 'text-zinc-400'}`)}
+                          <span className={`text-[8px] ${t.active ? 'text-violet-600 font-semibold' : 'text-zinc-500'}`}>{t.label}</span>
                         </div>
                       ))}
                     </div>
@@ -944,8 +1246,8 @@ export default function HomePageContent() {
                   </div>
                 </div>
 
-                {/* Floating notification card */}
-                <div className="absolute -right-6 top-20 hidden sm:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-56 rotate-[-4deg] ring-1 ring-black/5">
+                {/* Floating: new lead */}
+                <div className="absolute -right-6 top-20 hidden sm:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-56 ring-1 ring-black/5 animate-float-slow will-change-transform" style={{ '--tilt': '-4deg' } as React.CSSProperties}>
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center shrink-0">
                     <Bell className="w-4 h-4 text-white" strokeWidth={2.5} />
                   </div>
@@ -955,14 +1257,36 @@ export default function HomePageContent() {
                   </div>
                 </div>
 
-                {/* Floating payment card */}
-                <div className="absolute -left-4 bottom-28 hidden sm:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-52 rotate-[3deg] ring-1 ring-black/5">
+                {/* Floating: payment received */}
+                <div className="absolute -left-4 bottom-28 hidden sm:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-52 ring-1 ring-black/5 animate-float-medium will-change-transform" style={{ '--tilt': '3deg' } as React.CSSProperties}>
                   <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
                     <CreditCard className="w-4 h-4 text-emerald-600" strokeWidth={2.5} />
                   </div>
                   <div className="min-w-0">
                     <div className="text-[11px] font-bold text-zinc-900 leading-tight">תשלום התקבל</div>
                     <div className="text-[10px] text-emerald-600 font-semibold tabular-nums mt-0.5">+ ₪12,500</div>
+                  </div>
+                </div>
+
+                {/* Floating: WhatsApp message */}
+                <div className="absolute -left-8 top-32 hidden md:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-52 ring-1 ring-black/5 animate-float-delayed will-change-transform" style={{ '--tilt': '5deg' } as React.CSSProperties}>
+                  <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center shrink-0">
+                    <MessageCircle className="w-4 h-4 text-white" strokeWidth={2.5} fill="white" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-bold text-zinc-900 leading-tight">וואטסאפ · דוד כהן</div>
+                    <div className="text-[10px] text-zinc-500 mt-0.5 truncate">״כן, אני מאשר את ההצעה״</div>
+                  </div>
+                </div>
+
+                {/* Floating: new signup */}
+                <div className="absolute -right-10 bottom-44 hidden md:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-52 ring-1 ring-black/5 animate-float-delayed-2 will-change-transform" style={{ '--tilt': '-6deg' } as React.CSSProperties}>
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0">
+                    <UserPlus className="w-4 h-4 text-amber-600" strokeWidth={2.5} />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-bold text-zinc-900 leading-tight">לקוח חדש הצטרף</div>
+                    <div className="text-[10px] text-zinc-500 mt-0.5 truncate">סטודיו פיקסל · פרויקט חדש</div>
                   </div>
                 </div>
               </div>
@@ -972,17 +1296,17 @@ export default function HomePageContent() {
       </section>
 
       {/* PRICING — בסיס + למשתמש */}
-      <section id="pricing" className="bg-[#FAFAF7]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
+      <section id="pricing" className="scroll-mt-20 bg-[#FAFAF7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center mb-10 max-w-2xl mx-auto">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               מחירים
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              מ־<span className="bg-gradient-to-br from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">₪79</span> לחודש. בלי מינימום.
+              מ־<span className="bg-gradient-to-br from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">₪99</span> לחודש. בלי מינימום.
             </h2>
             <p className="text-lg text-zinc-600">
-              מחיר פשוט שגדל איתך: ₪79 לעצמאי, ₪75 לכל משתמש נוסף. עסק של 10 עובדים — ₪750 לחודש בלבד.
+              מחיר פשוט שגדל איתך: ₪99 לעצמאי, ₪75 בלבד! לכל משתמש נוסף.
             </p>
             <p className="text-xs text-zinc-500 mt-2">המחירים אינם כוללים מע״מ · 14 יום ניסיון חינם · ביטול בלחיצה</p>
           </div>
@@ -1015,7 +1339,7 @@ export default function HomePageContent() {
                   desc: 'לעצמאי או פרילנסר אחד',
                   minSeats: 1,
                   maxSeats: 1,
-                  priceAt: (_s: number) => 79,
+                  priceAt: (_s: number) => 99,
                   promoBadge: 'מבצע השקה',
                   features: [
                     'משתמש אחד',
@@ -1063,7 +1387,8 @@ export default function HomePageContent() {
               const inRange = seatCount >= plan.minSeats && seatCount <= plan.maxSeats
               const effectiveSeats = Math.max(plan.minSeats, Math.min(seatCount, plan.maxSeats))
               const total = plan.priceAt(effectiveSeats)
-              const popular = plan.popular
+              const popular = inRange
+              const hasPromo = 'promoBadge' in plan && !!plan.promoBadge
               const seatLabel =
                 plan.maxSeats === plan.minSeats
                   ? `${plan.minSeats} משתמש`
@@ -1072,19 +1397,19 @@ export default function HomePageContent() {
               return (
                 <div
                   key={i}
-                  className={`relative rounded-2xl p-7 transition-all ${
+                  className={`relative rounded-2xl p-7 transition-all duration-300 ${
                     popular
-                      ? 'bg-zinc-900 text-white shadow-xl ring-2 ring-violet-500'
+                      ? 'bg-zinc-900 text-white shadow-xl ring-2 ring-violet-500 scale-[1.015]'
                       : 'bg-white border border-zinc-200 hover:border-zinc-300'
-                  } ${!inRange ? 'opacity-70' : ''}`}
+                  } ${!inRange ? 'opacity-60' : ''}`}
                 >
                   {popular && (
-                    <div className="absolute -top-3 right-7 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                      הכי פופולרי
+                    <div className="absolute -top-3 right-7 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+                      המסלול שלך
                     </div>
                   )}
-                  {'promoBadge' in plan && plan.promoBadge && (
-                    <div className="absolute -top-3 right-7 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                  {hasPromo && 'promoBadge' in plan && plan.promoBadge && (
+                    <div className={`absolute -top-3 left-7 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${popular ? 'shadow-md' : ''}`}>
                       {plan.promoBadge}
                     </div>
                   )}
@@ -1137,54 +1462,71 @@ export default function HomePageContent() {
             })}
           </div>
           <p className="text-center text-xs text-zinc-500 mt-10 max-w-2xl mx-auto leading-relaxed">
-            בתשלום שנתי מראש — 20% הנחה. מעל 10 משתמשים? <a href="#contact" className="underline hover:text-violet-600">דבר איתנו</a> לתוכנית מותאמת.
+            ללא התחייבות, אפשר לבטל בכל חודש. מעל 10 משתמשים? <a href="#contact" className="underline hover:text-violet-600">דבר איתנו</a> לתוכנית מותאמת.
           </p>
 
-          {/* השוואת מחיר למתחרים */}
-          <div className="max-w-3xl mx-auto mt-16 bg-white border border-zinc-200 rounded-2xl p-6 md:p-8 shadow-sm">
-            <h3 className="text-xl md:text-2xl font-bold text-center mb-1">
-              לעסק של {seatCount} {seatCount === 1 ? 'עובד' : 'עובדים'} — כמה תחסוך?
-            </h3>
-            <p className="text-center text-sm text-zinc-500 mb-6">
-              השוואה לחבילת CRM ישראלית מובילה (Fireberry), על בסיס המחירים הפומביים שלה לחודש.
-            </p>
-            {(() => {
-              const quickTotal = seatCount === 1 ? 79 : seatCount * 75
-              const quickPlanName = seatCount === 1 ? 'סולו' : seatCount <= 5 ? 'עסק' : 'צוות'
-              const fireberryMinSeats = Math.max(seatCount, 3)
-              const fireberryTotal = fireberryMinSeats * 120
-              const savings = Math.max(0, fireberryTotal - quickTotal)
-              const savingsPct = fireberryTotal ? Math.round((savings / fireberryTotal) * 100) : 0
-              return (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-center">
-                    <div className="text-xs text-zinc-500 mb-1">Fireberry Standard</div>
-                    <div className="text-2xl font-bold tabular-nums text-zinc-900">₪{fireberryTotal.toLocaleString('he-IL')}</div>
-                    <div className="text-[11px] text-zinc-500 mt-1">מינימום 3 משתמשים</div>
+          {/* השוואת מחיר - תצוגת מידע, לא ניתנת ללחיצה */}
+          {(() => {
+            const quickTotal = seatCount === 1 ? 99 : seatCount * 75
+            const quickPlanName = seatCount === 1 ? 'סולו' : seatCount <= 5 ? 'עסק' : 'צוות'
+            const marketMinSeats = Math.max(seatCount, 3)
+            const marketTotal = marketMinSeats * 120
+            const savings = Math.max(0, marketTotal - quickTotal)
+            const savingsPct = marketTotal ? Math.round((savings / marketTotal) * 100) : 0
+            const quickBarPct = marketTotal ? Math.round((quickTotal / marketTotal) * 100) : 0
+            return (
+              <div className="max-w-3xl mx-auto mt-16">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-violet-600 mb-2">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                    השוואת מחיר
                   </div>
-                  <div className="rounded-xl border-2 border-violet-500 bg-violet-50/50 p-4 text-center">
-                    <div className="text-xs font-bold text-violet-700 mb-1">Quick CRM · {quickPlanName}</div>
-                    <div className="text-2xl font-bold tabular-nums text-violet-900">₪{quickTotal.toLocaleString('he-IL')}</div>
-                    <div className="text-[11px] text-violet-700 mt-1">בלי מינימום מושבים</div>
+                  <h3 className="text-xl md:text-2xl font-bold text-zinc-900">
+                    לעסק של {seatCount} {seatCount === 1 ? 'עובד' : 'עובדים'} — כמה תחסוך בחודש
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex items-baseline justify-between mb-1.5">
+                      <span className="text-sm text-zinc-600">ממוצע שוק ה־CRM בישראל <span className="text-zinc-400 text-xs">· מינימום 3 משתמשים</span></span>
+                      <span className="text-base font-semibold tabular-nums text-rose-600 line-through decoration-rose-300">₪{marketTotal.toLocaleString('he-IL')}</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-rose-50 overflow-hidden" aria-hidden>
+                      <div className="h-full bg-gradient-to-l from-rose-500 to-rose-400 rounded-full" style={{ width: '100%' }} />
+                    </div>
                   </div>
-                  <div className="rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-4 text-center">
-                    <div className="text-xs opacity-90 mb-1">חיסכון לחודש</div>
-                    <div className="text-2xl font-bold tabular-nums">₪{savings.toLocaleString('he-IL')}</div>
-                    <div className="text-[11px] opacity-90 mt-1">{savingsPct}% פחות</div>
+                  <div>
+                    <div className="flex items-baseline justify-between mb-1.5">
+                      <span className="text-sm font-semibold text-violet-700">Quick CRM · {quickPlanName} <span className="text-violet-500/80 text-xs font-normal">· בלי מינימום מושבים</span></span>
+                      <span className="text-lg font-bold tabular-nums text-violet-700">₪{quickTotal.toLocaleString('he-IL')}</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-violet-50 overflow-hidden" aria-hidden>
+                      <div
+                        className="h-full bg-gradient-to-l from-violet-600 to-fuchsia-500 rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${Math.max(8, quickBarPct)}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
-              )
-            })()}
-            <p className="text-center text-[11px] text-zinc-400 mt-4">
-              * השוואה מבוססת על מחירון פומבי נכון לתאריך הפרסום. ללא מע״מ. לא כולל הטבות שנתיות.
-            </p>
-          </div>
+                <div className="mt-6 flex items-center justify-center gap-2 text-sm">
+                  <span className="text-zinc-600">חיסכון חודשי:</span>
+                  <span className="inline-flex items-baseline gap-1.5 font-bold tabular-nums text-emerald-700">
+                    <span className="text-lg">₪{savings.toLocaleString('he-IL')}</span>
+                    <span className="text-xs text-emerald-600 font-semibold">עד {savingsPct}% פחות</span>
+                  </span>
+                </div>
+                <p className="text-center text-[11px] text-zinc-400 mt-4 max-w-xl mx-auto leading-relaxed">
+                  השוואה מבוססת על ממוצע מחירונים פומביים של מערכות CRM פופולריות בישראל נכון לתאריך הפרסום. ללא מע״מ.
+                </p>
+              </div>
+            )
+          })()}
         </div>
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="bg-white border-t border-zinc-100">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8 py-24">
+      <section id="faq" className="scroll-mt-20 bg-white border-t border-zinc-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center mb-10">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">שאלות נפוצות</span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">שאלות שכל בעל עסק קטן שואל</h2>
@@ -1194,11 +1536,11 @@ export default function HomePageContent() {
             {[
               {
                 q: 'האם Quick CRM מתאים לעסק של עובד אחד או שניים?',
-                a: 'בהחלט. חבילת סולו מתחילה ב־₪79 לחודש ומיועדת בדיוק לעצמאים, פרילנסרים ועסקים זעירים — בלי מינימום 3 משתמשים כמו במערכות אחרות.',
+                a: 'בהחלט. חבילת סולו מתחילה ב־₪99 לחודש ומיועדת בדיוק לעצמאים, פרילנסרים ועסקים זעירים — בלי מינימום 3 משתמשים כמו במערכות אחרות.',
               },
               {
                 q: 'כמה עולה CRM בעברית בישראל?',
-                a: 'המחיר הממוצע בישראל הוא ₪120–₪250 למשתמש, עם מינימום 3–10 משתמשים. ב־Quick CRM מתחילים מ־₪79 לחודש בלי מינימום מושבים — חיסכון של עד 70% לעסקים קטנים.',
+                a: 'המחיר הממוצע בישראל הוא ₪120–₪250 למשתמש, עם מינימום 3–10 משתמשים. ב־Quick CRM מתחילים מ־₪99 לחודש בלי מינימום מושבים — חיסכון של עד 60% לעסקים קטנים.',
               },
               {
                 q: 'האם אפשר ליצור הצעות מחיר וחשבוניות ממערכת אחת?',
@@ -1238,12 +1580,15 @@ export default function HomePageContent() {
 
       {/* FINAL CTA */}
       <section className="bg-zinc-900 text-white">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 py-24 text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-            תפסיק להזמין את <span className="bg-gradient-to-br from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">העסק שלך לאקסל.</span>
+            תפסיקו לנהל את <span className="bg-gradient-to-br from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">העסק שלכם באקסל.</span>
           </h2>
-          <p className="text-xl text-zinc-400 mb-10">
-            14 יום ניסיון חינם. ההגדרה לוקחת 3 דקות.
+          <p className="text-xl text-zinc-400 mb-3">
+            14 יום ניסיון חינם. ללא התחייבות וללא כרטיס אשראי.
+          </p>
+          <p className="text-lg text-zinc-500 mb-10">
+            מה יש לכם להפסיד? ההגדרה לוקחת 3 דקות.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
@@ -1265,13 +1610,11 @@ export default function HomePageContent() {
 
       {/* FOOTER */}
       <footer className="bg-zinc-950 text-zinc-400 border-t border-zinc-800">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
             <div className="col-span-2">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-white" />
-                </div>
+                <BrandLogoMark className="w-8 h-8 rounded-lg opacity-95" size={32} />
                 <span className="text-xl font-pacifico text-white">Quick crm</span>
               </div>
               <p className="text-sm leading-relaxed max-w-xs">

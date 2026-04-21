@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { BrandLogoMark } from "@/components/BrandLogoMark"
 import { cn } from "@/lib/utils"
 import {
   Home,
@@ -125,9 +126,7 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
       {/* Logo */}
       <div className="py-5 px-5 border-b border-zinc-200/70 min-h-[72px] flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-sm shadow-violet-200">
-            <Sparkles className="w-4 h-4 text-white" strokeWidth={2.5} />
-          </div>
+          <BrandLogoMark className="w-9 h-9 rounded-xl shadow-sm shadow-violet-200" size={36} priority />
           <div className="flex items-baseline gap-1.5">
             <span
               className="text-xl font-pacifico text-zinc-900 leading-none"

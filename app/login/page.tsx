@@ -5,6 +5,7 @@ import Image from "next/image"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { BrandLogoMark } from "@/components/BrandLogoMark"
 import { useToast } from "@/components/ui/use-toast"
 import {
   Sparkles,
@@ -68,9 +69,7 @@ export default function LoginPage() {
       <nav className="border-b border-zinc-200/60 bg-[#FAFAF7]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-lg flex items-center justify-center shadow-sm">
-              <Sparkles className="w-4 h-4 text-white" strokeWidth={2.5} />
-            </div>
+            <BrandLogoMark className="w-8 h-8 rounded-lg shadow-sm" size={32} priority />
             <span className="text-xl font-pacifico" style={{ letterSpacing: '0.5px' }}>
               Quick crm
             </span>

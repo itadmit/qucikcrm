@@ -1,14 +1,20 @@
 import type { Metadata } from 'next'
 import HomePageContent from '@/components/marketing/HomePageContent'
+import {
+  MARKETING_HERO_IMAGE,
+  MARKETING_HERO_IMAGE_ALT,
+  MARKETING_HERO_IMAGE_HEIGHT,
+  MARKETING_HERO_IMAGE_WIDTH,
+} from '@/lib/marketing-hero-image'
 import { getSiteUrl } from '@/lib/site-url'
 
 const site = getSiteUrl()
 
 const title =
-  'Quick CRM — מערכת CRM בעברית לעסקים קטנים | מ־₪79 לחודש'
+  'Quick CRM — מערכת CRM בעברית לעסקים קטנים | מ־₪99 לחודש'
 
 const description =
-  'Quick CRM היא מערכת CRM בעברית לעסקים קטנים בישראל (עד 10 עובדים): ניהול לקוחות ולידים, ניהול פרויקטים ומשימות, יצירת הצעות מחיר וחשבוניות, תשלומים וסליקה. בלי מינימום משתמשים, מתחילים מ־₪79 לחודש. 14 יום חינם.'
+  'Quick CRM היא מערכת CRM בעברית לעסקים קטנים בישראל (עד 10 עובדים): ניהול לקוחות ולידים, ניהול פרויקטים ומשימות, יצירת הצעות מחיר וחשבוניות, תשלומים וסליקה. בלי מינימום משתמשים, מתחילים מ־₪99 לחודש. 14 יום חינם.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
@@ -42,11 +48,20 @@ export const metadata: Metadata = {
     siteName: 'Quick CRM',
     title,
     description,
+    images: [
+      {
+        url: MARKETING_HERO_IMAGE,
+        width: MARKETING_HERO_IMAGE_WIDTH,
+        height: MARKETING_HERO_IMAGE_HEIGHT,
+        alt: MARKETING_HERO_IMAGE_ALT,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title,
     description,
+    images: [MARKETING_HERO_IMAGE],
   },
   robots: {
     index: true,
@@ -73,7 +88,7 @@ export default function HomePage() {
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'ILS',
-      lowPrice: 79,
+      lowPrice: 99,
       highPrice: 750,
       offerCount: 3,
       availability: 'https://schema.org/InStock',
@@ -106,7 +121,7 @@ export default function HomePage() {
         name: 'האם Quick CRM מתאים לעסק של עובד אחד או שניים?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'בהחלט. חבילת סולו מתחילה ב־79 ש״ח לחודש ומיועדת לעצמאים, פרילנסרים ועסקים זעירים, בלי מינימום 3 משתמשים כמו במערכות אחרות.',
+          text: 'בהחלט. חבילת סולו מתחילה ב־99 ש״ח לחודש ומיועדת לעצמאים, פרילנסרים ועסקים זעירים, בלי מינימום 3 משתמשים כמו במערכות אחרות.',
         },
       },
       {
@@ -114,7 +129,7 @@ export default function HomePage() {
         name: 'כמה עולה CRM בעברית בישראל?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'המחיר הממוצע בישראל הוא 120 עד 250 ש״ח למשתמש, עם מינימום של 3 עד 10 משתמשים. ב־Quick CRM: עצמאי משלם 79 ש״ח, עסק של 5 עובדים 375 ש״ח, ו-10 עובדים רק 750 ש״ח לחודש — חיסכון של עד 70% לעומת Fireberry.',
+          text: 'המחיר הממוצע בישראל הוא 120 עד 250 ש״ח למשתמש, עם מינימום של 3 עד 10 משתמשים במערכות הפופולריות. ב־Quick CRM: עצמאי משלם 99 ש״ח, עסק של 5 עובדים 375 ש״ח, ו-10 עובדים רק 750 ש״ח לחודש — חיסכון של עד 60% לעומת ממוצע שוק ה־CRM בישראל.',
         },
       },
       {
@@ -165,7 +180,7 @@ export default function HomePage() {
     '@type': 'Organization',
     name: 'Quick CRM',
     url: site,
-    logo: `${site}/favicon.ico`,
+    logo: `${site}/branding/icon.svg`,
     sameAs: [] as string[],
     address: {
       '@type': 'PostalAddress',
