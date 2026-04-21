@@ -127,7 +127,7 @@ export default function HomePage() {
         </div>
 
         {/* App screenshot — real product UI */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-16 lg:pb-20">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-violet-200/30 via-fuchsia-200/20 to-pink-200/30 blur-3xl rounded-3xl" aria-hidden />
             <div className="relative mx-auto max-w-6xl rounded-2xl border border-zinc-200 bg-white shadow-2xl overflow-hidden ring-1 ring-zinc-900/5">
@@ -154,20 +154,6 @@ export default function HomePage() {
                   sizes="(max-width: 1280px) 100vw, 1152px"
                 />
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Logo strip */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
-          <div className="mt-16 text-center">
-            <p className="text-xs text-zinc-500 mb-6 tracking-wider uppercase">עסקים שכבר משתמשים ב-Quick CRM</p>
-            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 opacity-60">
-              {['Wix', 'Tailor Brands', 'Lightricks', 'Fiverr', 'monday', 'Riskified', 'WSC Sports'].map((logo, i) => (
-                <span key={i} className="text-zinc-400 font-bold text-lg tracking-tight">
-                  {logo}
-                </span>
-              ))}
             </div>
           </div>
         </div>
