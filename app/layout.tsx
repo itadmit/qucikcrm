@@ -22,11 +22,11 @@ const pacifico = Pacifico({
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: 'Quick CRM — מערכת CRM בעברית לעסקים',
+    default: 'Quick CRM — מערכת CRM בעברית לעסקים קטנים | מ־₪79 לחודש',
     template: '%s | Quick CRM',
   },
   description:
-    'מערכת CRM בעברית: ניהול לקוחות ולידים, ניהול פרויקטים, משימות, יצירת הצעות מחיר ותשלומים — בממשק אחד מהיר ומותאם לישראל.',
+    'מערכת CRM בעברית לעסקים קטנים בישראל (עד 10 עובדים): ניהול לקוחות ולידים, ניהול פרויקטים, משימות, יצירת הצעות מחיר, חשבוניות ותשלומים. בלי מינימום משתמשים — מתחילים מ־₪79 לחודש.',
   openGraph: {
     type: 'website',
     locale: 'he_IL',

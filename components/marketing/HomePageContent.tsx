@@ -24,7 +24,7 @@ import {
 } from "lucide-react"
 
 export default function HomePageContent() {
-  const [seatCount, setSeatCount] = useState(5)
+  const [seatCount, setSeatCount] = useState(3)
   return (
     <div className="min-h-screen bg-[#FAFAF7] text-zinc-900" dir="rtl">
       {/* Nav */}
@@ -47,6 +47,7 @@ export default function HomePageContent() {
             <a href="#workflow" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">איך זה עובד</a>
             <a href="#apps" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">אפליקציה</a>
             <a href="#pricing" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">מחירים</a>
+            <a href="#faq" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">שאלות נפוצות</a>
             <a href="#customers" className="px-3 py-1.5 rounded-md hover:bg-zinc-100 transition-colors">לקוחות</a>
           </div>
 
@@ -76,28 +77,28 @@ export default function HomePageContent() {
               href="/register"
               className="inline-flex items-center gap-2 bg-white border border-zinc-200 rounded-full pl-4 pr-1 py-1 mb-8 hover:border-zinc-300 transition-colors shadow-sm"
             >
-              <span className="text-xs text-zinc-600">חדש: גרסה 2 — מהיר פי 3, מעוצב מחדש</span>
+              <span className="text-xs text-zinc-600">בנוי לעסקים של עד 10 עובדים · בלי מינימום מושבים</span>
               <span className="bg-violet-100 text-violet-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
                 גלה →
               </span>
             </Link>
 
             <p className="text-sm md:text-base font-semibold text-violet-800/90 mb-4 tracking-tight">
-              מערכת CRM בעברית · ניהול לקוחות · ניהול פרויקטים · יצירת הצעות מחיר
+              מערכת CRM בעברית לעסקים קטנים · עצמאים, פרילנסרים וצוותים עד 10 עובדים
             </p>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] text-zinc-900 mb-6">
-              ה-CRM שמרגיש
+              ניהול לקוחות שמתאים
               <br />
               <span className="relative">
                 <span className="bg-gradient-to-br from-violet-600 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent">
-                  שעובד בשבילך.
+                  לעסק הקטן שלך.
                 </span>
               </span>
             </h1>
             <p className="text-lg md:text-xl text-zinc-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-              נהל לידים, לקוחות, הצעות מחיר, פרויקטים ותשלומים — במערכת אחת ישראלית, עברית, ומהירה.
+              לידים, לקוחות, הצעות מחיר, פרויקטים ותשלומים — במערכת אחת בעברית, מהירה ופשוטה להטמעה.
               <br className="hidden md:block" />
-              ממשק נקי, מחיר שקוף, ותמיכה מקומית — בלי סיבוכים מיותרים.
+              מתחילים מ־<span className="font-semibold text-zinc-900">₪79 לחודש</span> · בלי מינימום משתמשים · ניסיון 14 יום חינם.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
@@ -662,30 +663,31 @@ export default function HomePageContent() {
               מחירים
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              דמי בסיס + משתמשים לפי הצורך
+              תמחור הוגן לעסקים קטנים
             </h2>
             <p className="text-lg text-zinc-600">
-              כל תוכנית כוללת חבילת משתמשים בסיסית. מעבר לכך — תשלום פר־מושב שקוף. 14 יום ניסיון חינם, ביטול בלחיצה.
+              בלי מינימום 3 או 5 משתמשים. בלי הפתעות. כל חבילה כוללת מושבים בסיסיים — רק משלמים על מה שצריך.
             </p>
+            <p className="text-xs text-zinc-500 mt-2">המחירים אינם כוללים מע״מ · 14 יום ניסיון חינם · ביטול בלחיצה</p>
           </div>
 
           <div className="max-w-xl mx-auto mb-14 px-2">
             <label htmlFor="seat-slider" className="flex items-center justify-between text-sm font-medium text-zinc-800 mb-3">
-              <span>כמה משתמשים במשרד?</span>
+              <span>כמה משתמשים בעסק שלך?</span>
               <span className="tabular-nums text-violet-700 bg-violet-50 px-2 py-0.5 rounded-md">{seatCount}</span>
             </label>
             <input
               id="seat-slider"
               type="range"
               min={1}
-              max={30}
+              max={10}
               value={seatCount}
               onChange={(e) => setSeatCount(Number(e.target.value))}
               className="w-full h-2 rounded-full appearance-none cursor-pointer bg-zinc-200 accent-violet-600"
             />
             <div className="flex justify-between text-xs text-zinc-500 mt-1.5">
               <span>1</span>
-              <span>30</span>
+              <span>10</span>
             </div>
           </div>
 
@@ -693,30 +695,48 @@ export default function HomePageContent() {
             {(
               [
                 {
-                  name: 'התחלה',
-                  base: 89,
+                  name: 'סולו',
+                  base: 79,
                   includedSeats: 1,
-                  extraPerSeat: 42,
-                  desc: 'מושלם לעצמאים ולצוותים קטנים',
-                  features: ['עד 100 לקוחות', 'עד 50 הצעות מחיר בחודש', 'דשבורד וקנבן', 'תמיכה במייל'],
+                  extraPerSeat: 39,
+                  desc: 'לעצמאים ופרילנסרים',
+                  features: [
+                    'לידים ולקוחות ללא הגבלה',
+                    'הצעות מחיר וחשבוניות',
+                    'משימות ופרויקטים',
+                    'דשבורד וקנבן',
+                    'תמיכה במייל ובצ׳אט',
+                  ],
                   popular: false,
                 },
                 {
-                  name: 'צמיחה',
-                  base: 179,
+                  name: 'עסק',
+                  base: 189,
                   includedSeats: 3,
-                  extraPerSeat: 36,
-                  desc: 'הבחירה של רוב העסקים',
-                  features: ['עד 1,000 לקוחות', 'הצעות וחשבוניות ללא הגבלה', 'אוטומציות', 'סליקה ואינטגרציות', 'תמיכה טלפונית'],
+                  extraPerSeat: 35,
+                  desc: 'המתאים לרוב העסקים עד 10 עובדים',
+                  features: [
+                    'כל מה שבסולו',
+                    'אוטומציות ותהליכי עבודה',
+                    'סליקת אשראי ותשלומים',
+                    'אינטגרציה לחשבשבת ו־API',
+                    'תמיכה טלפונית בעברית',
+                  ],
                   popular: true,
                 },
                 {
-                  name: 'מקצועי',
-                  base: 349,
-                  includedSeats: 8,
-                  extraPerSeat: 28,
-                  desc: 'לארגונים שצריכים שליטה מלאה',
-                  features: ['נפחים גבוהים ו־API', 'הרשאות מתקדמות', 'מנהל לקוח', 'SLA ותמיכה מורחבת'],
+                  name: 'צוות',
+                  base: 449,
+                  includedSeats: 10,
+                  extraPerSeat: 29,
+                  desc: 'לעסקים קטנים בצמיחה מהירה',
+                  features: [
+                    'כל מה שבעסק',
+                    'הרשאות מתקדמות',
+                    'תצוגות מותאמות אישית',
+                    'ייצוא נתונים ו־BI',
+                    'מנהל לקוח ו־SLA תגובה',
+                  ],
                   popular: false,
                 },
               ] as const
@@ -795,8 +815,104 @@ export default function HomePageContent() {
             })}
           </div>
           <p className="text-center text-xs text-zinc-500 mt-10 max-w-2xl mx-auto leading-relaxed">
-            המחירים להמחשה בלבד — לפני רכישה תקבלו הצעה מדויקת לפי גודל הארגון והיקף השימוש. אפשר גם חבילה קבועה ללא פר־מושב.
+            המחירים להמחשה בלבד — לפני רכישה תקבלו הצעה מדויקת לפי גודל הארגון והיקף השימוש. בתשלום שנתי מראש — 20% הנחה.
           </p>
+
+          {/* השוואת מחיר למתחרים */}
+          <div className="max-w-3xl mx-auto mt-16 bg-white border border-zinc-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            <h3 className="text-xl md:text-2xl font-bold text-center mb-1">
+              לעסק של {seatCount} {seatCount === 1 ? 'עובד' : 'עובדים'} — כמה תחסוך?
+            </h3>
+            <p className="text-center text-sm text-zinc-500 mb-6">
+              השוואה לחבילת CRM ישראלית מובילה (Fireberry), על בסיס המחירים הפומביים שלה לחודש.
+            </p>
+            {(() => {
+              const quickBase = 189
+              const quickIncluded = 3
+              const quickExtra = 35
+              const quickTotal = quickBase + Math.max(0, seatCount - quickIncluded) * quickExtra
+              const fireberryMinSeats = Math.max(seatCount, 3)
+              const fireberryTotal = fireberryMinSeats * 120
+              const savings = Math.max(0, fireberryTotal - quickTotal)
+              const savingsPct = fireberryTotal ? Math.round((savings / fireberryTotal) * 100) : 0
+              return (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-center">
+                    <div className="text-xs text-zinc-500 mb-1">Fireberry Standard</div>
+                    <div className="text-2xl font-bold tabular-nums text-zinc-900">₪{fireberryTotal.toLocaleString('he-IL')}</div>
+                    <div className="text-[11px] text-zinc-500 mt-1">מינימום 3 משתמשים</div>
+                  </div>
+                  <div className="rounded-xl border-2 border-violet-500 bg-violet-50/50 p-4 text-center">
+                    <div className="text-xs font-bold text-violet-700 mb-1">Quick CRM · עסק</div>
+                    <div className="text-2xl font-bold tabular-nums text-violet-900">₪{quickTotal.toLocaleString('he-IL')}</div>
+                    <div className="text-[11px] text-violet-700 mt-1">בלי מינימום מושבים</div>
+                  </div>
+                  <div className="rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-4 text-center">
+                    <div className="text-xs opacity-90 mb-1">חיסכון לחודש</div>
+                    <div className="text-2xl font-bold tabular-nums">₪{savings.toLocaleString('he-IL')}</div>
+                    <div className="text-[11px] opacity-90 mt-1">{savingsPct}% פחות</div>
+                  </div>
+                </div>
+              )
+            })()}
+            <p className="text-center text-[11px] text-zinc-400 mt-4">
+              * השוואה מבוססת על מחירון פומבי נכון לתאריך הפרסום. ללא מע״מ. לא כולל הטבות שנתיות.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="bg-white border-t border-zinc-100">
+        <div className="max-w-3xl mx-auto px-6 lg:px-8 py-24">
+          <div className="text-center mb-10">
+            <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">שאלות נפוצות</span>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">שאלות שכל בעל עסק קטן שואל</h2>
+            <p className="text-zinc-600">כל מה שצריך לדעת לפני שמתחילים ב־Quick CRM.</p>
+          </div>
+          <div className="space-y-3">
+            {[
+              {
+                q: 'האם Quick CRM מתאים לעסק של עובד אחד או שניים?',
+                a: 'בהחלט. חבילת סולו מתחילה ב־₪79 לחודש ומיועדת בדיוק לעצמאים, פרילנסרים ועסקים זעירים — בלי מינימום 3 משתמשים כמו במערכות אחרות.',
+              },
+              {
+                q: 'כמה עולה CRM בעברית בישראל?',
+                a: 'המחיר הממוצע בישראל הוא ₪120–₪250 למשתמש, עם מינימום 3–10 משתמשים. ב־Quick CRM מתחילים מ־₪79 לחודש בלי מינימום מושבים — חיסכון של עד 70% לעסקים קטנים.',
+              },
+              {
+                q: 'האם אפשר ליצור הצעות מחיר וחשבוניות ממערכת אחת?',
+                a: 'כן. Quick CRM מייצרת הצעות מחיר בעיצוב מקצועי, ממירה אותן להזמנה ומפיקה חשבוניות וקבלות מוכרות מס — הכול בממשק אחד בעברית.',
+              },
+              {
+                q: 'כמה זמן לוקח להטמיע את המערכת?',
+                a: 'רוב הלקוחות מתחילים לעבוד תוך פחות משעה. הממשק בעברית, יש תבניות מוכנות, ותמיכה טלפונית מקומית שמלווה אותך בכל שלב.',
+              },
+              {
+                q: 'האם הנתונים שלי מאובטחים?',
+                a: 'כן. כל המידע מוצפן (TLS בתעבורה, AES-256 באחסון), הגיבויים יומיים, והמערכת מאוחסנת בשרתים בישראל ובאירופה בתאימות GDPR.',
+              },
+              {
+                q: 'אפשר לבטל בכל רגע?',
+                a: 'בטח. אין חוזה ארוך טווח, אין דמי ביטול, ואפשר לייצא את כל הנתונים בקובץ Excel בלחיצה אחת.',
+              },
+              {
+                q: 'יש אפליקציה לנייד?',
+                a: 'אפליקציה ל־iPhone ול־Android בדרך. בינתיים המערכת מותאמת לחלוטין למובייל דרך הדפדפן ואפשר להוסיף אותה למסך הבית.',
+              },
+            ].map((item, i) => (
+              <details
+                key={i}
+                className="group rounded-xl border border-zinc-200 bg-[#FAFAF7] open:bg-white open:shadow-sm transition-all"
+              >
+                <summary className="cursor-pointer list-none p-5 flex items-center justify-between gap-4 font-semibold text-zinc-900">
+                  <span>{item.q}</span>
+                  <span className="text-violet-600 text-2xl leading-none transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <div className="px-5 pb-5 text-zinc-600 leading-relaxed">{item.a}</div>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
