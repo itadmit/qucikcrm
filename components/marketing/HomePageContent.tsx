@@ -508,7 +508,7 @@ export default function HomePageContent() {
                 <span className="text-xs font-semibold text-zinc-700">הצעות מחיר</span>
               </div>
               <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
-                הצעות מחיר ש<span className="italic font-pacifico font-normal text-fuchsia-600" style={{ letterSpacing: '2px' }}>סוגרות</span> עסקאות.
+                הצעות מחיר ש<span className="font-black text-fuchsia-600">סוגרות</span> עסקאות.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
                 תבניות מקצועיות עם הלוגו והמיתוג שלך. ייצוא ל-PDF בלחיצה. חתימה דיגיטלית של הלקוח ישר מהמייל.
