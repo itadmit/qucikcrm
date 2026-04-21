@@ -173,13 +173,32 @@ export default function HomePageContent() {
   }, [mobileMenuOpen])
 
   const PIPELINE_STEPS = ['ליד', 'לקוח', 'הצעת מחיר', 'תשלום', '🎉'] as const
+  const pipelineRef = useRef<HTMLDivElement>(null)
+  const [pipelineVisible, setPipelineVisible] = useState(false)
 
   useEffect(() => {
+    const el = pipelineRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPipelineVisible(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!pipelineVisible) return
     const id = setInterval(() => {
       setPipelineStep((s) => (s + 1) % PIPELINE_STEPS.length)
     }, 2000)
     return () => clearInterval(id)
-  }, [PIPELINE_STEPS.length])
+  }, [pipelineVisible, PIPELINE_STEPS.length])
 
   return (
     <div ref={pageRef} className="min-h-screen bg-[#FAFAF7] text-zinc-900" dir="rtl">
@@ -422,7 +441,7 @@ export default function HomePageContent() {
             </h2>
 
             {/* מובייל — אנימציית לופ, שלב נכנס משמאל ודוחף את הקודם ימינה */}
-            <div className="md:hidden relative h-[4.5rem] overflow-hidden mb-4" aria-label="מליד ללקוח לכסף בבנק">
+            <div ref={pipelineRef} className="md:hidden relative h-[4.5rem] overflow-hidden mb-4" aria-label="מליד ללקוח לכסף בבנק">
               {PIPELINE_STEPS.map((label, i) => (
                 <div
                   key={label}
@@ -446,18 +465,6 @@ export default function HomePageContent() {
               ))}
             </div>
 
-            {/* נקודות למובייל */}
-            <div className="flex md:hidden items-center justify-center gap-1.5 mb-4">
-              {PIPELINE_STEPS.map((_, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    "rounded-full transition-all duration-500",
-                    i === pipelineStep ? "w-5 h-1.5 bg-violet-600" : "w-1.5 h-1.5 bg-zinc-300"
-                  )}
-                />
-              ))}
-            </div>
 
             <p className="text-lg text-zinc-600">
               ה-Pipeline הקלאסי. רק שעכשיו הוא מתנהל לבד.
