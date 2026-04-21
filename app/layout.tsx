@@ -3,6 +3,7 @@ import { Noto_Sans_Hebrew, Pacifico } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
 import { AuthProvider } from '@/components/providers/AuthProvider'
+import { getSiteUrl } from '@/lib/site-url'
 
 const notoSansHebrew = Noto_Sans_Hebrew({
   subsets: ['hebrew'],
@@ -19,8 +20,19 @@ const pacifico = Pacifico({
 })
 
 export const metadata: Metadata = {
-  title: 'QuickCRM - מערכת ניהול לקוחות',
-  description: 'מערכת CRM מתקדמת לניהול לידים, לקוחות, פרויקטים ומשימות',
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: 'Quick CRM — מערכת CRM בעברית לעסקים',
+    template: '%s | Quick CRM',
+  },
+  description:
+    'מערכת CRM בעברית: ניהול לקוחות ולידים, ניהול פרויקטים, משימות, יצירת הצעות מחיר ותשלומים — בממשק אחד מהיר ומותאם לישראל.',
+  openGraph: {
+    type: 'website',
+    locale: 'he_IL',
+    siteName: 'Quick CRM',
+  },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({
