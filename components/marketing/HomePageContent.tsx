@@ -100,6 +100,7 @@ const NAV_LINKS = [
 export default function HomePageContent() {
   const [seatCount, setSeatCount] = useState(3)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [pipelineStep, setPipelineStep] = useState(0)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [testimonialFade, setTestimonialFade] = useState(true)
   const testimonialTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -140,6 +141,15 @@ export default function HomePageContent() {
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [mobileMenuOpen])
+
+  const PIPELINE_STEPS = ['ליד', 'לקוח', 'הצעת מחיר', 'תשלום', '🎉'] as const
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setPipelineStep((s) => (s + 1) % PIPELINE_STEPS.length)
+    }, 2000)
+    return () => clearInterval(id)
+  }, [PIPELINE_STEPS.length])
 
   return (
     <div className="min-h-screen bg-[#FAFAF7] text-zinc-900" dir="rtl">
@@ -375,9 +385,50 @@ export default function HomePageContent() {
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               איך זה עובד
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+
+            {/* דסקטופ — כותרת סטטית */}
+            <h2 className="hidden md:block text-5xl lg:text-6xl font-black tracking-tight mb-4">
               מליד <span className="text-zinc-400">←</span> ללקוח <span className="text-zinc-400">←</span> לכסף בבנק
             </h2>
+
+            {/* מובייל — אנימציית לופ, שלב נכנס משמאל ודוחף את הקודם ימינה */}
+            <div className="md:hidden relative h-[4.5rem] overflow-hidden mb-4" aria-label="מליד ללקוח לכסף בבנק">
+              {PIPELINE_STEPS.map((label, i) => (
+                <div
+                  key={label}
+                  className="absolute inset-0 flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none"
+                  style={{
+                    transform:
+                      i === pipelineStep
+                        ? 'translateX(0)'
+                        : i < pipelineStep || (pipelineStep === 0 && i === PIPELINE_STEPS.length - 1 && i !== 0)
+                          ? 'translateX(120%)'
+                          : 'translateX(-120%)',
+                    opacity: i === pipelineStep ? 1 : 0,
+                  }}
+                  aria-hidden={i !== pipelineStep}
+                >
+                  <span className={cn("font-black tracking-tight text-zinc-900", i === PIPELINE_STEPS.length - 1 ? "text-7xl" : "text-[3.25rem]")}>{label}</span>
+                  {i < PIPELINE_STEPS.length - 1 && (
+                    <span className="text-4xl text-zinc-300 mr-3">←</span>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* נקודות למובייל */}
+            <div className="flex md:hidden items-center justify-center gap-1.5 mb-4">
+              {PIPELINE_STEPS.map((_, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "rounded-full transition-all duration-500",
+                    i === pipelineStep ? "w-5 h-1.5 bg-violet-600" : "w-1.5 h-1.5 bg-zinc-300"
+                  )}
+                />
+              ))}
+            </div>
+
             <p className="text-lg text-zinc-600">
               ה-Pipeline הקלאסי. רק שעכשיו הוא מתנהל לבד.
             </p>
@@ -502,7 +553,7 @@ export default function HomePageContent() {
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               המוצר
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <h2 className="text-[2.5rem] md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
               כל מה שעסק צריך.
               <br />
               <span className="text-zinc-500">בלי פיצ'רים שלא משתמשים בהם.</span>
@@ -518,7 +569,7 @@ export default function HomePageContent() {
                 </div>
                 <span className="text-xs font-semibold text-zinc-700">ניהול פרויקטים</span>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
+              <h3 className="text-[2rem] md:text-4xl lg:text-[2.75rem] font-black mb-4 tracking-tight text-zinc-900">
                 הכי פשוט לנהל משימות. בעברית.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
@@ -777,7 +828,7 @@ export default function HomePageContent() {
                 </div>
                 <span className="text-xs font-semibold text-zinc-700">360° לקוח</span>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
+              <h3 className="text-[2rem] md:text-4xl lg:text-[2.75rem] font-black mb-4 tracking-tight text-zinc-900">
                 כל מה שצריך לדעת על לקוח. במסך אחד.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
@@ -803,8 +854,8 @@ export default function HomePageContent() {
                 </div>
                 <span className="text-xs font-semibold text-zinc-700">הצעות מחיר</span>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
-                הצעות מחיר ש<span className="font-black text-fuchsia-600">סוגרות</span> עסקאות.
+              <h3 className="text-[2rem] md:text-4xl lg:text-[2.75rem] font-black mb-4 tracking-tight text-zinc-900">
+                הצעות מחיר ש<span className="text-fuchsia-600">סוגרות</span> עסקאות.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
                 תבניות מקצועיות עם הלוגו והמיתוג שלך. הלקוח חותם דיגיטלית בסריקת QR ומשלם מקדמה באותו רגע — בלי טלפונים ובלי דחיות.
@@ -932,7 +983,7 @@ export default function HomePageContent() {
               { v: '4.9 / 5', l: 'דירוג מעל 200 לקוחות' },
             ].map((s, i) => (
               <div key={i} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-br from-violet-600 to-fuchsia-600 bg-clip-text text-transparent mb-2">
+                <div className="text-[2.5rem] md:text-5xl lg:text-6xl font-black tracking-tight bg-gradient-to-br from-violet-600 to-fuchsia-600 bg-clip-text text-transparent mb-2">
                   {s.v}
                 </div>
                 <div className="text-sm text-zinc-600">{s.l}</div>
@@ -1015,7 +1066,7 @@ export default function HomePageContent() {
                 </span>
                 <span className="text-[11px] font-semibold tracking-wider uppercase text-white/90">בפיתוח · השקה Q2 2026</span>
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-5 leading-[1.08]">
+              <h2 className="text-[2.5rem] md:text-5xl lg:text-6xl font-black tracking-tight mb-5 leading-[1.08]">
                 ה־CRM שלך.
                 <br />
                 <span className="bg-gradient-to-br from-violet-300 via-fuchsia-300 to-pink-300 bg-clip-text text-transparent">
@@ -1302,7 +1353,7 @@ export default function HomePageContent() {
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               מחירים
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <h2 className="text-[2.5rem] md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
               מ־<span className="bg-gradient-to-br from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">₪99</span> לחודש. בלי מינימום.
             </h2>
             <p className="text-lg text-zinc-600">
@@ -1529,7 +1580,7 @@ export default function HomePageContent() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center mb-10">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">שאלות נפוצות</span>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">שאלות שכל בעל עסק קטן שואל</h2>
+            <h2 className="text-[2.5rem] md:text-5xl lg:text-6xl font-black tracking-tight mb-3">שאלות שכל בעל עסק שואל</h2>
             <p className="text-zinc-600">כל מה שצריך לדעת לפני שמתחילים ב־Quick CRM.</p>
           </div>
           <div className="space-y-3">
@@ -1581,7 +1632,7 @@ export default function HomePageContent() {
       {/* FINAL CTA */}
       <section className="bg-zinc-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+          <h2 className="text-[2.5rem] md:text-6xl lg:text-7xl font-black tracking-tight mb-6">
             תפסיקו לנהל את <span className="bg-gradient-to-br from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">העסק שלכם באקסל.</span>
           </h2>
           <p className="text-xl text-zinc-400 mb-3">
