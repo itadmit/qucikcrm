@@ -21,6 +21,12 @@ import {
   Zap,
   Layers,
   Smartphone,
+  AlertCircle,
+  Clock,
+  FolderKanban,
+  CheckCircle2,
+  TrendingUp,
+  Building,
 } from "lucide-react"
 
 export default function HomePageContent() {
@@ -335,84 +341,133 @@ export default function HomePageContent() {
             <div className="lg:col-span-7">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-100/50 via-fuchsia-50/40 to-zinc-100/60 blur-2xl rounded-3xl" aria-hidden />
-                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-sm p-4 sm:p-5">
+                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-none p-4 sm:p-5">
+                  {/* Card header בסגנון של AppLayout + Card */}
                   <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-100">
-                    <h5 className="text-sm font-semibold text-zinc-900 tracking-tight">פרויקט: עיצוב אתר ויזיון</h5>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
+                        <Layers className="w-4 h-4 text-violet-600" strokeWidth={2.2} />
+                      </div>
+                      <div>
+                        <h5 className="text-sm font-semibold text-zinc-900 tracking-tight leading-tight">עיצוב אתר ויזיון</h5>
+                        <span className="text-[10px] text-zinc-500">פרויקט · סטודיו פיקסל</span>
+                      </div>
+                    </div>
                     <div className="flex -space-x-1.5">
-                      <div className="w-6 h-6 rounded-full border-2 border-white bg-violet-500" />
-                      <div className="w-6 h-6 rounded-full border-2 border-white bg-fuchsia-500" />
-                      <div className="w-6 h-6 rounded-full border-2 border-white bg-pink-400" />
+                      <div className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-white text-[9px] font-bold">ד</div>
+                      <div className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-[9px] font-bold">ש</div>
+                      <div className="w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-[9px] font-bold">מ</div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
+
+                  <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
                     {[
                       {
                         title: 'לביצוע',
-                        count: 4,
-                        wrap: 'rounded-xl border border-zinc-200/70 bg-zinc-50/50',
-                        header: 'bg-zinc-100 text-zinc-700 border border-zinc-200/80',
+                        count: 3,
+                        dot: 'bg-zinc-400',
+                        header: 'bg-zinc-100 text-zinc-700',
                         tasks: [
-                          { t: 'שיחת בריף עם הלקוח', tag: 'דחוף', tagColor: 'bg-red-50 text-red-700 border border-red-100' },
-                          { t: 'איסוף תוכן ראשוני', tag: 'תוכן', tagColor: 'bg-violet-50 text-violet-700 border border-violet-100' },
-                          { t: 'מחקר מתחרים' },
-                        ]
+                          { t: 'שיחת בריף עם הלקוח', priority: 'URGENT', assignee: 'דני' },
+                          { t: 'איסוף תוכן ראשוני', priority: 'NORMAL', project: 'ויזיון' },
+                          { t: 'מחקר מתחרים', priority: 'LOW' },
+                        ],
                       },
                       {
                         title: 'בתהליך',
                         count: 2,
-                        wrap: 'rounded-xl border border-cyan-100/80 bg-cyan-50/30',
-                        header: 'bg-cyan-50 text-cyan-800 border border-cyan-100',
+                        dot: 'bg-cyan-500',
+                        header: 'bg-cyan-50 text-cyan-700',
                         tasks: [
-                          { t: 'עיצוב דף הבית', tag: 'עיצוב', tagColor: 'bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-100', avatar: true },
-                          { t: 'wireframes פנימיים', avatar: true },
-                        ]
+                          { t: 'עיצוב דף הבית', priority: 'HIGH', assignee: 'שרה', due: 'מחר' },
+                          { t: 'Wireframes פנימיים', priority: 'NORMAL', assignee: 'מיכאל' },
+                        ],
                       },
                       {
-                        title: 'בוצע',
-                        count: 5,
-                        wrap: 'rounded-xl border border-emerald-100/80 bg-emerald-50/30',
-                        header: 'bg-emerald-50 text-emerald-800 border border-emerald-100',
+                        title: 'הושלם',
+                        count: 3,
+                        dot: 'bg-emerald-500',
+                        header: 'bg-emerald-50 text-emerald-700',
                         tasks: [
-                          { t: 'פגישת היכרות', done: true },
-                          { t: 'הצעת מחיר', done: true },
-                          { t: 'חתימה על חוזה', done: true },
-                        ]
+                          { t: 'פגישת היכרות', priority: 'NORMAL', done: true },
+                          { t: 'הצעת מחיר', priority: 'NORMAL', done: true },
+                          { t: 'חתימה על חוזה', priority: 'HIGH', done: true },
+                        ],
                       },
-                    ].map((col, i) => (
-                      <div key={i} className={`${col.wrap} p-2`}>
-                        <div className={`flex items-center justify-between gap-1 mb-2 px-1.5 py-1 rounded-md text-[11px] font-semibold ${col.header}`}>
-                          <span>{col.title}</span>
-                          <span className="tabular-nums text-zinc-500 font-medium">{col.count}</span>
-                        </div>
-                        <div className="space-y-1.5">
-                          {col.tasks.map((t, j) => (
-                            <div
-                              key={j}
-                              className="rounded-xl border border-zinc-200/80 bg-white px-2.5 py-2 shadow-none hover:border-zinc-300/80 transition-colors"
-                            >
-                              <div className="flex items-start justify-between gap-1">
-                                <div className={`text-[11px] leading-snug font-medium ${t.done ? 'line-through text-zinc-400' : 'text-zinc-900'}`}>
+                    ].map((col, i) => {
+                      const priBorder: Record<string, string> = {
+                        URGENT: 'border-r-rose-500',
+                        HIGH: 'border-r-amber-400',
+                        NORMAL: 'border-r-blue-400',
+                        LOW: 'border-r-zinc-300',
+                      }
+                      const priBadge: Record<string, { label: string; cls: string }> = {
+                        URGENT: { label: 'דחוף', cls: 'bg-rose-50 text-rose-700 border-rose-200' },
+                        HIGH: { label: 'גבוהה', cls: 'bg-amber-50 text-amber-700 border-amber-200' },
+                        NORMAL: { label: '', cls: '' },
+                        LOW: { label: '', cls: '' },
+                      }
+                      return (
+                        <div key={i} className="rounded-xl bg-zinc-50/40 border border-zinc-200/50 p-1.5">
+                          <div className={`flex items-center justify-between gap-1 mb-2 px-2 py-1 rounded-md text-[11px] font-semibold ${col.header}`}>
+                            <div className="flex items-center gap-1.5">
+                              <div className={`w-1.5 h-1.5 rounded-full ${col.dot}`} />
+                              <span>{col.title}</span>
+                            </div>
+                            <span className="tabular-nums text-zinc-500 font-medium">{col.count}</span>
+                          </div>
+                          <div className="space-y-1.5">
+                            {col.tasks.map((t, j) => (
+                              <div
+                                key={j}
+                                className={`group relative rounded-xl border border-zinc-200/80 bg-white px-2.5 py-2 hover:border-zinc-300 hover:shadow-sm transition-all border-r-[3px] ${priBorder[t.priority]}`}
+                              >
+                                {(t.priority === 'URGENT' || t.priority === 'HIGH') && !t.done && (
+                                  <span className={`inline-flex items-center gap-0.5 text-[9px] font-semibold px-1.5 py-0.5 rounded-md border mb-1 ${priBadge[t.priority].cls}`}>
+                                    <AlertCircle className="w-2.5 h-2.5" />
+                                    {priBadge[t.priority].label}
+                                  </span>
+                                )}
+                                <div className={`text-[11px] leading-snug font-semibold ${t.done ? 'line-through text-zinc-400' : 'text-zinc-900'}`}>
                                   {t.t}
                                 </div>
-                                {t.done && (
-                                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" strokeWidth={2.5} />
+                                {(t.due || t.project) && (
+                                  <div className="flex items-center gap-1 flex-wrap mt-1.5">
+                                    {t.due && (
+                                      <span className="inline-flex items-center gap-0.5 text-[9px] font-medium px-1 py-0.5 rounded-md bg-zinc-50 text-zinc-600 border border-zinc-200">
+                                        <Clock className="w-2 h-2" />
+                                        {t.due}
+                                      </span>
+                                    )}
+                                    {t.project && (
+                                      <span className="inline-flex items-center gap-0.5 text-[9px] font-medium px-1 py-0.5 rounded-md bg-violet-50 text-violet-700 border border-violet-200">
+                                        <Layers className="w-2 h-2" />
+                                        {t.project}
+                                      </span>
+                                    )}
+                                  </div>
                                 )}
+                                <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-zinc-100">
+                                  {t.assignee ? (
+                                    <div className="flex items-center gap-1">
+                                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center text-white text-[8px] font-bold shadow-sm ring-2 ring-white">
+                                        {t.assignee.charAt(0)}
+                                      </div>
+                                      <span className="text-[9px] text-zinc-500 font-medium">{t.assignee}</span>
+                                    </div>
+                                  ) : (
+                                    <div className="w-4 h-4 rounded-full bg-zinc-100" />
+                                  )}
+                                  {t.done && (
+                                    <Check className="w-3 h-3 text-emerald-600" strokeWidth={3} />
+                                  )}
+                                </div>
                               </div>
-                              <div className="flex items-center justify-between mt-1.5">
-                                {t.tag ? (
-                                  <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-md ${t.tagColor}`}>{t.tag}</span>
-                                ) : (
-                                  <span />
-                                )}
-                                {t.avatar && (
-                                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 ring-2 ring-white shrink-0" />
-                                )}
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </div>
               </div>
@@ -424,49 +479,88 @@ export default function HomePageContent() {
             <div className="lg:col-span-7 lg:order-1 order-2">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-violet-50/50 to-fuchsia-50/40 blur-2xl rounded-3xl" aria-hidden />
-                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-sm p-4 sm:p-6">
+                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-none p-4 sm:p-6">
+                  {/* Header identical pattern to dashboard client card */}
                   <div className="flex items-center gap-3 pb-4 border-b border-zinc-100 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-white text-sm font-bold shadow-sm ring-2 ring-white">
                       ש.ל
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-sm text-zinc-900 tracking-tight">שרה לוי</div>
-                      <div className="text-xs text-zinc-500 mt-0.5">מנכ״לית · סטודיו פיקסל</div>
-                    </div>
-                    <div className="text-left shrink-0">
-                      <div className="text-[10px] font-medium text-zinc-500">שווי כולל</div>
-                      <div className="text-base font-bold tabular-nums text-zinc-900">₪127,400</div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 text-xs mb-5">
-                    <div className="flex items-center gap-2 text-zinc-600 rounded-lg bg-zinc-50/80 border border-zinc-100 px-2.5 py-2">
-                      <Mail className="w-3.5 h-3.5 text-zinc-400 shrink-0" strokeWidth={2} />
-                      <span className="truncate">sara@pixel.co.il</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-zinc-600 rounded-lg bg-zinc-50/80 border border-zinc-100 px-2.5 py-2">
-                      <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" strokeWidth={2} />
-                      <span dir="ltr" className="truncate">050-1234567</span>
+                      <div className="flex items-center gap-2">
+                        <div className="font-semibold text-sm text-zinc-900 tracking-tight">שרה לוי</div>
+                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          <div className="w-1 h-1 rounded-full bg-emerald-500" />
+                          פעיל
+                        </span>
+                      </div>
+                      <div className="text-xs text-zinc-500 mt-0.5 flex items-center gap-1.5">
+                        <Building className="w-3 h-3" />
+                        סטודיו פיקסל · מנכ״לית
+                      </div>
                     </div>
                   </div>
 
-                  <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">פעילות אחרונה</div>
-                  <div className="space-y-2">
+                  {/* Stat cards — same pattern as dashboard */}
+                  <div className="grid grid-cols-3 gap-2 mb-4">
                     {[
-                      { icon: FileText, box: 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white', text: 'הצעת מחיר #2418 נשלחה', time: 'לפני 2 שעות' },
-                      { icon: CreditCard, box: 'bg-emerald-50 text-emerald-600 border border-emerald-100', text: 'תשלום התקבל · ₪12,500', time: 'אתמול' },
-                      { icon: Calendar, box: 'bg-blue-50 text-blue-600 border border-blue-100', text: 'פגישה תואמה ליום שני', time: 'לפני 3 ימים' },
-                      { icon: Mail, box: 'bg-zinc-100 text-zinc-600 border border-zinc-200', text: 'מייל נשלח: סיכום פגישה', time: 'לפני 5 ימים' },
+                      { label: 'שווי כולל', value: '₪127,400', icon: TrendingUp, bg: 'bg-emerald-50', fg: 'text-emerald-600' },
+                      { label: 'פרויקטים', value: '3', icon: FolderKanban, bg: 'bg-violet-50', fg: 'text-violet-600' },
+                      { label: 'הצעות פתוחות', value: '2', icon: FileText, bg: 'bg-blue-50', fg: 'text-blue-600' },
+                    ].map((s, i) => (
+                      <div key={i} className="rounded-xl border border-zinc-200/70 bg-white p-2.5 hover:border-zinc-300 transition-all">
+                        <div className="flex items-center justify-between mb-1">
+                          <div className={`w-6 h-6 rounded-lg ${s.bg} flex items-center justify-center`}>
+                            <s.icon className={`w-3 h-3 ${s.fg}`} strokeWidth={2.5} />
+                          </div>
+                        </div>
+                        <div className="text-sm font-bold tabular-nums text-zinc-900 leading-tight">{s.value}</div>
+                        <div className="text-[9px] text-zinc-500 mt-0.5">{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Contact row */}
+                  <div className="grid grid-cols-2 gap-2 text-xs mb-5">
+                    <div className="flex items-center gap-1.5 text-zinc-600 rounded-lg bg-zinc-50/80 border border-zinc-100 px-2.5 py-1.5">
+                      <Mail className="w-3 h-3 text-zinc-400 shrink-0" strokeWidth={2} />
+                      <span className="truncate text-[11px]">sara@pixel.co.il</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-zinc-600 rounded-lg bg-zinc-50/80 border border-zinc-100 px-2.5 py-1.5">
+                      <Phone className="w-3 h-3 text-zinc-400 shrink-0" strokeWidth={2} />
+                      <span dir="ltr" className="truncate text-[11px]">050-1234567</span>
+                    </div>
+                  </div>
+
+                  {/* Activity timeline — matches dashboard notifications list */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-md bg-fuchsia-50 flex items-center justify-center">
+                        <Clock className="w-3 h-3 text-fuchsia-600" strokeWidth={2.5} />
+                      </div>
+                      <span className="text-[11px] font-semibold text-zinc-900">פעילות אחרונה</span>
+                    </div>
+                    <span className="text-[10px] text-zinc-400">ראה הכל ‹</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {[
+                      { icon: FileText, box: 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white', text: 'הצעת מחיר #2418 נשלחה', time: 'לפני 2 שעות', unread: true },
+                      { icon: CreditCard, box: 'bg-emerald-50 text-emerald-600 border border-emerald-100', text: 'תשלום התקבל · ₪12,500', time: 'אתמול', unread: true },
+                      { icon: Calendar, box: 'bg-blue-50 text-blue-600 border border-blue-100', text: 'פגישה תואמה ליום שני', time: 'לפני 3 ימים', unread: false },
+                      { icon: Mail, box: 'bg-zinc-100 text-zinc-600 border border-zinc-200', text: 'מייל נשלח: סיכום פגישה', time: 'לפני 5 ימים', unread: false },
                     ].map((act, i) => (
                       <div
                         key={i}
-                        className="flex items-start gap-2.5 text-xs p-2.5 rounded-xl border border-transparent bg-zinc-50/50 hover:bg-white hover:border-zinc-200/80 transition-all"
+                        className={`flex items-start gap-2.5 p-2.5 rounded-xl border transition-all ${
+                          act.unread
+                            ? 'border-violet-100 bg-violet-50/40 hover:border-violet-200'
+                            : 'border-transparent bg-zinc-50/40 opacity-70'
+                        }`}
                       >
-                        <div className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${act.box}`}>
+                        <div className={`mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${act.box}`}>
                           <act.icon className="w-3.5 h-3.5" strokeWidth={2.2} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-zinc-900 leading-tight">{act.text}</div>
+                          <div className="text-[12px] font-semibold text-zinc-900 leading-tight">{act.text}</div>
                           <div className="text-[10px] text-zinc-500 mt-0.5">{act.time}</div>
                         </div>
                       </div>
@@ -526,11 +620,17 @@ export default function HomePageContent() {
             <div className="lg:col-span-7">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-100/50 to-fuchsia-100/50 blur-2xl rounded-3xl" aria-hidden />
-                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-sm overflow-hidden">
+                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-none overflow-hidden">
                   <div className="bg-gradient-to-br from-violet-600 via-violet-600 to-fuchsia-600 px-5 py-5 sm:p-6 text-white">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <div className="text-xs text-white/80 font-medium mb-1">הצעת מחיר</div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs text-white/80 font-medium">הצעת מחיר</span>
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-white/15 text-white border border-white/25 backdrop-blur-sm">
+                            <div className="w-1 h-1 rounded-full bg-amber-300 animate-pulse" />
+                            ממתין לחתימה
+                          </span>
+                        </div>
                         <div className="text-2xl sm:text-3xl font-bold tracking-tight">#QM-2426</div>
                       </div>
                       <div className="text-left shrink-0">
