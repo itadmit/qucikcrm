@@ -90,7 +90,7 @@ export default function HomePage() {
             <p className="text-lg md:text-xl text-zinc-600 max-w-2xl mx-auto mb-10 leading-relaxed">
               נהל לידים, לקוחות, הצעות מחיר, פרויקטים ותשלומים — במערכת אחת ישראלית, עברית, ומהירה.
               <br className="hidden md:block" />
-              בלי הסיבוכים של HubSpot. בלי המחיר של Salesforce.
+              ממשק נקי, מחיר שקוף, ותמיכה מקומית — בלי סיבוכים מיותרים.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
@@ -597,7 +597,7 @@ export default function HomePage() {
           </div>
 
           <blockquote className="text-2xl md:text-3xl font-medium text-zinc-900 leading-relaxed text-center max-w-3xl mx-auto mb-8">
-            "ניסינו HubSpot, Pipedrive, ועוד 3 מערכות. כולם או יקרים או מסובכים. Quick CRM זה הראשון שהצוות באמת אימץ. תוך שבוע — כולם השתמשו, ב<span className="bg-yellow-200/60 px-1">לי הדרכות</span>."
+            ״חיפשנו משהו פשוט שיצמח איתנו. Quick CRM זה הראשון שהצוות באמת אימץ — תוך שבוע כולם עבדו במערכת, בלי הדרכות ארוכות ובלי בלגן.״
           </blockquote>
 
           <div className="flex items-center justify-center gap-3">
