@@ -3,7 +3,11 @@ import { ImageResponse } from 'next/og'
 export const size = { width: 180, height: 180 }
 export const contentType = 'image/png'
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const pacificoFont = await fetch(
+    'https://fonts.gstatic.com/s/pacifico/v22/FwZY7-Qmy14u9lezJ96A4sijpFu_.ttf'
+  ).then((res) => res.arrayBuffer())
+
   return new ImageResponse(
     (
       <div
@@ -20,15 +24,26 @@ export default function AppleIcon() {
         <span
           style={{
             fontSize: 110,
-            fontWeight: 700,
+            fontWeight: 400,
             color: 'white',
-            fontFamily: 'Georgia, serif',
+            fontFamily: 'Pacifico',
+            marginTop: -8,
           }}
         >
           Q
         </span>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: 'Pacifico',
+          data: pacificoFont,
+          style: 'normal',
+          weight: 400,
+        },
+      ],
+    }
   )
 }
