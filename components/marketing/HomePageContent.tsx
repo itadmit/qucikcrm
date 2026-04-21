@@ -97,6 +97,35 @@ const NAV_LINKS = [
   { href: "#customers", label: "לקוחות" },
 ] as const
 
+function useRevealOnScroll() {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) {
+      el.querySelectorAll('.reveal').forEach((c) => c.classList.add('revealed'))
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('revealed')
+            io.unobserve(e.target)
+          }
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    )
+    el.querySelectorAll('.reveal').forEach((c) => io.observe(c))
+    return () => io.disconnect()
+  }, [])
+
+  return ref
+}
+
 export default function HomePageContent() {
   const [seatCount, setSeatCount] = useState(3)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -104,6 +133,7 @@ export default function HomePageContent() {
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [testimonialFade, setTestimonialFade] = useState(true)
   const testimonialTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pageRef = useRevealOnScroll()
 
   const goToTestimonial = useCallback((idx: number) => {
     setTestimonialFade(false)
@@ -152,7 +182,7 @@ export default function HomePageContent() {
   }, [PIPELINE_STEPS.length])
 
   return (
-    <div className="min-h-screen bg-[#FAFAF7] text-zinc-900" dir="rtl">
+    <div ref={pageRef} className="min-h-screen bg-[#FAFAF7] text-zinc-900" dir="rtl">
       {/* Nav */}
       <nav className="sticky top-0 z-50 backdrop-blur-md bg-[#FAFAF7]/80 border-b border-zinc-200/60">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 gap-3">
@@ -281,7 +311,7 @@ export default function HomePageContent() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 lg:pt-20 lg:pb-14">
-          <div className="text-center max-w-3xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto reveal">
             {/* Announcement pill */}
             <Link
               href="#pricing"
@@ -306,7 +336,7 @@ export default function HomePageContent() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-[3rem] sm:text-5xl md:text-[4.25rem] lg:text-[4.75rem] font-black tracking-tight text-zinc-900 mb-6 text-balance max-sm:word-spacing-[0.12em] max-sm:tracking-wide max-sm:leading-[1.15] sm:leading-[1.05] md:leading-[1.02]">
+            <h1 className="text-[3rem] sm:text-5xl md:text-[4.25rem] lg:text-[4.75rem] font-black tracking-tight text-zinc-900 mb-6 text-balance max-sm:leading-[1.15] sm:leading-[1.05] md:leading-[1.02]">
               <span className="block">ה־CRM היחידי</span>
               <span className="block mt-1 sm:mt-0.5">
                 <span className="bg-gradient-to-br from-violet-600 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent">
@@ -346,7 +376,7 @@ export default function HomePageContent() {
         </div>
 
         {/* App screenshot — real product UI */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-20 reveal reveal-delay-2">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-violet-200/30 via-fuchsia-200/20 to-pink-200/30 blur-3xl rounded-3xl" aria-hidden />
             <div className="relative mx-auto max-w-6xl rounded-2xl border border-zinc-200 bg-white shadow-2xl overflow-hidden ring-1 ring-zinc-900/5">
@@ -381,7 +411,7 @@ export default function HomePageContent() {
       {/* WORKFLOW — pipeline visualization */}
       <section id="workflow" className="scroll-mt-20 border-y border-zinc-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-14 max-w-2xl mx-auto">
+          <div className="text-center mb-14 max-w-2xl mx-auto reveal">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               איך זה עובד
             </span>
@@ -435,7 +465,7 @@ export default function HomePageContent() {
           </div>
 
           {/* Pipeline visual */}
-          <div className="relative">
+          <div className="relative reveal reveal-delay-2">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
               {[
                 {
@@ -549,19 +579,20 @@ export default function HomePageContent() {
       {/* PRODUCT — features with mockups */}
       <section id="product" className="bg-[#FAFAF7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center mb-16 max-w-2xl mx-auto">
+          <div className="text-center mb-16 max-w-2xl mx-auto reveal">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               המוצר
             </span>
             <h2 className="text-[2.5rem] md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
               כל מה שעסק צריך.
-              <br />
-              <span className="text-zinc-500">בלי פיצ'רים שלא משתמשים בהם.</span>
             </h2>
+            <p className="text-lg md:text-xl text-zinc-500">
+              בלי פיצ׳רים שלא משתמשים בהם.
+            </p>
           </div>
 
           {/* Feature 1 - Kanban (מראה כמו דשבורד / לוח פרויקט) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32 reveal">
             <div className="lg:col-span-5">
               <div className="inline-flex items-center gap-2.5 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
@@ -727,7 +758,7 @@ export default function HomePageContent() {
           </div>
 
           {/* Feature 2 - כרטיס לקוח בסגנון דשבורד */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32 reveal">
             <div className="lg:col-span-7 lg:order-1 order-2">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-violet-50/50 to-fuchsia-50/40 blur-2xl rounded-3xl" aria-hidden />
@@ -846,7 +877,7 @@ export default function HomePageContent() {
           </div>
 
           {/* Feature 3 - הצעת מחיר כמו במערכת */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center reveal">
             <div className="lg:col-span-5">
               <div className="inline-flex items-center gap-2.5 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-fuchsia-50 flex items-center justify-center">
@@ -976,7 +1007,7 @@ export default function HomePageContent() {
       {/* TESTIMONIAL */}
       <section id="customers" className="bg-white border-y border-zinc-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 reveal">
             {[
               { v: '12 שעות', l: 'נחסכות בשבוע בממוצע' },
               { v: '+34%', l: 'גידול בהמרת לידים ללקוחות' },
@@ -991,7 +1022,7 @@ export default function HomePageContent() {
             ))}
           </div>
 
-          <div className="min-h-[220px] sm:min-h-[200px] flex flex-col items-center justify-center">
+          <div className="min-h-[220px] sm:min-h-[200px] flex flex-col items-center justify-center reveal reveal-delay-1">
             <blockquote
               className={cn(
                 "text-xl sm:text-2xl md:text-3xl font-medium text-zinc-900 leading-relaxed text-center max-w-3xl mx-auto mb-8 transition-opacity duration-300 ease-in-out motion-reduce:transition-none",
@@ -1056,7 +1087,7 @@ export default function HomePageContent() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-28">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center reveal">
             {/* Copy + waitlist */}
             <div className="lg:col-span-6 order-2 lg:order-1">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 backdrop-blur px-3 py-1 mb-6">
@@ -1349,7 +1380,7 @@ export default function HomePageContent() {
       {/* PRICING — בסיס + למשתמש */}
       <section id="pricing" className="scroll-mt-20 bg-[#FAFAF7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center mb-10 max-w-2xl mx-auto">
+          <div className="text-center mb-10 max-w-2xl mx-auto reveal">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">
               מחירים
             </span>
@@ -1382,7 +1413,7 @@ export default function HomePageContent() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto reveal reveal-delay-1">
             {(
               [
                 {
@@ -1526,7 +1557,7 @@ export default function HomePageContent() {
             const savingsPct = marketTotal ? Math.round((savings / marketTotal) * 100) : 0
             const quickBarPct = marketTotal ? Math.round((quickTotal / marketTotal) * 100) : 0
             return (
-              <div className="max-w-3xl mx-auto mt-16">
+              <div className="max-w-3xl mx-auto mt-16 reveal">
                 <div className="text-center mb-6">
                   <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-violet-600 mb-2">
                     <TrendingUp className="w-3.5 h-3.5" />
@@ -1578,12 +1609,12 @@ export default function HomePageContent() {
       {/* FAQ */}
       <section id="faq" className="scroll-mt-20 bg-white border-t border-zinc-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center mb-10">
+          <div className="text-center mb-10 reveal">
             <span className="inline-block text-xs font-bold text-violet-600 tracking-wider uppercase mb-3">שאלות נפוצות</span>
             <h2 className="text-[2.5rem] md:text-5xl lg:text-6xl font-black tracking-tight mb-3">שאלות שכל בעל עסק שואל</h2>
             <p className="text-zinc-600">כל מה שצריך לדעת לפני שמתחילים ב־Quick CRM.</p>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-3 reveal reveal-delay-1">
             {[
               {
                 q: 'האם Quick CRM מתאים לעסק של עובד אחד או שניים?',
@@ -1631,7 +1662,7 @@ export default function HomePageContent() {
 
       {/* FINAL CTA */}
       <section className="bg-zinc-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center reveal">
           <h2 className="text-[2.5rem] md:text-6xl lg:text-7xl font-black tracking-tight mb-6">
             תפסיקו לנהל את <span className="bg-gradient-to-br from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">העסק שלכם באקסל.</span>
           </h2>
