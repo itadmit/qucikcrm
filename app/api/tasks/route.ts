@@ -107,31 +107,16 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    // Send notification (in-app + email) - רק אם לא מדלגים על מייל
-    if (!skipEmail) {
-      await notifyTaskAssigned({
-        userId: task.assigneeId || user.id,
-        companyId: user.companyId,
-        taskId: task.id,
-        taskTitle: task.title,
-        assigneeName: task.assignee?.name || user.name || 'Unknown',
-        dueDate: task.dueDate ? new Date(task.dueDate).toLocaleDateString('he-IL') : undefined,
-      })
-    } else {
-      // רק התראה בתוך המערכת, ללא מייל
-      await prisma.notification.create({
-        data: {
-          userId: task.assigneeId || user.id,
-          companyId: user.companyId,
-          type: 'task',
-          title: 'משימה חדשה',
-          message: task.title,
-          entityType: 'task',
-          entityId: task.id,
-          isRead: false,
-        },
-      })
-    }
+    await notifyTaskAssigned({
+      userId: task.assigneeId || user.id,
+      companyId: user.companyId,
+      taskId: task.id,
+      taskTitle: task.title,
+      assignedByName: user.name || 'משתמש',
+      dueDate: task.dueDate ? new Date(task.dueDate).toLocaleDateString('he-IL') : undefined,
+      projectName: task.project?.name,
+      sendEmail: !skipEmail,
+    })
 
     // Trigger automation for task creation
     await triggerAutomation(
@@ -273,8 +258,9 @@ export async function PATCH(req: NextRequest) {
           companyId: user.companyId,
           taskId: task.id,
           taskTitle: task.title,
-          assigneeName: newAssignee.name,
+          assignedByName: user.name || 'משתמש',
           dueDate: task.dueDate ? new Date(task.dueDate).toLocaleDateString('he-IL') : undefined,
+          projectName: task.project?.name,
         })
       }
     }
@@ -286,6 +272,7 @@ export async function PATCH(req: NextRequest) {
         companyId: user.companyId,
         taskId: task.id,
         taskTitle: task.title,
+        completedByName: user.name || 'משתמש',
       })
 
       await triggerAutomation(

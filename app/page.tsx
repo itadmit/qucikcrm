@@ -74,7 +74,7 @@ export default function HomePage() {
       '@type': 'AggregateOffer',
       priceCurrency: 'ILS',
       lowPrice: 79,
-      highPrice: 739,
+      highPrice: 750,
       offerCount: 3,
       availability: 'https://schema.org/InStock',
     },
@@ -114,7 +114,7 @@ export default function HomePage() {
         name: 'כמה עולה CRM בעברית בישראל?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'המחיר הממוצע בישראל הוא 120 עד 250 ש״ח למשתמש, עם מינימום של 3 עד 10 משתמשים. ב־Quick CRM מתחילים מ־79 ש״ח לחודש בלי מינימום מושבים — חיסכון של עד 70% לעסקים קטנים.',
+          text: 'המחיר הממוצע בישראל הוא 120 עד 250 ש״ח למשתמש, עם מינימום של 3 עד 10 משתמשים. ב־Quick CRM: עצמאי משלם 79 ש״ח, עסק של 5 עובדים 375 ש״ח, ו-10 עובדים רק 750 ש״ח לחודש — חיסכון של עד 70% לעומת Fireberry.',
         },
       },
       {

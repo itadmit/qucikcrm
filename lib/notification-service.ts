@@ -9,11 +9,13 @@ import { sendEmail as sendEmailViaGmail, emailTemplates, getEmailTemplate } from
 export interface NotificationData {
   userId: string
   companyId: string
-  type: 'task' | 'lead' | 'client' | 'project' | 'meeting' | 'automation' | 'system' | 'reminder' | 'document' | 'quote' | 'payment'
+  type: 'task' | 'task_completed' | 'lead' | 'client' | 'project' | 'meeting' | 'automation' | 'system' | 'reminder' | 'document' | 'quote' | 'payment'
   title: string
   message: string
   entityType?: string
   entityId?: string
+  /** Structured context for mobile / rich UI (assigner, due date, etc.) */
+  entityDetails?: Record<string, unknown>
   // Email specific
   sendEmail?: boolean // Should we also send an email?
   emailSubject?: string // Custom email subject (optional)
@@ -35,6 +37,7 @@ export async function sendNotification(data: NotificationData): Promise<void> {
         message: data.message,
         entityType: data.entityType,
         entityId: data.entityId,
+        entityDetails: data.entityDetails ?? undefined,
         isRead: false,
       },
     })
@@ -99,20 +102,43 @@ export async function notifyTaskAssigned(params: {
   companyId: string
   taskId: string
   taskTitle: string
-  assigneeName: string
+  /** שם המשתמש שהקצה את המשימה */
+  assignedByName: string
   dueDate?: string
+  projectName?: string
+  sendEmail?: boolean
 }) {
+  const assignedAt = new Date().toISOString()
+  const dueLine = params.dueDate ? `תאריך יעד: ${params.dueDate}` : 'תאריך יעד: לא נקבע'
+  const message = [
+    `הוקצתה על ידי: ${params.assignedByName}`,
+    dueLine,
+    params.projectName ? `פרויקט: ${params.projectName}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n')
+
+  const entityDetails: Record<string, unknown> = {
+    kind: 'task_assigned',
+    taskTitle: params.taskTitle,
+    assignedByName: params.assignedByName,
+    dueDate: params.dueDate ?? null,
+    projectName: params.projectName ?? null,
+    assignedAt,
+  }
+
   await sendNotification({
     userId: params.userId,
     companyId: params.companyId,
     type: 'task',
-    title: 'משימה חדשה הוקצתה לך',
-    message: `${params.taskTitle}${params.dueDate ? ` - תאריך יעד: ${params.dueDate}` : ''}`,
+    title: params.taskTitle,
+    message,
     entityType: 'task',
     entityId: params.taskId,
-    sendEmail: true,
+    entityDetails,
+    sendEmail: params.sendEmail !== false,
     emailSubject: `משימה חדשה: ${params.taskTitle}`,
-    emailBody: emailTemplates.taskAssigned(params.taskTitle, params.assigneeName, params.dueDate).html,
+    emailBody: emailTemplates.taskAssigned(params.taskTitle, params.assignedByName, params.dueDate).html,
   })
 }
 
@@ -165,16 +191,26 @@ export async function notifyTaskCompleted(params: {
   companyId: string
   taskId: string
   taskTitle: string
+  completedByName: string
 }) {
+  const completedAt = new Date().toISOString()
+  const entityDetails: Record<string, unknown> = {
+    kind: 'task_completed',
+    taskTitle: params.taskTitle,
+    completedByName: params.completedByName,
+    completedAt,
+  }
+
   await sendNotification({
     userId: params.userId,
     companyId: params.companyId,
-    type: 'task',
-    title: 'משימה הושלמה',
-    message: `${params.taskTitle} הושלמה בהצלחה`,
+    type: 'task_completed',
+    title: params.taskTitle,
+    message: `הושלמה על ידי: ${params.completedByName}`,
     entityType: 'task',
     entityId: params.taskId,
-    sendEmail: false, // Usually don't need email for task completion
+    entityDetails,
+    sendEmail: false,
   })
 }
 

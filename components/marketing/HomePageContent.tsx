@@ -979,10 +979,10 @@ export default function HomePageContent() {
               מחירים
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              תמחור הוגן לעסקים קטנים
+              מ־<span className="bg-gradient-to-br from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">₪79</span> לחודש. בלי מינימום.
             </h2>
             <p className="text-lg text-zinc-600">
-              בלי מינימום 3 או 5 משתמשים. בלי הפתעות. כל חבילה כוללת מושבים בסיסיים — רק משלמים על מה שצריך.
+              מחיר פשוט שגדל איתך: ₪79 לעצמאי, ₪75 לכל משתמש נוסף. עסק של 10 עובדים — ₪750 לחודש בלבד.
             </p>
             <p className="text-xs text-zinc-500 mt-2">המחירים אינם כוללים מע״מ · 14 יום ניסיון חינם · ביטול בלחיצה</p>
           </div>
@@ -1012,26 +1012,28 @@ export default function HomePageContent() {
               [
                 {
                   name: 'סולו',
-                  base: 79,
-                  includedSeats: 1,
-                  extraPerSeat: 39,
-                  desc: 'לעצמאים ופרילנסרים',
+                  desc: 'לעצמאי או פרילנסר אחד',
+                  minSeats: 1,
+                  maxSeats: 1,
+                  priceAt: (_s: number) => 79,
+                  promoBadge: 'מבצע השקה',
                   features: [
+                    'משתמש אחד',
                     'לידים ולקוחות ללא הגבלה',
                     'הצעות מחיר וחשבוניות',
-                    'משימות ופרויקטים',
-                    'דשבורד וקנבן',
+                    'משימות, פרויקטים וקנבן',
                     'תמיכה במייל ובצ׳אט',
                   ],
                   popular: false,
                 },
                 {
                   name: 'עסק',
-                  base: 189,
-                  includedSeats: 3,
-                  extraPerSeat: 35,
-                  desc: 'המתאים לרוב העסקים עד 10 עובדים',
+                  desc: 'המתאים לעסקים של 2–5 עובדים',
+                  minSeats: 2,
+                  maxSeats: 5,
+                  priceAt: (s: number) => s * 75,
                   features: [
+                    'עד 5 משתמשים · ₪75 לכל מושב',
                     'כל מה שבסולו',
                     'אוטומציות ותהליכי עבודה',
                     'סליקת אשראי ותשלומים',
@@ -1042,11 +1044,12 @@ export default function HomePageContent() {
                 },
                 {
                   name: 'צוות',
-                  base: 449,
-                  includedSeats: 10,
-                  extraPerSeat: 29,
-                  desc: 'לעסקים קטנים בצמיחה מהירה',
+                  desc: 'לעסקים קטנים של 6–10 עובדים',
+                  minSeats: 6,
+                  maxSeats: 10,
+                  priceAt: (s: number) => s * 75,
                   features: [
+                    'עד 10 משתמשים · ₪75 לכל מושב',
                     'כל מה שבעסק',
                     'הרשאות מתקדמות',
                     'תצוגות מותאמות אישית',
@@ -1057,9 +1060,15 @@ export default function HomePageContent() {
                 },
               ] as const
             ).map((plan, i) => {
-              const extraSeats = Math.max(0, seatCount - plan.includedSeats)
-              const total = plan.base + extraSeats * plan.extraPerSeat
+              const inRange = seatCount >= plan.minSeats && seatCount <= plan.maxSeats
+              const effectiveSeats = Math.max(plan.minSeats, Math.min(seatCount, plan.maxSeats))
+              const total = plan.priceAt(effectiveSeats)
               const popular = plan.popular
+              const seatLabel =
+                plan.maxSeats === plan.minSeats
+                  ? `${plan.minSeats} משתמש`
+                  : `${plan.minSeats}–${plan.maxSeats} משתמשים`
+
               return (
                 <div
                   key={i}
@@ -1067,49 +1076,46 @@ export default function HomePageContent() {
                     popular
                       ? 'bg-zinc-900 text-white shadow-xl ring-2 ring-violet-500'
                       : 'bg-white border border-zinc-200 hover:border-zinc-300'
-                  }`}
+                  } ${!inRange ? 'opacity-70' : ''}`}
                 >
                   {popular && (
                     <div className="absolute -top-3 right-7 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                       הכי פופולרי
                     </div>
                   )}
-                  <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
-                  <p className={`text-sm mb-4 ${popular ? 'text-zinc-400' : 'text-zinc-500'}`}>{plan.desc}</p>
-                  <div className={`text-xs mb-4 space-y-1 rounded-lg p-3 ${popular ? 'bg-zinc-800/80' : 'bg-zinc-50 border border-zinc-100'}`}>
-                    <div className="flex justify-between gap-2">
-                      <span className={popular ? 'text-zinc-400' : 'text-zinc-600'}>דמי בסיס</span>
-                      <span className="font-mono tabular-nums font-semibold">₪{plan.base}</span>
+                  {'promoBadge' in plan && plan.promoBadge && (
+                    <div className="absolute -top-3 right-7 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      {plan.promoBadge}
                     </div>
-                    <div className="flex justify-between gap-2">
-                      <span className={popular ? 'text-zinc-400' : 'text-zinc-600'}>משתמשים כלולים</span>
-                      <span className="font-mono tabular-nums font-semibold">{plan.includedSeats}</span>
+                  )}
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-xl font-bold">{plan.name}</h3>
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md tabular-nums ${popular ? 'bg-white/10 text-white' : 'bg-zinc-100 text-zinc-700'}`}>
+                      {seatLabel}
+                    </span>
+                  </div>
+                  <p className={`text-sm mb-5 ${popular ? 'text-zinc-400' : 'text-zinc-500'}`}>{plan.desc}</p>
+
+                  <div className={`mb-6 pb-6 border-b ${popular ? 'border-zinc-700' : 'border-zinc-200/80'}`}>
+                    <div className={`text-xs mb-1 ${popular ? 'text-zinc-400' : 'text-zinc-500'}`}>
+                      {inRange ? `לפי ${seatCount} ${seatCount === 1 ? 'משתמש' : 'משתמשים'}` : `החל מ־${plan.minSeats} משתמשים`}
                     </div>
-                    <div className="flex justify-between gap-2">
-                      <span className={popular ? 'text-zinc-400' : 'text-zinc-600'}>תוספת למושב</span>
-                      <span className="font-mono tabular-nums font-semibold">₪{plan.extraPerSeat}</span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-5xl sm:text-6xl font-bold tracking-tight tabular-nums">₪{total}</span>
+                      <span className={`text-sm ${popular ? 'text-zinc-400' : 'text-zinc-500'}`}>/ חודש</span>
                     </div>
-                    {extraSeats > 0 ? (
-                      <div className={`flex justify-between gap-2 pt-1 border-t ${popular ? 'border-zinc-700' : 'border-zinc-200'}`}>
-                        <span className={popular ? 'text-zinc-400' : 'text-zinc-600'}>
-                          {extraSeats} מושבים נוספים
-                        </span>
-                        <span className="font-mono tabular-nums font-semibold">+₪{extraSeats * plan.extraPerSeat}</span>
+                    {plan.name !== 'סולו' && (
+                      <div className={`text-[11px] mt-2 ${popular ? 'text-zinc-500' : 'text-zinc-500'}`}>
+                        ₪75 למשתמש · ללא מע״מ
                       </div>
-                    ) : (
-                      <div className={`text-center pt-1 text-[11px] ${popular ? 'text-zinc-500' : 'text-zinc-500'}`}>
-                        כל המושבים בתוך החבילה
+                    )}
+                    {plan.name === 'סולו' && (
+                      <div className={`text-[11px] mt-2 font-semibold ${popular ? 'text-emerald-300' : 'text-emerald-700'}`}>
+                        מחיר שובר שוק — הזול בישראל
                       </div>
                     )}
                   </div>
-                  <div className={`mb-6 pb-6 border-b ${popular ? 'border-zinc-700' : 'border-zinc-200/80'}`}>
-                    <div className={`text-xs mb-1 ${popular ? 'text-zinc-400' : 'text-zinc-500'}`}>סה״כ משוער לחודש</div>
-                    <span className="text-4xl sm:text-5xl font-bold tracking-tight tabular-nums">₪{total}</span>
-                    <span className={`text-sm ${popular ? 'text-zinc-400' : 'text-zinc-500'}`}> / חודש</span>
-                    <div className={`text-[11px] mt-1 ${popular ? 'text-zinc-500' : 'text-zinc-500'}`}>
-                      לפי {seatCount} משתמשים פעילים
-                    </div>
-                  </div>
+
                   <ul className="space-y-2.5 mb-8">
                     {plan.features.map((f, j) => (
                       <li key={j} className="flex items-start gap-2.5 text-sm">
@@ -1131,7 +1137,7 @@ export default function HomePageContent() {
             })}
           </div>
           <p className="text-center text-xs text-zinc-500 mt-10 max-w-2xl mx-auto leading-relaxed">
-            המחירים להמחשה בלבד — לפני רכישה תקבלו הצעה מדויקת לפי גודל הארגון והיקף השימוש. בתשלום שנתי מראש — 20% הנחה.
+            בתשלום שנתי מראש — 20% הנחה. מעל 10 משתמשים? <a href="#contact" className="underline hover:text-violet-600">דבר איתנו</a> לתוכנית מותאמת.
           </p>
 
           {/* השוואת מחיר למתחרים */}
@@ -1143,10 +1149,8 @@ export default function HomePageContent() {
               השוואה לחבילת CRM ישראלית מובילה (Fireberry), על בסיס המחירים הפומביים שלה לחודש.
             </p>
             {(() => {
-              const quickBase = 189
-              const quickIncluded = 3
-              const quickExtra = 35
-              const quickTotal = quickBase + Math.max(0, seatCount - quickIncluded) * quickExtra
+              const quickTotal = seatCount === 1 ? 79 : seatCount * 75
+              const quickPlanName = seatCount === 1 ? 'סולו' : seatCount <= 5 ? 'עסק' : 'צוות'
               const fireberryMinSeats = Math.max(seatCount, 3)
               const fireberryTotal = fireberryMinSeats * 120
               const savings = Math.max(0, fireberryTotal - quickTotal)
@@ -1159,7 +1163,7 @@ export default function HomePageContent() {
                     <div className="text-[11px] text-zinc-500 mt-1">מינימום 3 משתמשים</div>
                   </div>
                   <div className="rounded-xl border-2 border-violet-500 bg-violet-50/50 p-4 text-center">
-                    <div className="text-xs font-bold text-violet-700 mb-1">Quick CRM · עסק</div>
+                    <div className="text-xs font-bold text-violet-700 mb-1">Quick CRM · {quickPlanName}</div>
                     <div className="text-2xl font-bold tabular-nums text-violet-900">₪{quickTotal.toLocaleString('he-IL')}</div>
                     <div className="text-[11px] text-violet-700 mt-1">בלי מינימום מושבים</div>
                   </div>

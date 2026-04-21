@@ -24,15 +24,42 @@ export async function GET(req: NextRequest) {
     // הוספת פרטים נוספים על ה-entities
     const enrichedNotifications = await Promise.all(
       notifications.map(async (notification) => {
+        const storedDetails = notification.entityDetails as Record<string, unknown> | null
         const enriched: any = {
           ...notification,
-          entityDetails: null,
+          entityDetails: storedDetails ?? null,
         }
 
-        // אם יש entityType ו-entityId, נטען פרטים נוספים
+        if (storedDetails && typeof storedDetails === 'object') {
+          return enriched
+        }
+
+        // אם יש entityType ו-entityId, נטען פרטים נוספים (התראות ישנות ללא entityDetails)
         if (notification.entityType && notification.entityId) {
           try {
             switch (notification.entityType) {
+              case 'task': {
+                const t = await prisma.task.findUnique({
+                  where: { id: notification.entityId },
+                  select: {
+                    title: true,
+                    dueDate: true,
+                    project: { select: { name: true } },
+                    assignee: { select: { name: true } },
+                  },
+                })
+                if (t) {
+                  enriched.entityDetails = {
+                    kind: 'task_assigned',
+                    taskTitle: t.title,
+                    assignedByName: null,
+                    dueDate: t.dueDate ? t.dueDate.toLocaleDateString('he-IL') : null,
+                    projectName: t.project?.name ?? null,
+                    assignedAt: notification.createdAt.toISOString(),
+                  }
+                }
+                break
+              }
               case 'lead':
                 const lead = await prisma.lead.findUnique({
                   where: { id: notification.entityId },

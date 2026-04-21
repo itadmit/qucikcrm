@@ -210,14 +210,14 @@ export const emailTemplates = {
     }),
   }),
 
-  taskAssigned: (taskTitle: string, assigneeName: string, dueDate?: string) => ({
+  taskAssigned: (taskTitle: string, assignedByName: string, dueDate?: string) => ({
     subject: `משימה חדשה הוקצתה לך: ${taskTitle}`,
     html: getEmailTemplate({
       title: 'משימה חדשה',
       content: `
         <h2>הוקצתה לך משימה חדשה 📋</h2>
         <p><strong>כותרת:</strong> ${taskTitle}</p>
-        ${assigneeName ? `<p><strong>מקבל המשימה:</strong> ${assigneeName}</p>` : ''}
+        ${assignedByName ? `<p><strong>הוקצתה על ידי:</strong> ${assignedByName}</p>` : ''}
         ${dueDate ? `<p><strong>תאריך יעד:</strong> ${dueDate}</p>` : ''}
         <a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/tasks/my" class="button">
           צפה במשימה
