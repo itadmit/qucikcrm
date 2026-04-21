@@ -21,6 +21,9 @@ import {
   Zap,
   Layers,
   Smartphone,
+  Bell,
+  Fingerprint,
+  WifiOff,
   AlertCircle,
   Clock,
   FolderKanban,
@@ -726,30 +729,243 @@ export default function HomePageContent() {
         </div>
       </section>
 
-      {/* Mobile apps — בקרוב */}
-      <section id="apps" className="bg-white border-y border-zinc-200">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 mb-5">
-              <Smartphone className="w-6 h-6" strokeWidth={2} />
+      {/* Mobile apps — coming soon */}
+      <section id="apps" className="relative overflow-hidden bg-zinc-950 text-white">
+        {/* Decorative gradients */}
+        <div aria-hidden className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-[32rem] h-[32rem] rounded-full bg-violet-600/30 blur-3xl" />
+          <div className="absolute -bottom-40 -left-32 w-[28rem] h-[28rem] rounded-full bg-fuchsia-600/25 blur-3xl" />
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-28">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* Copy + waitlist */}
+            <div className="lg:col-span-6 order-2 lg:order-1">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 backdrop-blur px-3 py-1 mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                <span className="text-[11px] font-semibold tracking-wider uppercase text-white/90">בפיתוח · השקה Q2 2026</span>
+              </span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-5 leading-[1.08]">
+                ה־CRM שלך.
+                <br />
+                <span className="bg-gradient-to-br from-violet-300 via-fuchsia-300 to-pink-300 bg-clip-text text-transparent">
+                  בכיס שלך.
+                </span>
+              </h2>
+              <p className="text-lg text-zinc-300 leading-relaxed mb-8 max-w-lg">
+                אפליקציה ילידית לאייפון ולאנדרואיד — אותה חוויית ניהול לקוחות, משימות, הצעות מחיר והתראות,
+                רק מהירה יותר ומותאמת למסך הקטן.
+              </p>
+
+              {/* Feature grid */}
+              <div className="grid grid-cols-2 gap-3 mb-8 max-w-lg">
+                {[
+                  { icon: Bell, label: 'התראות Push', sub: 'ליד חדש מייד' },
+                  { icon: WifiOff, label: 'מצב Offline', sub: 'גם בלי אינטרנט' },
+                  { icon: Fingerprint, label: 'כניסה ביומטרית', sub: 'Face ID / טביעה' },
+                  { icon: Zap, label: 'פתיחה מיידית', sub: 'מהירה פי 3' },
+                ].map((f, i) => (
+                  <div key={i} className="rounded-xl bg-white/[0.04] border border-white/10 p-3 backdrop-blur hover:bg-white/[0.06] hover:border-white/20 transition-all">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center mb-2 shadow-lg shadow-violet-500/20">
+                      <f.icon className="w-4 h-4 text-white" strokeWidth={2.2} />
+                    </div>
+                    <div className="text-sm font-semibold text-white">{f.label}</div>
+                    <div className="text-[11px] text-zinc-400 mt-0.5">{f.sub}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Waitlist form */}
+              <form
+                onSubmit={(e) => e.preventDefault()}
+                className="relative flex flex-col sm:flex-row gap-2 p-1.5 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur max-w-lg"
+              >
+                <input
+                  type="email"
+                  required
+                  placeholder="האימייל שלך"
+                  className="flex-1 bg-transparent px-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-zinc-900 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-zinc-100 transition-colors shadow-lg"
+                >
+                  שמור לי מקום
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+              </form>
+              <div className="flex items-center gap-3 mt-4 text-xs text-zinc-400">
+                <div className="flex -space-x-1.5">
+                  {['from-violet-500 to-fuchsia-500', 'from-amber-500 to-orange-500', 'from-blue-500 to-cyan-500', 'from-emerald-500 to-teal-500'].map((g, i) => (
+                    <div key={i} className={`w-6 h-6 rounded-full bg-gradient-to-br ${g} ring-2 ring-zinc-950`} />
+                  ))}
+                </div>
+                <span>
+                  <span className="font-bold text-white tabular-nums">1,284</span> בעלי עסקים כבר ברשימת ההמתנה
+                </span>
+              </div>
+
+              {/* Store badges */}
+              <div className="flex flex-wrap gap-3 mt-6">
+                <div className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.03] backdrop-blur px-4 py-2.5 opacity-70">
+                  <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                    <path d="M17.05 20.28c-.98.95-2.05.88-3.08.38-1.09-.5-2.08-.53-3.24 0-1.44.62-2.2.44-3.06-.38C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                  </svg>
+                  <div className="text-right">
+                    <div className="text-[9px] text-zinc-400 leading-none">זמין בקרוב ב־</div>
+                    <div className="text-sm font-semibold text-white leading-tight mt-0.5">App Store</div>
+                  </div>
+                </div>
+                <div className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/[0.03] backdrop-blur px-4 py-2.5 opacity-70">
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" aria-hidden>
+                    <path fill="#34A853" d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92z" />
+                    <path fill="#FBBC04" d="M16.81 15.017l-2.413-2.413-2.413 2.413 5.447 3.145a1.001 1.001 0 00.997-.002l.002-.001 3.31-1.912a1 1 0 000-1.732l-3.31-1.913a1 1 0 00-.999 0l-5.447 3.145 2.413 2.413 2.413-2.413z" opacity=".65" />
+                    <path fill="#EA4335" d="M20.16 10.485l-3.31-1.913a1 1 0 00-.999 0l-5.447 3.145L12.813 14l4.87-2.812a1 1 0 00.001-1.732z" />
+                    <path fill="#4285F4" d="M3.61 1.814l10.183 10.186 2.414-2.414L6.02 1.257a1 1 0 00-2.41.557z" />
+                  </svg>
+                  <div className="text-right">
+                    <div className="text-[9px] text-zinc-400 leading-none">זמין בקרוב ב־</div>
+                    <div className="text-sm font-semibold text-white leading-tight mt-0.5">Google Play</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 tracking-tight mb-3">
-              אפליקציה לנייד — בקרוב
-            </h2>
-            <p className="text-lg text-zinc-600 leading-relaxed mb-8">
-              אפליקציה ייעודית <span className="font-semibold text-zinc-800">לאייפון (iOS)</span> ול־
-              <span className="font-semibold text-zinc-800">אנדרואיד</span> — אותה חוויית ניהול לקוחות, משימות והתראות,
-              בדרך אליכם. ההרשמה היום שומרת את המקום ברשימת ההמתנה.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-sm font-medium text-zinc-800">
-                <span className="text-xs font-bold text-zinc-700 bg-white border border-zinc-200 px-1.5 py-0.5 rounded">iOS</span>
-                אפליקציה לאייפון — בקרוב
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-sm font-medium text-zinc-800">
-                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Android</span>
-                אפליקציה לאנדרואיד — בקרוב
-              </span>
+
+            {/* Phone mockup */}
+            <div className="lg:col-span-6 order-1 lg:order-2 relative">
+              <div className="relative mx-auto" style={{ maxWidth: 340 }}>
+                {/* Ambient glow */}
+                <div aria-hidden className="absolute -inset-10 bg-gradient-to-br from-violet-500/30 via-fuchsia-500/20 to-transparent rounded-[3rem] blur-3xl" />
+
+                {/* Phone frame */}
+                <div className="relative rounded-[2.8rem] bg-zinc-900 p-2.5 shadow-[0_30px_90px_-20px_rgba(139,92,246,0.45)] ring-1 ring-white/10">
+                  <div className="relative rounded-[2.2rem] bg-[#FAFAF7] overflow-hidden aspect-[9/19.5]">
+                    {/* Dynamic Island */}
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-7 bg-zinc-900 rounded-full z-20" />
+                    {/* Status bar */}
+                    <div className="flex items-center justify-between px-7 pt-3 pb-1 text-[10px] font-semibold text-zinc-900 relative z-10">
+                      <span className="tabular-nums">9:41</span>
+                      <div className="flex items-center gap-1">
+                        <div className="flex gap-0.5 items-end">
+                          <div className="w-0.5 h-1.5 bg-zinc-900 rounded-sm" />
+                          <div className="w-0.5 h-2 bg-zinc-900 rounded-sm" />
+                          <div className="w-0.5 h-2.5 bg-zinc-900 rounded-sm" />
+                          <div className="w-0.5 h-3 bg-zinc-900 rounded-sm" />
+                        </div>
+                        <div className="w-5 h-2.5 border border-zinc-900 rounded-sm relative">
+                          <div className="absolute inset-0.5 bg-zinc-900 rounded-[1px] w-[70%]" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* App content */}
+                    <div className="px-4 pt-6 pb-20">
+                      {/* Greeting */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <div className="text-[10px] text-zinc-500 font-medium">יום שלישי, 21 באפריל</div>
+                          <div className="text-lg font-bold text-zinc-900 leading-tight">שלום, דני</div>
+                        </div>
+                        <div className="relative">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">ד.כ</div>
+                          <div className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-rose-500 border-2 border-[#FAFAF7]" />
+                        </div>
+                      </div>
+
+                      {/* Stat cards */}
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        <div className="rounded-xl bg-white border border-zinc-200/70 p-2.5">
+                          <div className="flex items-center justify-between mb-1">
+                            <TrendingUp className="w-3 h-3 text-emerald-600" strokeWidth={2.5} />
+                            <span className="text-[8px] font-semibold text-emerald-600 tabular-nums">+12%</span>
+                          </div>
+                          <div className="text-sm font-bold text-zinc-900 tabular-nums">₪300K</div>
+                          <div className="text-[9px] text-zinc-500">תקציבים</div>
+                        </div>
+                        <div className="rounded-xl bg-white border border-zinc-200/70 p-2.5">
+                          <div className="flex items-center justify-between mb-1">
+                            <Users className="w-3 h-3 text-violet-600" strokeWidth={2.5} />
+                            <span className="text-[8px] font-semibold text-violet-600 tabular-nums">+4</span>
+                          </div>
+                          <div className="text-sm font-bold text-zinc-900 tabular-nums">46</div>
+                          <div className="text-[9px] text-zinc-500">לקוחות פעילים</div>
+                        </div>
+                      </div>
+
+                      {/* Tasks card */}
+                      <div className="rounded-xl bg-white border border-zinc-200/70 p-3 mb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-1.5">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-violet-600" strokeWidth={2.5} />
+                            <span className="text-[11px] font-bold text-zinc-900">המשימות שלי</span>
+                          </div>
+                          <span className="text-[9px] bg-cyan-50 text-cyan-700 font-semibold px-1.5 py-0.5 rounded-md">3 פעילות</span>
+                        </div>
+                        <div className="space-y-1.5">
+                          {[
+                            { t: 'ליצור הצעה ללקוחות משופצים', border: 'border-r-rose-500' },
+                            { t: 'גביית תשלום מגמר חשבון', border: 'border-r-amber-400' },
+                            { t: 'יצירת משתמש חדש בקווין', border: 'border-r-blue-400' },
+                          ].map((t, i) => (
+                            <div key={i} className={`rounded-lg bg-zinc-50 border border-zinc-200/60 border-r-[3px] ${t.border} px-2 py-1.5`}>
+                              <div className="text-[10px] font-semibold text-zinc-900 leading-tight">{t.t}</div>
+                              <div className="flex items-center gap-1 mt-1">
+                                <div className="w-3 h-3 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 ring-1 ring-white" />
+                                <span className="text-[8px] text-zinc-500">דני כהן</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom tab bar */}
+                    <div className="absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur border-t border-zinc-200/60 px-4 py-2.5 flex items-center justify-around">
+                      {[
+                        { icon: Sparkles, active: true },
+                        { icon: Users, active: false },
+                        { icon: FileText, active: false },
+                        { icon: Bell, active: false, badge: true },
+                      ].map((t, i) => (
+                        <div key={i} className="relative flex flex-col items-center gap-0.5">
+                          <t.icon className={`w-5 h-5 ${t.active ? 'text-violet-600' : 'text-zinc-400'}`} strokeWidth={t.active ? 2.5 : 2} />
+                          {t.active && <div className="w-1 h-1 rounded-full bg-violet-600" />}
+                          {t.badge && <div className="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-rose-500" />}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Home indicator */}
+                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 rounded-full bg-zinc-900/80" />
+                  </div>
+                </div>
+
+                {/* Floating notification card */}
+                <div className="absolute -right-6 top-20 hidden sm:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-56 rotate-[-4deg] ring-1 ring-black/5">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center shrink-0">
+                    <Bell className="w-4 h-4 text-white" strokeWidth={2.5} />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-bold text-zinc-900 leading-tight">ליד חדש · שרה לוי</div>
+                    <div className="text-[10px] text-zinc-500 mt-0.5 truncate">עכשיו · לחצי לצפייה</div>
+                  </div>
+                </div>
+
+                {/* Floating payment card */}
+                <div className="absolute -left-4 bottom-28 hidden sm:flex items-center gap-2.5 rounded-2xl bg-white shadow-2xl shadow-black/40 border border-zinc-200 px-3 py-2.5 w-52 rotate-[3deg] ring-1 ring-black/5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
+                    <CreditCard className="w-4 h-4 text-emerald-600" strokeWidth={2.5} />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-bold text-zinc-900 leading-tight">תשלום התקבל</div>
+                    <div className="text-[10px] text-emerald-600 font-semibold tabular-nums mt-0.5">+ ₪12,500</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
