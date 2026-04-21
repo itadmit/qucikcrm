@@ -11,17 +11,17 @@ import { getSiteUrl } from '@/lib/site-url'
 const site = getSiteUrl()
 
 const title =
-  'Quick CRM — מערכת CRM בעברית לעסקים קטנים | מ־₪99 לחודש'
+  'Quick CRM — מערכת CRM בעברית | מ־₪99 לחודש'
 
 const description =
-  'Quick CRM היא מערכת CRM בעברית לעסקים קטנים בישראל (עד 10 עובדים): ניהול לקוחות ולידים, ניהול פרויקטים ומשימות, יצירת הצעות מחיר וחשבוניות, תשלומים וסליקה. בלי מינימום משתמשים, מתחילים מ־₪99 לחודש. 14 יום חינם.'
+  'Quick CRM היא מערכת CRM בעברית לניהול לקוחות ולידים, פרויקטים ומשימות, יצירת הצעות מחיר וחשבוניות, תשלומים וסליקה. בלי מינימום משתמשים, מתחילים מ־₪99 לחודש. 14 יום חינם.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(site),
   title,
   description,
   keywords: [
-    'CRM לעסקים קטנים',
+    'CRM בעברית',
     'מערכת CRM בעברית',
     'CRM לעצמאים',
     'CRM לפרילנסרים',
@@ -83,7 +83,7 @@ export default function HomePage() {
     url: site,
     audience: {
       '@type': 'BusinessAudience',
-      audienceType: 'עסקים קטנים עד 10 עובדים, עצמאים, פרילנסרים',
+      audienceType: 'עסקים, עצמאים, פרילנסרים',
     },
     offers: {
       '@type': 'AggregateOffer',

@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Quick CRM',
     short_name: 'Quick CRM',
     description:
-      'מערכת CRM בעברית לעסקים קטנים בישראל (עד 10 עובדים): ניהול לקוחות ולידים, פרויקטים, משימות, הצעות מחיר ותשלומים.',
+      'מערכת CRM בעברית לניהול לקוחות ולידים, פרויקטים, משימות, הצעות מחיר ותשלומים.',
     start_url: '/',
     scope: '/',
     display: 'standalone',
