@@ -314,14 +314,16 @@ export default function HomePage() {
             </h2>
           </div>
 
-          {/* Feature 1 - Kanban */}
+          {/* Feature 1 - Kanban (מראה כמו דשבורד / לוח פרויקט) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
             <div className="lg:col-span-5">
-              <div className="inline-flex items-center gap-2 bg-violet-100 text-violet-700 text-xs font-bold px-2.5 py-1 rounded-md mb-4">
-                <Layers className="w-3 h-3" />
-                ניהול פרויקטים
+              <div className="inline-flex items-center gap-2.5 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
+                  <Layers className="w-4 h-4 text-violet-600" strokeWidth={2.2} />
+                </div>
+                <span className="text-xs font-semibold text-zinc-700">ניהול פרויקטים</span>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
                 Kanban בעברית. בסוף.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
@@ -338,41 +340,44 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-7">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-200/40 to-fuchsia-200/40 blur-2xl"></div>
-                <div className="relative bg-white border border-zinc-200 rounded-xl shadow-xl p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h5 className="text-sm font-bold">פרויקט: עיצוב אתר ויזיון</h5>
-                    <div className="flex -space-x-1">
-                      {['violet', 'fuchsia', 'pink'].map((c, i) => (
-                        <div key={i} className={`w-6 h-6 rounded-full border-2 border-white bg-${c}-500`}></div>
-                      ))}
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-100/50 via-fuchsia-50/40 to-zinc-100/60 blur-2xl rounded-3xl" aria-hidden />
+                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-sm p-4 sm:p-5">
+                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-100">
+                    <h5 className="text-sm font-semibold text-zinc-900 tracking-tight">פרויקט: עיצוב אתר ויזיון</h5>
+                    <div className="flex -space-x-1.5">
+                      <div className="w-6 h-6 rounded-full border-2 border-white bg-violet-500" />
+                      <div className="w-6 h-6 rounded-full border-2 border-white bg-fuchsia-500" />
+                      <div className="w-6 h-6 rounded-full border-2 border-white bg-pink-400" />
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
                     {[
                       {
-                        title: 'לעשות',
+                        title: 'לביצוע',
                         count: 4,
-                        color: 'bg-zinc-100',
+                        wrap: 'rounded-xl border border-zinc-200/70 bg-zinc-50/50',
+                        header: 'bg-zinc-100 text-zinc-700 border border-zinc-200/80',
                         tasks: [
-                          { t: 'שיחת בריף עם הלקוח', tag: 'urgent', tagColor: 'bg-rose-100 text-rose-700' },
-                          { t: 'איסוף תוכן ראשוני', tag: 'תוכן', tagColor: 'bg-violet-100 text-violet-700' },
+                          { t: 'שיחת בריף עם הלקוח', tag: 'דחוף', tagColor: 'bg-red-50 text-red-700 border border-red-100' },
+                          { t: 'איסוף תוכן ראשוני', tag: 'תוכן', tagColor: 'bg-violet-50 text-violet-700 border border-violet-100' },
                           { t: 'מחקר מתחרים' },
                         ]
                       },
                       {
-                        title: 'בעבודה',
+                        title: 'בתהליך',
                         count: 2,
-                        color: 'bg-amber-50',
+                        wrap: 'rounded-xl border border-cyan-100/80 bg-cyan-50/30',
+                        header: 'bg-cyan-50 text-cyan-800 border border-cyan-100',
                         tasks: [
-                          { t: 'עיצוב דף הבית', tag: 'design', tagColor: 'bg-fuchsia-100 text-fuchsia-700', avatar: true },
+                          { t: 'עיצוב דף הבית', tag: 'עיצוב', tagColor: 'bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-100', avatar: true },
                           { t: 'wireframes פנימיים', avatar: true },
                         ]
                       },
                       {
                         title: 'בוצע',
                         count: 5,
-                        color: 'bg-emerald-50',
+                        wrap: 'rounded-xl border border-emerald-100/80 bg-emerald-50/30',
+                        header: 'bg-emerald-50 text-emerald-800 border border-emerald-100',
                         tasks: [
                           { t: 'פגישת היכרות', done: true },
                           { t: 'הצעת מחיר', done: true },
@@ -380,21 +385,33 @@ export default function HomePage() {
                         ]
                       },
                     ].map((col, i) => (
-                      <div key={i} className={`${col.color} rounded-lg p-2`}>
-                        <div className="flex items-center justify-between mb-2 px-1">
-                          <span className="text-[11px] font-bold">{col.title}</span>
-                          <span className="text-[10px] text-zinc-500 bg-white px-1.5 rounded">{col.count}</span>
+                      <div key={i} className={`${col.wrap} p-2`}>
+                        <div className={`flex items-center justify-between gap-1 mb-2 px-1.5 py-1 rounded-md text-[11px] font-semibold ${col.header}`}>
+                          <span>{col.title}</span>
+                          <span className="tabular-nums text-zinc-500 font-medium">{col.count}</span>
                         </div>
                         <div className="space-y-1.5">
                           {col.tasks.map((t, j) => (
-                            <div key={j} className="bg-white border border-zinc-200 rounded-md p-2">
-                              <div className={`text-[11px] mb-1.5 ${t.done ? 'line-through text-zinc-400' : ''}`}>{t.t}</div>
-                              <div className="flex items-center justify-between">
+                            <div
+                              key={j}
+                              className="rounded-xl border border-zinc-200/80 bg-white px-2.5 py-2 shadow-none hover:border-zinc-300/80 transition-colors"
+                            >
+                              <div className="flex items-start justify-between gap-1">
+                                <div className={`text-[11px] leading-snug font-medium ${t.done ? 'line-through text-zinc-400' : 'text-zinc-900'}`}>
+                                  {t.t}
+                                </div>
+                                {t.done && (
+                                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" strokeWidth={2.5} />
+                                )}
+                              </div>
+                              <div className="flex items-center justify-between mt-1.5">
                                 {t.tag ? (
-                                  <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded ${t.tagColor}`}>{t.tag}</span>
-                                ) : <span></span>}
+                                  <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-md ${t.tagColor}`}>{t.tag}</span>
+                                ) : (
+                                  <span />
+                                )}
                                 {t.avatar && (
-                                  <div className="w-4 h-4 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500"></div>
+                                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500 ring-2 ring-white shrink-0" />
                                 )}
                               </div>
                             </div>
@@ -408,51 +425,56 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Feature 2 - Customer 360 */}
+          {/* Feature 2 - כרטיס לקוח בסגנון דשבורד */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-32">
             <div className="lg:col-span-7 lg:order-1 order-2">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-200/40 to-cyan-200/40 blur-2xl"></div>
-                <div className="relative bg-white border border-zinc-200 rounded-xl shadow-xl p-5">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-violet-50/50 to-fuchsia-50/40 blur-2xl rounded-3xl" aria-hidden />
+                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-sm p-4 sm:p-6">
                   <div className="flex items-center gap-3 pb-4 border-b border-zinc-100 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center text-white text-sm font-bold shadow-sm">
                       ש.ל
                     </div>
-                    <div className="flex-1">
-                      <div className="font-bold text-sm">שרה לוי</div>
-                      <div className="text-xs text-zinc-500">מנכ״לית · סטודיו פיקסל</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm text-zinc-900 tracking-tight">שרה לוי</div>
+                      <div className="text-xs text-zinc-500 mt-0.5">מנכ״לית · סטודיו פיקסל</div>
                     </div>
-                    <div className="text-left">
-                      <div className="text-[10px] text-zinc-500">שווי כולל</div>
-                      <div className="text-base font-bold tabular-nums">₪127,400</div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 text-xs mb-4">
-                    <div className="flex items-center gap-2 text-zinc-600">
-                      <Mail className="w-3.5 h-3.5 text-zinc-400" />
-                      sara@pixel.co.il
-                    </div>
-                    <div className="flex items-center gap-2 text-zinc-600">
-                      <Phone className="w-3.5 h-3.5 text-zinc-400" />
-                      050-1234567
+                    <div className="text-left shrink-0">
+                      <div className="text-[10px] font-medium text-zinc-500">שווי כולל</div>
+                      <div className="text-base font-bold tabular-nums text-zinc-900">₪127,400</div>
                     </div>
                   </div>
 
-                  <div className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">פעילות אחרונה</div>
+                  <div className="grid grid-cols-2 gap-3 text-xs mb-5">
+                    <div className="flex items-center gap-2 text-zinc-600 rounded-lg bg-zinc-50/80 border border-zinc-100 px-2.5 py-2">
+                      <Mail className="w-3.5 h-3.5 text-zinc-400 shrink-0" strokeWidth={2} />
+                      <span className="truncate">sara@pixel.co.il</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-zinc-600 rounded-lg bg-zinc-50/80 border border-zinc-100 px-2.5 py-2">
+                      <Phone className="w-3.5 h-3.5 text-zinc-400 shrink-0" strokeWidth={2} />
+                      <span dir="ltr" className="truncate">050-1234567</span>
+                    </div>
+                  </div>
+
+                  <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">פעילות אחרונה</div>
                   <div className="space-y-2">
                     {[
-                      { icon: FileText, color: 'text-fuchsia-600 bg-fuchsia-50', text: 'הצעת מחיר #2418 נשלחה', time: 'לפני 2 שעות' },
-                      { icon: CreditCard, color: 'text-emerald-600 bg-emerald-50', text: 'תשלום התקבל · ₪12,500', time: 'אתמול' },
-                      { icon: Calendar, color: 'text-blue-600 bg-blue-50', text: 'פגישה תואמה ליום שני', time: 'לפני 3 ימים' },
-                      { icon: Mail, color: 'text-violet-600 bg-violet-50', text: 'מייל נשלח: סיכום פגישה', time: 'לפני 5 ימים' },
+                      { icon: FileText, box: 'bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white', text: 'הצעת מחיר #2418 נשלחה', time: 'לפני 2 שעות' },
+                      { icon: CreditCard, box: 'bg-emerald-50 text-emerald-600 border border-emerald-100', text: 'תשלום התקבל · ₪12,500', time: 'אתמול' },
+                      { icon: Calendar, box: 'bg-blue-50 text-blue-600 border border-blue-100', text: 'פגישה תואמה ליום שני', time: 'לפני 3 ימים' },
+                      { icon: Mail, box: 'bg-zinc-100 text-zinc-600 border border-zinc-200', text: 'מייל נשלח: סיכום פגישה', time: 'לפני 5 ימים' },
                     ].map((act, i) => (
-                      <div key={i} className="flex items-center gap-2.5 text-xs">
-                        <div className={`w-7 h-7 rounded-md flex items-center justify-center ${act.color}`}>
-                          <act.icon className="w-3.5 h-3.5" />
+                      <div
+                        key={i}
+                        className="flex items-start gap-2.5 text-xs p-2.5 rounded-xl border border-transparent bg-zinc-50/50 hover:bg-white hover:border-zinc-200/80 transition-all"
+                      >
+                        <div className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${act.box}`}>
+                          <act.icon className="w-3.5 h-3.5" strokeWidth={2.2} />
                         </div>
-                        <span className="flex-1">{act.text}</span>
-                        <span className="text-[10px] text-zinc-400">{act.time}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-zinc-900 leading-tight">{act.text}</div>
+                          <div className="text-[10px] text-zinc-500 mt-0.5">{act.time}</div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -460,11 +482,13 @@ export default function HomePage() {
               </div>
             </div>
             <div className="lg:col-span-5 lg:order-2 order-1">
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-md mb-4">
-                <Users className="w-3 h-3" />
-                360° לקוח
+              <div className="inline-flex items-center gap-2.5 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+                  <Users className="w-4 h-4 text-blue-600" strokeWidth={2.2} />
+                </div>
+                <span className="text-xs font-semibold text-zinc-700">360° לקוח</span>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
                 כל מה שצריך לדעת על לקוח. במסך אחד.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
@@ -481,14 +505,16 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Feature 3 - Quote */}
+          {/* Feature 3 - הצעת מחיר כמו במערכת */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-5">
-              <div className="inline-flex items-center gap-2 bg-fuchsia-100 text-fuchsia-700 text-xs font-bold px-2.5 py-1 rounded-md mb-4">
-                <FileText className="w-3 h-3" />
-                הצעות מחיר
+              <div className="inline-flex items-center gap-2.5 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-fuchsia-50 flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-fuchsia-600" strokeWidth={2.2} />
+                </div>
+                <span className="text-xs font-semibold text-zinc-700">הצעות מחיר</span>
               </div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+              <h3 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-zinc-900">
                 הצעות מחיר ש<span className="italic font-pacifico font-normal text-fuchsia-600" style={{ letterSpacing: '2px' }}>סוגרות</span> עסקאות.
               </h3>
               <p className="text-lg text-zinc-600 mb-6 leading-relaxed">
@@ -505,56 +531,56 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-7">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-200/40 to-pink-200/40 blur-2xl"></div>
-                <div className="relative bg-white border border-zinc-200 rounded-xl shadow-xl overflow-hidden">
-                  <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 p-6 text-white">
-                    <div className="flex items-start justify-between">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-100/50 to-fuchsia-100/50 blur-2xl rounded-3xl" aria-hidden />
+                <div className="relative bg-white border border-zinc-200/70 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="bg-gradient-to-br from-violet-600 via-violet-600 to-fuchsia-600 px-5 py-5 sm:p-6 text-white">
+                    <div className="flex items-start justify-between gap-4">
                       <div>
-                        <div className="text-xs opacity-80 mb-1">הצעת מחיר</div>
-                        <div className="text-2xl font-bold">#QM-2426</div>
+                        <div className="text-xs text-white/80 font-medium mb-1">הצעת מחיר</div>
+                        <div className="text-2xl sm:text-3xl font-bold tracking-tight">#QM-2426</div>
                       </div>
-                      <div className="text-left">
-                        <div className="text-xs opacity-80">תאריך</div>
-                        <div className="font-mono">20.04.2026</div>
+                      <div className="text-left shrink-0">
+                        <div className="text-xs text-white/80 font-medium">תאריך</div>
+                        <div className="font-mono text-sm font-medium tabular-nums">20.04.2026</div>
                       </div>
                     </div>
                   </div>
-                  <div className="p-5">
+                  <div className="p-4 sm:p-6">
                     <div className="grid grid-cols-2 gap-4 mb-5 pb-4 border-b border-zinc-100">
                       <div>
-                        <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">מאת</div>
-                        <div className="text-sm font-bold">החברה שלי בע״מ</div>
-                        <div className="text-[11px] text-zinc-500">ע.מ 123456789</div>
+                        <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-1.5">מאת</div>
+                        <div className="text-sm font-semibold text-zinc-900">החברה שלי בע״מ</div>
+                        <div className="text-[11px] text-zinc-500 mt-0.5">ע.מ 123456789</div>
                       </div>
                       <div>
-                        <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">לכבוד</div>
-                        <div className="text-sm font-bold">סטודיו פיקסל בע״מ</div>
-                        <div className="text-[11px] text-zinc-500">שרה לוי, מנכ״לית</div>
+                        <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-1.5">לכבוד</div>
+                        <div className="text-sm font-semibold text-zinc-900">סטודיו פיקסל בע״מ</div>
+                        <div className="text-[11px] text-zinc-500 mt-0.5">שרה לוי, מנכ״לית</div>
                       </div>
                     </div>
-                    <div className="space-y-1.5 mb-4">
+                    <div className="space-y-0 mb-4">
                       {[
                         { item: 'עיצוב לוגו ומיתוג', qty: 1, price: 4500 },
                         { item: 'בניית אתר תדמית', qty: 1, price: 18000 },
                         { item: 'ניהול תוכן (3 חודשים)', qty: 3, price: 2000 },
                       ].map((row, i) => (
-                        <div key={i} className="grid grid-cols-12 gap-2 text-xs py-1.5 border-b border-zinc-100">
-                          <div className="col-span-7">{row.item}</div>
-                          <div className="col-span-2 text-zinc-500">{row.qty}</div>
-                          <div className="col-span-3 text-left tabular-nums font-medium">₪{row.price.toLocaleString()}</div>
+                        <div key={i} className="grid grid-cols-12 gap-2 text-xs py-2.5 border-b border-zinc-100 last:border-0">
+                          <div className="col-span-7 text-zinc-800 font-medium">{row.item}</div>
+                          <div className="col-span-2 text-zinc-500 tabular-nums">{row.qty}</div>
+                          <div className="col-span-3 text-left tabular-nums font-semibold text-zinc-900">₪{row.price.toLocaleString()}</div>
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between items-center pt-3 border-t-2 border-zinc-900">
-                      <span className="text-sm font-bold">סה״כ לתשלום</span>
-                      <span className="text-2xl font-bold tabular-nums">₪28,500</span>
+                    <div className="flex justify-between items-center pt-4 border-t border-zinc-200">
+                      <span className="text-sm font-semibold text-zinc-700">סה״כ לתשלום</span>
+                      <span className="text-xl sm:text-2xl font-bold tabular-nums text-zinc-900">₪28,500</span>
                     </div>
                     <div className="mt-4 grid grid-cols-2 gap-2">
-                      <button className="bg-zinc-900 text-white text-xs font-medium py-2 rounded-md flex items-center justify-center gap-1.5">
-                        <Check className="w-3 h-3" />
+                      <button type="button" className="bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium py-2.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition-colors">
+                        <Check className="w-3.5 h-3.5" strokeWidth={2.5} />
                         אישור וחתימה
                       </button>
-                      <button className="bg-zinc-100 text-zinc-700 text-xs font-medium py-2 rounded-md">
+                      <button type="button" className="bg-white border border-zinc-200 text-zinc-800 hover:bg-zinc-50 text-xs font-medium py-2.5 rounded-lg transition-colors">
                         הורד PDF
                       </button>
                     </div>
