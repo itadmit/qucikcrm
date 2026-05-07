@@ -15,6 +15,11 @@ const nextConfig = {
     ],
   },
   serverExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
+  outputFileTracingIncludes: {
+    '/api/quotes/[id]/pdf': ['./node_modules/@sparticuz/chromium/**/*'],
+    '/api/quotes/[id]/send': ['./node_modules/@sparticuz/chromium/**/*'],
+    '/api/quotes/create-and-send': ['./node_modules/@sparticuz/chromium/**/*'],
+  },
 }
 
 module.exports = nextConfig
