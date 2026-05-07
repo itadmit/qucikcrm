@@ -85,6 +85,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       discount,
       tax,
       depositPercent,
+      leadId,
     } = body
 
     // בדיקה שההצעת מחיר שייכת לחברה
@@ -104,6 +105,16 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (title !== undefined) updateData.title = title
     if (description !== undefined) updateData.description = description
     if (body.templateType !== undefined) updateData.templateType = body.templateType
+    if (leadId !== undefined && leadId !== existingQuote.leadId) {
+      const targetLead = await prisma.lead.findFirst({
+        where: { id: leadId, companyId: dbUser.companyId },
+        select: { id: true },
+      })
+      if (!targetLead) {
+        return NextResponse.json({ error: "Lead not found" }, { status: 404 })
+      }
+      updateData.leadId = leadId
+    }
     if (status !== undefined) {
       updateData.status = status
       if (status === "SENT" && !existingQuote.issuedAt) {
