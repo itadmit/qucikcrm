@@ -74,6 +74,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       size: file.size,
     })
 
+    // External (Vercel Blob / S3 / R2) URL — redirect
+    if (file.path.startsWith("http://") || file.path.startsWith("https://")) {
+      return NextResponse.redirect(file.path)
+    }
+
     // קריאת הקובץ מהדיסק
     // אם הנתיב מתחיל ב-/, נסיר אותו כי join כבר מוסיף את process.cwd()
     const normalizedPath = file.path.startsWith("/") ? file.path.slice(1) : file.path

@@ -62,13 +62,25 @@ function formatDate(date: Date | null): string {
 
 async function imageToDataUrl(imagePath: string): Promise<string | null> {
   try {
-    // imagePath is like "/uploads/expense/<file>" — strip leading slash, resolve from cwd
-    const clean = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath
-    const fullPath = join(process.cwd(), clean)
-    const buffer = await readFile(fullPath)
-    const ext = clean.split(".").pop()?.toLowerCase() || "jpeg"
-    const mime =
-      ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg"
+    let buffer: Buffer
+    let mime: string
+
+    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+      // Vercel Blob (or other external) URL — fetch over HTTPS
+      const res = await fetch(imagePath)
+      if (!res.ok) return null
+      const arrayBuf = await res.arrayBuffer()
+      buffer = Buffer.from(arrayBuf)
+      mime = res.headers.get("content-type") || "image/jpeg"
+    } else {
+      const clean = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath
+      const fullPath = join(process.cwd(), clean)
+      buffer = await readFile(fullPath)
+      const ext = clean.split(".").pop()?.toLowerCase() || "jpeg"
+      mime =
+        ext === "png" ? "image/png" : ext === "webp" ? "image/webp" : "image/jpeg"
+    }
+
     return `data:${mime};base64,${buffer.toString("base64")}`
   } catch {
     return null
