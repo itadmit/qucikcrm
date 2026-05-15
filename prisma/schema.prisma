@@ -24,6 +24,7 @@ model Company {
   clients        Client[]
   emailTemplates EmailTemplate[]
   events         Event[]
+  expenses       Expense[]
   files          File[]
   integrations   Integration[]
   invitations    Invitation[]
@@ -779,4 +780,44 @@ enum InvitationStatus {
   ACCEPTED
   EXPIRED
   REVOKED
+}
+
+model Expense {
+  id            String          @id @default(cuid())
+  companyId     String
+  userId        String?
+  amount        Float
+  currency      String          @default("ILS")
+  vatAmount     Float?
+  category      ExpenseCategory @default(OTHER)
+  vendor        String?
+  description   String?
+  receiptDate   DateTime?
+  receiptNumber String?
+  imagePath     String?
+  fileId        String?
+  aiExtracted   Boolean         @default(false)
+  aiConfidence  Float?
+  notes         String?
+  exportedAt    DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  company       Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([category])
+  @@index([receiptDate])
+  @@index([createdAt])
+  @@map("expenses")
+}
+
+enum ExpenseCategory {
+  FUEL
+  OFFICE
+  MEALS
+  CLOTHING
+  EQUIPMENT
+  TRAVEL
+  COMMUNICATION
+  OTHER
 }

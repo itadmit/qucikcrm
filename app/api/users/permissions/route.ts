@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
           projects: true,
           quotes: true,
           payments: true,
+          expenses: true,
           settings: true,
           integrations: true,
           automations: true,

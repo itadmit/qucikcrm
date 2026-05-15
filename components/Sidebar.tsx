@@ -43,6 +43,7 @@ const projectItems = [
   { label: "פרויקטים", href: "/projects", color: "bg-cyan-500", permission: "projects" },
   { label: "מסמכים", href: "/quotes", color: "bg-green-500", permission: "quotes" },
   { label: "תשלומים", href: "/payments", color: "bg-orange-500", permission: "payments" },
+  { label: "הוצאות", href: "/expenses", color: "bg-pink-500", permission: "expenses" },
 ]
 
 const settingsItems = [
@@ -90,8 +91,8 @@ export function Sidebar({ mobileOpen, onMobileClose, externalUnreadCount }: Side
       setPermissions({
         dashboard: true, tasks: true, calendar: true, attendance: true,
         notifications: true, reports: true, leads: true, clients: true,
-        projects: true, quotes: true, payments: true, settings: true,
-        integrations: true, automations: true,
+        projects: true, quotes: true, payments: true, expenses: true,
+        settings: true, integrations: true, automations: true,
       })
     } finally {
       setLoadingPermissions(false)
