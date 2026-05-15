@@ -12,6 +12,24 @@ export async function GET(req: NextRequest) {
 
     const companyId = user.companyId
 
+    // Period ranges (Today / Week / Month) — based on receiptDate, falling back to createdAt
+    const now = new Date()
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999)
+    // Week starts on Sunday (Israel convention)
+    const startOfWeek = new Date(startOfToday)
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999)
+
+    const periodWhere = (from: Date, to: Date) => ({
+      companyId,
+      OR: [
+        { receiptDate: { gte: from, lte: to } },
+        { AND: [{ receiptDate: null }, { createdAt: { gte: from, lte: to } }] },
+      ],
+    })
+
     // Get stats
     const [
       totalLeads,
@@ -25,6 +43,9 @@ export async function GET(req: NextRequest) {
       myTasks,
       upcomingEvents,
       recentNotifications,
+      expensesToday,
+      expensesWeek,
+      expensesMonth,
     ] = await Promise.all([
       prisma.lead.count({ where: { companyId } }),
       prisma.lead.count({
@@ -81,6 +102,21 @@ export async function GET(req: NextRequest) {
         take: 3,
         orderBy: { createdAt: 'desc' },
       }),
+      prisma.expense.aggregate({
+        where: periodWhere(startOfToday, endOfToday),
+        _sum: { amount: true, vatAmount: true },
+        _count: true,
+      }),
+      prisma.expense.aggregate({
+        where: periodWhere(startOfWeek, endOfToday),
+        _sum: { amount: true, vatAmount: true },
+        _count: true,
+      }),
+      prisma.expense.aggregate({
+        where: periodWhere(startOfMonth, endOfMonth),
+        _sum: { amount: true, vatAmount: true },
+        _count: true,
+      }),
     ])
 
     return NextResponse.json({
@@ -99,6 +135,23 @@ export async function GET(req: NextRequest) {
       budgets: {
         total: totalBudgets._sum.amount || 0,
         pending: pendingBudgets._sum.amount || 0,
+      },
+      expenses: {
+        today: {
+          total: expensesToday._sum.amount || 0,
+          vat: expensesToday._sum.vatAmount || 0,
+          count: expensesToday._count,
+        },
+        week: {
+          total: expensesWeek._sum.amount || 0,
+          vat: expensesWeek._sum.vatAmount || 0,
+          count: expensesWeek._count,
+        },
+        month: {
+          total: expensesMonth._sum.amount || 0,
+          vat: expensesMonth._sum.vatAmount || 0,
+          count: expensesMonth._count,
+        },
       },
       myTasks,
       upcomingEvents,
