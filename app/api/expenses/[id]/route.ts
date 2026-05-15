@@ -79,6 +79,52 @@ export async function PATCH(
       data.receiptNumber = body.receiptNumber || null
     if (body.notes !== undefined) data.notes = body.notes || null
 
+    // Image replace / clear
+    if (body.fileId !== undefined) {
+      // Delete previous image if replaced or cleared
+      if (existing.fileId && existing.fileId !== body.fileId) {
+        const prev = await prisma.file.findFirst({
+          where: { id: existing.fileId, companyId: user.companyId },
+        })
+        if (prev) {
+          const clean = prev.path.startsWith("/") ? prev.path.slice(1) : prev.path
+          await unlink(join(process.cwd(), clean)).catch(() => {})
+          await prisma.file.delete({ where: { id: prev.id } }).catch(() => {})
+        }
+      }
+      data.fileId = body.fileId || null
+
+      if (body.fileId) {
+        // Link new file to this expense
+        const newFile = await prisma.file.findFirst({
+          where: { id: body.fileId, companyId: user.companyId },
+        })
+        if (newFile) {
+          data.imagePath = newFile.path
+          await prisma.file
+            .update({
+              where: { id: newFile.id },
+              data: { entityType: "expense", entityId: id },
+            })
+            .catch(() => {})
+        }
+      } else {
+        data.imagePath = null
+      }
+    } else if (body.imagePath === null && existing.fileId) {
+      // Clearing image without specifying fileId
+      const prev = await prisma.file.findFirst({
+        where: { id: existing.fileId, companyId: user.companyId },
+      })
+      if (prev) {
+        const clean = prev.path.startsWith("/") ? prev.path.slice(1) : prev.path
+        await unlink(join(process.cwd(), clean)).catch(() => {})
+        await prisma.file.delete({ where: { id: prev.id } }).catch(() => {})
+      }
+      data.fileId = null
+      data.imagePath = null
+    }
+
     const expense = await prisma.expense.update({ where: { id }, data })
     return NextResponse.json(expense)
   } catch (error) {

@@ -6,8 +6,10 @@ import { readFile } from "fs/promises"
 import { join } from "path"
 
 // POST /api/expenses/extract
-// body: { fileId?: string, imagePath?: string }
-// returns: { amount, vatAmount, vendor, receiptDate, receiptNumber, category, confidence } | null
+// Accepts one of:
+//   - multipart/form-data with field "file" (one-shot, image NOT persisted)
+//   - JSON body { fileId } or { imagePath } (reads existing uploaded file)
+// returns: { extracted: { amount, vatAmount, vendor, receiptDate, receiptNumber, category, confidence } | null }
 export async function POST(req: NextRequest) {
   try {
     const user = await getAuthUser(req)
@@ -15,38 +17,51 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const body = await req.json().catch(() => ({}))
-    const { fileId, imagePath } = body
-
-    let path: string | null = null
-    let mimeType = "image/jpeg"
-
-    if (fileId) {
-      const file = await prisma.file.findFirst({
-        where: { id: fileId, companyId: user.companyId },
-      })
-      if (!file) {
-        return NextResponse.json({ error: "File not found" }, { status: 404 })
-      }
-      path = file.path
-      if (file.mimeType) mimeType = file.mimeType
-    } else if (imagePath) {
-      path = imagePath
-    }
-
-    if (!path) {
-      return NextResponse.json(
-        { error: "fileId or imagePath required" },
-        { status: 400 }
-      )
-    }
-
     if (!process.env.GEMINI_API_KEY) {
       return NextResponse.json({ extracted: null, reason: "no_api_key" })
     }
 
-    const clean = path.startsWith("/") ? path.slice(1) : path
-    const buffer = await readFile(join(process.cwd(), clean))
+    let buffer: Buffer | null = null
+    let mimeType = "image/jpeg"
+
+    const contentType = req.headers.get("content-type") || ""
+
+    if (contentType.includes("multipart/form-data")) {
+      const formData = await req.formData()
+      const file = formData.get("file") as File | null
+      if (!file) {
+        return NextResponse.json({ error: "file required" }, { status: 400 })
+      }
+      buffer = Buffer.from(await file.arrayBuffer())
+      if (file.type) mimeType = file.type
+    } else {
+      const body = await req.json().catch(() => ({}))
+      const { fileId, imagePath } = body
+      let path: string | null = null
+
+      if (fileId) {
+        const dbFile = await prisma.file.findFirst({
+          where: { id: fileId, companyId: user.companyId },
+        })
+        if (!dbFile) {
+          return NextResponse.json({ error: "File not found" }, { status: 404 })
+        }
+        path = dbFile.path
+        if (dbFile.mimeType) mimeType = dbFile.mimeType
+      } else if (imagePath) {
+        path = imagePath
+      }
+
+      if (!path) {
+        return NextResponse.json(
+          { error: "file, fileId, or imagePath required" },
+          { status: 400 }
+        )
+      }
+
+      const clean = path.startsWith("/") ? path.slice(1) : path
+      buffer = await readFile(join(process.cwd(), clean))
+    }
 
     const extracted = await extractReceipt(buffer, mimeType)
     return NextResponse.json({ extracted })
