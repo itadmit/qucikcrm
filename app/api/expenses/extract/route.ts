@@ -17,7 +17,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    if (!process.env.GEMINI_API_KEY) {
+    // Read the company's Gemini API key from settings (falls back to env)
+    const company = await prisma.company.findUnique({
+      where: { id: user.companyId },
+      select: { settings: true },
+    })
+    const companyKey =
+      (company?.settings as any)?.aiSettings?.geminiApiKey ||
+      process.env.GEMINI_API_KEY ||
+      null
+
+    if (!companyKey) {
       return NextResponse.json({ extracted: null, reason: "no_api_key" })
     }
 
@@ -63,7 +73,7 @@ export async function POST(req: NextRequest) {
       buffer = await readFile(join(process.cwd(), clean))
     }
 
-    const extracted = await extractReceipt(buffer, mimeType)
+    const extracted = await extractReceipt(buffer, mimeType, companyKey)
     return NextResponse.json({ extracted })
   } catch (error) {
     console.error("Error extracting receipt:", error)

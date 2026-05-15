@@ -33,14 +33,16 @@ const PROMPT = `נתח את הקבלה/חשבונית שבתמונה והחזר 
 
 export async function extractReceipt(
   imageBuffer: Buffer,
-  mimeType: string
+  mimeType: string,
+  apiKey?: string | null
 ): Promise<ExtractedReceipt | null> {
-  if (!process.env.GEMINI_API_KEY) {
+  const key = apiKey || process.env.GEMINI_API_KEY
+  if (!key) {
     return null
   }
 
   try {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+    const genAI = new GoogleGenerativeAI(key)
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
